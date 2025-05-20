@@ -22,7 +22,9 @@ class TaskPlanner(Node):
         self.create_subscription(String, '/command_topic', self.task_callback, 10)
         self.create_subscription(JointState, '/joint_states', self.joint_states_callback, 10)
 
-        self.arm_client = ActionClient(self, FollowJointTrajectory, '/arm_controller/follow_joint_trajectory')
+
+#publisher per joint trajectory
+        self.publisher = self.create_publisher(JointTrajectory, '/arm_controller/joint_trajectory', 10)
         self.gripper_client = ActionClient(self, FollowJointTrajectory, '/gripper_controller/follow_joint_trajectory')
 
         self.joint_angle_ranges = np.array([
@@ -40,7 +42,7 @@ class TaskPlanner(Node):
         self.current_joint_state = None
 
     def joint_states_callback(self, msg):
-        joint_order = [f'arm_{i+1}_joint' for i in range(7)]
+        joint_order = ['torso_lift_joint'] + [f'arm_{i+1}_joint' for i in range(7)]
         joint_pos = []
         for name in joint_order:
             if name in msg.name:
@@ -85,7 +87,7 @@ class TaskPlanner(Node):
             self.get_logger().error("Nessuna soluzione IK trovata. Comando non inviato.")
             return
         traj_msg = JointTrajectory()
-        traj_msg.joint_names = [f'arm_{i+1}_joint' for i in range(7)]
+        traj_msg.joint_names = [['torso_lift_joint'] + [f'arm_{i+1}_joint' for i in range(7)]]
         for i, q in enumerate(q_traj):
             point = JointTrajectoryPoint()
             point.positions = q.tolist()
