@@ -22,24 +22,11 @@ class TaskPlanner(Node):
         self.create_subscription(String, '/command_topic', self.task_callback, 10)
         self.create_subscription(JointState, '/joint_states', self.joint_states_callback, 10)
 
-
-#publisher per joint trajectory
-        self.publisher = self.create_publisher(JointTrajectory, '/arm_controller/joint_trajectory', 10)
+        # Publisher per JointTrajectory
+        self.arm_pub = self.create_publisher(JointTrajectory, '/arm_controller/joint_trajectory', 10)
+        self.torso_pub = self.create_publisher(JointTrajectory, '/torso_controller/joint_trajectory', 10)
         self.gripper_client = ActionClient(self, FollowJointTrajectory, '/gripper_controller/follow_joint_trajectory')
 
-        self.joint_angle_ranges = np.array([
-            [-150 * (np.pi / 180), 114 * (np.pi / 180)],
-            [-67 * (np.pi / 180), 109 * (np.pi / 180)],
-            [-150 * (np.pi / 180), 41 * (np.pi / 180)],
-            [-92 * (np.pi / 180), 110 * (np.pi / 180)],
-            [-150 * (np.pi / 180), 150 * (np.pi / 180)],
-            [92 * (np.pi / 180), 113 * (np.pi / 180)],
-            [-150 * (np.pi / 180), 150 * (np.pi / 180)]
-        ])
-        self.q0 = np.mean(self.joint_angle_ranges, axis=1)
-        self.current_pose = None
-        self.current_task = None
-        self.current_joint_state = None
 
     def joint_states_callback(self, msg):
         joint_order = ['torso_lift_joint'] + [f'arm_{i+1}_joint' for i in range(7)]
@@ -86,20 +73,26 @@ class TaskPlanner(Node):
         if not q_traj:
             self.get_logger().error("Nessuna soluzione IK trovata. Comando non inviato.")
             return
+
+        # Prepara messaggio JointTrajectory (con torso+arm)
         traj_msg = JointTrajectory()
         traj_msg.joint_names = [['torso_lift_joint'] + [f'arm_{i+1}_joint' for i in range(7)]]
         for i, q in enumerate(q_traj):
+            # Se q è di lunghezza 8 (torso+7 arm), prendi tutto. Altrimenti (solo arm) aggiungi un valore fisso per torso.
+            if len(q) == 8:
+                positions = q.tolist()
+            else:
+                positions = [0.15] + q.tolist()  # 0.15 ad esempio per torso_lift_joint
             point = JointTrajectoryPoint()
-            point.positions = q.tolist()
+            point.positions = positions
             point.time_from_start.sec = int(i * 0.1)
             traj_msg.points.append(point)
-        goal_msg = FollowJointTrajectory.Goal()
-        goal_msg.trajectory = traj_msg
-        self.arm_client.wait_for_server()
-        self.arm_client.send_goal_async(goal_msg)
-        self.get_logger().info("Inviata traiettoria al braccio.")
+        self.torso_pub.publish(traj_msg[0])
+        self.arm_pub.publish(traj_msg[1:7])
+        self.get_logger().info("Inviata traiettoria al braccio tramite JointTrajectory.")
 
     def send_gripper_command(self):
+        # Rimane invariato, puoi convertirlo a publisher se necessario
         traj_msg = JointTrajectory()
         traj_msg.joint_names = ['gripper_left_finger_joint', 'gripper_right_finger_joint']
         point = JointTrajectoryPoint()
@@ -109,6 +102,7 @@ class TaskPlanner(Node):
         else:
             point.positions = [0.04, 0.04]
         traj_msg.points.append(point)
+        # Se vuoi, puoi pubblicare anche per il gripper, oppure lasciare la action!
         goal_msg = FollowJointTrajectory.Goal()
         goal_msg.trajectory = traj_msg
         self.gripper_client.wait_for_server()
