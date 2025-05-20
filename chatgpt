@@ -1,0 +1,265 @@
+[to_base-4] [INFO] [1747747888.859361274] [aruco_pose_transformer]: [Marker 1] Ricevuta posa: x=-0.202, y=-0.051, z=0.408
+[to_base-4] [INFO] [1747747888.860003704] [aruco_pose_transformer]: [Marker 3] Ricevuta posa: x=0.151, y=0.260, z=0.652
+[to_base-4] [INFO] [1747747888.860968957] [aruco_pose_transformer]: [Marker 4] Ricevuta posa: x=0.004, y=0.232, z=0.591
+[aruco_pose_estimator_node-3] [INFO] [1747747888.938688339] [aruco_pose_estimator]: Camera parameters received.
+[to_base-4] [INFO] [1747747888.948652704] [aruco_pose_transformer]: [Marker 2] Ricevuta posa: x=-0.193, y=0.196, z=0.511
+[to_base-4] [INFO] [1747747888.951200345] [aruco_pose_transformer]: [Marker 1] Ricevuta posa: x=-0.202, y=-0.051, z=0.408
+[to_base-4] [INFO] [1747747888.952796018] [aruco_pose_transformer]: [Marker 3] Ricevuta posa: x=0.151, y=0.260, z=0.652
+[to_base-4] [INFO] [1747747888.953564663] [aruco_pose_transformer]: [Marker 4] Ricevuta posa: x=0.004, y=0.232, z=0.591
+[to_base-4] [INFO] [1747747888.985191254] [aruco_pose_transformer]: [TF] Marker 2: pubblicata posa trasformata.
+[to_base-4] [INFO] [1747747888.985946802] [aruco_pose_transformer]: [TF] Marker 3: pubblicata posa trasformata.
+[to_base-4] [INFO] [1747747888.986728082] [aruco_pose_transformer]: [TF] Marker 4: pubblicata posa trasformata.
+[to_base-4] [INFO] [1747747888.987561545] [aruco_pose_transformer]: [TF] Marker 1: pubblicata posa trasformata.
+[aruco_pose_estimator_node-3] [INFO] [1747747889.005584474] [aruco_pose_estimator]: Camera parameters received.
+[to_base-4] [INFO] [1747747889.016739803] [aruco_pose_transformer]: [Marker 2] Ricevuta posa: x=-0.193, y=0.196, z=0.511
+[to_base-4] [INFO] [1747747889.018905384] [aruco_pose_transformer]: [Marker 1] Ricevuta posa: x=-0.202, y=-0.051, z=0.408
+[to_base-4] [INFO] [1747747889.020321206] [aruco_pose_transformer]: [Marker 3] Ricevuta posa: x=0.151, y=0.260, z=0.652
+[to_base-4] [INFO] [1747747889.021716180] [aruco_pose_transformer]: [Marker 4] Ricevuta posa: x=0.004, y=0.232, z=0.591
+[aruco_pose_estimator_node-3] [INFO] [1747747889.061226108] [aruco_pose_estimator]: Camera parameters received.
+[to_base-4] [INFO] [1747747889.071841600] [aruco_pose_transformer]: [Marker 2] Ricevuta posa: x=-0.193, y=0.196, z=0.511
+[to_base-4] [INFO] [1747747889.074246777] [aruco_pose_transformer]: [Marker 1] Ricevuta posa: x=-0.202, y=-0.051, z=0.408
+[to_base-4] [INFO] [1747747889.075940120] [aruco_pose_transformer]: [Marker 3] Ricevuta posa: x=0.151, y=0.260, z=0.652
+[to_base-4] [INFO] [1747747889.077603707] [aruco_pose_transformer]: [Marker 4] Ricevuta posa: x=0.004, y=0.232, z=0.591
+[aruco_pose_estimator_node-3] [INFO] [1747747889.123053841] [aruco_pose_estimator]: Camera parameters received.
+[to_base-4] [INFO] [1747747889.134931406] [aruco_pose_transformer]: [Marker 2] Ricevuta posa: x=-0.193, y=0.196, z=0.511
+[to_base-4] [INFO] [1747747889.136992354] [aruco_pose_transformer]: [Marker 1] Ricevuta posa: x=-0.202, y=-0.051, z=0.408
+[to_base-4] [INFO] [1747747889.138275634] [aruco_pose_transformer]: [Marker 3] Ricevuta posa: x=0.151, y=0.260, z=0.652
+[to_base-4] [INFO] [1747747889.139685825] [aruco_pose_transformer]: [Marker 4] Ricevuta posa: x=0.004, y=0.232, z=0.591
+[aruco_pose_estimator_node-3] [INFO] [1747747889.210974364] [aruco_pose_estimator]: Camera parameters received.
+[to_base-4] [INFO] [1747747889.220628028] [aruco_pose_transformer]: [Marker 2] Ricevuta posa: x=-0.193, y=0.196, z=0.511
+[to_base-4] [INFO] [1747747889.222764540] [aruco_pose_transformer]: [Marker 1] Ricevuta posa: x=-0.202, y=-0.051, z=0.408
+[to_base-4] [INFO] [1747747889.224213422] [aruco_pose_transformer]: [Marker 3] Ricevuta posa: x=0.151, y=0.260, z=0.652
+[to_base-4] [INFO] [1747747889.225528752] [aruco_pose_transformer]: [Marker 4] Ricevuta posa: x=0.004, y=0.232, z=0.591
+[aruco_pose_estimator_node-3] [INFO] [1747747889.276663529] [aruco_pose_estimator]: Camera parameters received.
+[to_base-4] [INFO] [1747747889.287487165] [aruco_pose_transformer]: [Marker 2] Ricevuta posa: x=-0.193, y=0.196, z=0.511
+[to_base-4] [INFO] [1747747889.289100582] [aruco_pose_transformer]: [Marker 1] Ricevuta posa: x=-0.202, y=-0.051, z=0.408
+[to_base-4] [INFO] [1747747889.290045433] [aruco_pose_transformer]: [Marker 3] Ricevuta posa: x=0.151, y=0.260, z=0.652
+[to_base-4] [INFO] [1747747889.290730891] [aruco_pose_transformer]: [Marker 4] Ricevuta posa: x=0.004, y=0.232, z=0.591
+[aruco_pose_estimator_node-3] [INFO] [1747747889.348107191] [aruco_pose_estimator]: Camera parameters received.
+[to_base-4] [INFO] [1747747889.367354192] [aruco_pose_transformer]: [Marker 2] Ricevuta posa: x=-0.193, y=0.196, z=0.511
+[to_base-4] [INFO] [1747747889.369826312] [aruco_pose_transformer]: [Marker 1] Ricevuta posa: x=-0.202, y=-0.051, z=0.408
+[to_base-4] [INFO] [1747747889.371274441] [aruco_pose_transformer]: [Marker 3] Ricevuta posa: x=0.151, y=0.260, z=0.652
+[to_base-4] [INFO] [1747747889.372571889] [aruco_pose_transformer]: [Marker 4] Ricevuta posa: x=0.004, y=0.232, z=0.591
+[aruco_pose_estimator_node-3] [INFO] [1747747889.432710843] [aruco_pose_estimator]: Camera parameters received.
+[to_base-4] [INFO] [1747747889.444734223] [aruco_pose_transformer]: [Marker 2] Ricevuta posa: x=-0.193, y=0.196, z=0.511
+[to_base-4] [INFO] [1747747889.447156995] [aruco_pose_transformer]: [Marker 1] Ricevuta posa: x=-0.202, y=-0.051, z=0.408
+[to_base-4] [INFO] [1747747889.448857317] [aruco_pose_transformer]: [Marker 3] Ricevuta posa: x=0.151, y=0.260, z=0.652
+[to_base-4] [INFO] [1747747889.450453111] [aruco_pose_transformer]: [Marker 4] Ricevuta posa: x=0.004, y=0.232, z=0.591
+[aruco_pose_estimator_node-3] [INFO] [1747747889.508650239] [aruco_pose_estimator]: Camera parameters received.
+[to_base-4] [INFO] [1747747889.517383484] [aruco_pose_transformer]: [Marker 1] Ricevuta posa: x=-0.202, y=-0.051, z=0.408
+[to_base-4] [INFO] [1747747889.519007781] [aruco_pose_transformer]: [Marker 2] Ricevuta posa: x=-0.193, y=0.196, z=0.511
+[to_base-4] [INFO] [1747747889.520775047] [aruco_pose_transformer]: [Marker 3] Ricevuta posa: x=0.151, y=0.260, z=0.652
+[to_base-4] [INFO] [1747747889.522362711] [aruco_pose_transformer]: [Marker 4] Ricevuta posa: x=0.004, y=0.232, z=0.591
+[aruco_pose_estimator_node-3] [INFO] [1747747889.580308916] [aruco_pose_estimator]: Camera parameters received.
+[to_base-4] [INFO] [1747747889.601075084] [aruco_pose_transformer]: [Marker 2] Ricevuta posa: x=-0.193, y=0.196, z=0.511
+[to_base-4] [INFO] [1747747889.601793570] [aruco_pose_transformer]: [Marker 3] Ricevuta posa: x=0.151, y=0.260, z=0.652
+[to_base-4] [INFO] [1747747889.603612035] [aruco_pose_transformer]: [Marker 1] Ricevuta posa: x=-0.202, y=-0.051, z=0.408
+[to_base-4] [INFO] [1747747889.605458548] [aruco_pose_transformer]: [Marker 4] Ricevuta posa: x=0.004, y=0.232, z=0.591
+[aruco_pose_estimator_node-3] [INFO] [1747747889.625372541] [aruco_pose_estimator]: Camera parameters received.
+[to_base-4] [INFO] [1747747889.636046080] [aruco_pose_transformer]: [Marker 2] Ricevuta posa: x=-0.193, y=0.196, z=0.511
+[to_base-4] [INFO] [1747747889.640088151] [aruco_pose_transformer]: [Marker 1] Ricevuta posa: x=-0.202, y=-0.051, z=0.408
+[to_base-4] [INFO] [1747747889.640892466] [aruco_pose_transformer]: [Marker 3] Ricevuta posa: x=0.151, y=0.260, z=0.652
+[to_base-4] [INFO] [1747747889.641618128] [aruco_pose_transformer]: [Marker 4] Ricevuta posa: x=0.004, y=0.232, z=0.591
+[aruco_pose_estimator_node-3] [INFO] [1747747889.690817779] [aruco_pose_estimator]: Camera parameters received.
+[to_base-4] [INFO] [1747747889.704481550] [aruco_pose_transformer]: [Marker 2] Ricevuta posa: x=-0.193, y=0.196, z=0.511
+[to_base-4] [INFO] [1747747889.706698014] [aruco_pose_transformer]: [Marker 1] Ricevuta posa: x=-0.202, y=-0.051, z=0.408
+[to_base-4] [INFO] [1747747889.708295687] [aruco_pose_transformer]: [Marker 3] Ricevuta posa: x=0.151, y=0.260, z=0.652
+[to_base-4] [INFO] [1747747889.710117625] [aruco_pose_transformer]: [Marker 4] Ricevuta posa: x=0.004, y=0.232, z=0.591
+[test_robot-10] [INFO] [1747747889.729840443] [test_robot_node]: Publishing event: arrived_to_grasp
+[robot_state_machine-9] [INFO] [1747747889.731983974] [robot_state_machine_node]: Evento ricevuto: arrived_to_grasp
+[robot_state_machine-9] [INFO] [1747747889.732947287] [robot_state_machine_node]: Pubblicata pose 2 della sequenza.
+[robot_state_machine-9] [INFO] [1747747889.733317027] [robot_state_machine_node]: Nessuna transizione per evento 'arrived_to_grasp' nello stato move_to_grasp
+[aruco_pose_estimator_node-3] [INFO] [1747747889.761238494] [aruco_pose_estimator]: Camera parameters received.
+[to_base-4] [INFO] [1747747889.772426228] [aruco_pose_transformer]: [Marker 1] Ricevuta posa: x=-0.202, y=-0.051, z=0.408
+[to_base-4] [INFO] [1747747889.773576517] [aruco_pose_transformer]: [Marker 2] Ricevuta posa: x=-0.193, y=0.196, z=0.511
+[to_base-4] [INFO] [1747747889.774657460] [aruco_pose_transformer]: [Marker 3] Ricevuta posa: x=0.151, y=0.260, z=0.652
+[to_base-4] [INFO] [1747747889.775664437] [aruco_pose_transformer]: [Marker 4] Ricevuta posa: x=0.004, y=0.232, z=0.591
+[aruco_pose_estimator_node-3] [INFO] [1747747889.834789660] [aruco_pose_estimator]: Camera parameters received.
+[to_base-4] [INFO] [1747747889.855749508] [aruco_pose_transformer]: [Marker 1] Ricevuta posa: x=-0.202, y=-0.051, z=0.408
+[to_base-4] [INFO] [1747747889.857952447] [aruco_pose_transformer]: [Marker 2] Ricevuta posa: x=-0.193, y=0.196, z=0.511
+[to_base-4] [INFO] [1747747889.859874116] [aruco_pose_transformer]: [Marker 3] Ricevuta posa: x=0.151, y=0.260, z=0.652
+[to_base-4] [INFO] [1747747889.861902585] [aruco_pose_transformer]: [Marker 4] Ricevuta posa: x=0.004, y=0.232, z=0.591
+[aruco_pose_estimator_node-3] [INFO] [1747747889.885776223] [aruco_pose_estimator]: Camera parameters received.
+[to_base-4] [INFO] [1747747889.903852037] [aruco_pose_transformer]: [Marker 2] Ricevuta posa: x=-0.193, y=0.196, z=0.511
+[to_base-4] [INFO] [1747747889.906112657] [aruco_pose_transformer]: [Marker 1] Ricevuta posa: x=-0.202, y=-0.051, z=0.408
+[to_base-4] [INFO] [1747747889.907265860] [aruco_pose_transformer]: [Marker 3] Ricevuta posa: x=0.151, y=0.260, z=0.652
+[to_base-4] [INFO] [1747747889.908107424] [aruco_pose_transformer]: [Marker 4] Ricevuta posa: x=0.004, y=0.232, z=0.591
+[aruco_pose_estimator_node-3] [INFO] [1747747889.943753319] [aruco_pose_estimator]: Camera parameters received.
+[to_base-4] [INFO] [1747747889.961318314] [aruco_pose_transformer]: [Marker 2] Ricevuta posa: x=-0.193, y=0.196, z=0.511
+[to_base-4] [INFO] [1747747889.962576782] [aruco_pose_transformer]: [Marker 1] Ricevuta posa: x=-0.202, y=-0.051, z=0.408
+[to_base-4] [INFO] [1747747889.963182574] [aruco_pose_transformer]: [Marker 3] Ricevuta posa: x=0.151, y=0.260, z=0.652
+[to_base-4] [INFO] [1747747889.963719557] [aruco_pose_transformer]: [Marker 4] Ricevuta posa: x=0.004, y=0.232, z=0.591
+[to_base-4] [INFO] [1747747889.985978424] [aruco_pose_transformer]: [TF] Marker 2: pubblicata posa trasformata.
+[to_base-4] [INFO] [1747747889.986758637] [aruco_pose_transformer]: [TF] Marker 3: pubblicata posa trasformata.
+[to_base-4] [INFO] [1747747889.987455346] [aruco_pose_transformer]: [TF] Marker 4: pubblicata posa trasformata.
+[to_base-4] [INFO] [1747747889.988086277] [aruco_pose_transformer]: [TF] Marker 1: pubblicata posa trasformata.
+[aruco_pose_estimator_node-3] [INFO] [1747747889.995066575] [aruco_pose_estimator]: Camera parameters received.
+[to_base-4] [INFO] [1747747890.003456663] [aruco_pose_transformer]: [Marker 2] Ricevuta posa: x=-0.193, y=0.196, z=0.511
+[to_base-4] [INFO] [1747747890.005877911] [aruco_pose_transformer]: [Marker 1] Ricevuta posa: x=-0.202, y=-0.051, z=0.408
+[to_base-4] [INFO] [1747747890.007802685] [aruco_pose_transformer]: [Marker 3] Ricevuta posa: x=0.151, y=0.260, z=0.652
+[to_base-4] [INFO] [1747747890.009651682] [aruco_pose_transformer]: [Marker 4] Ricevuta posa: x=0.004, y=0.232, z=0.591
+[aruco_pose_estimator_node-3] [INFO] [1747747890.081916351] [aruco_pose_estimator]: Camera parameters received.
+[to_base-4] [INFO] [1747747890.091580796] [aruco_pose_transformer]: [Marker 2] Ricevuta posa: x=-0.193, y=0.196, z=0.511
+[to_base-4] [INFO] [1747747890.092713434] [aruco_pose_transformer]: [Marker 1] Ricevuta posa: x=-0.202, y=-0.051, z=0.408
+[to_base-4] [INFO] [1747747890.093200527] [aruco_pose_transformer]: [Marker 3] Ricevuta posa: x=0.151, y=0.260, z=0.652
+[to_base-4] [INFO] [1747747890.094108600] [aruco_pose_transformer]: [Marker 4] Ricevuta posa: x=0.004, y=0.232, z=0.591
+[aruco_pose_estimator_node-3] [INFO] [1747747890.149068059] [aruco_pose_estimator]: Camera parameters received.
+[to_base-4] [INFO] [1747747890.157551910] [aruco_pose_transformer]: [Marker 2] Ricevuta posa: x=-0.193, y=0.196, z=0.511
+[to_base-4] [INFO] [1747747890.159543270] [aruco_pose_transformer]: [Marker 1] Ricevuta posa: x=-0.202, y=-0.051, z=0.408
+[to_base-4] [INFO] [1747747890.160222905] [aruco_pose_transformer]: [Marker 3] Ricevuta posa: x=0.151, y=0.260, z=0.652
+[to_base-4] [INFO] [1747747890.160785051] [aruco_pose_transformer]: [Marker 4] Ricevuta posa: x=0.004, y=0.232, z=0.591
+[aruco_pose_estimator_node-3] [INFO] [1747747890.215841413] [aruco_pose_estimator]: Camera parameters received.
+[to_base-4] [INFO] [1747747890.225441928] [aruco_pose_transformer]: [Marker 2] Ricevuta posa: x=-0.193, y=0.196, z=0.511
+[to_base-4] [INFO] [1747747890.228121939] [aruco_pose_transformer]: [Marker 1] Ricevuta posa: x=-0.202, y=-0.051, z=0.408
+[to_base-4] [INFO] [1747747890.229889214] [aruco_pose_transformer]: [Marker 3] Ricevuta posa: x=0.151, y=0.260, z=0.652
+[to_base-4] [INFO] [1747747890.231302210] [aruco_pose_transformer]: [Marker 4] Ricevuta posa: x=0.004, y=0.232, z=0.591
+[aruco_pose_estimator_node-3] [INFO] [1747747890.291874827] [aruco_pose_estimator]: Camera parameters received.
+[to_base-4] [INFO] [1747747890.301492129] [aruco_pose_transformer]: [Marker 2] Ricevuta posa: x=-0.193, y=0.196, z=0.511
+[to_base-4] [INFO] [1747747890.302692998] [aruco_pose_transformer]: [Marker 1] Ricevuta posa: x=-0.202, y=-0.051, z=0.408
+[to_base-4] [INFO] [1747747890.303331857] [aruco_pose_transformer]: [Marker 3] Ricevuta posa: x=0.151, y=0.260, z=0.652
+[to_base-4] [INFO] [1747747890.304251008] [aruco_pose_transformer]: [Marker 4] Ricevuta posa: x=0.004, y=0.232, z=0.591
+[aruco_pose_estimator_node-3] [INFO] [1747747890.342376446] [aruco_pose_estimator]: Camera parameters received.
+[to_base-4] [INFO] [1747747890.359517843] [aruco_pose_transformer]: [Marker 2] Ricevuta posa: x=-0.193, y=0.196, z=0.511
+[to_base-4] [INFO] [1747747890.360861543] [aruco_pose_transformer]: [Marker 3] Ricevuta posa: x=0.151, y=0.260, z=0.652
+[to_base-4] [INFO] [1747747890.361865806] [aruco_pose_transformer]: [Marker 1] Ricevuta posa: x=-0.202, y=-0.051, z=0.408
+[to_base-4] [INFO] [1747747890.363587795] [aruco_pose_transformer]: [Marker 4] Ricevuta posa: x=0.004, y=0.232, z=0.591
+[aruco_pose_estimator_node-3] [INFO] [1747747890.415308129] [aruco_pose_estimator]: Camera parameters received.
+[to_base-4] [INFO] [1747747890.423132332] [aruco_pose_transformer]: [Marker 2] Ricevuta posa: x=-0.193, y=0.196, z=0.511
+[to_base-4] [INFO] [1747747890.424507212] [aruco_pose_transformer]: [Marker 3] Ricevuta posa: x=0.151, y=0.260, z=0.652
+[to_base-4] [INFO] [1747747890.426547513] [aruco_pose_transformer]: [Marker 1] Ricevuta posa: x=-0.202, y=-0.051, z=0.408
+[to_base-4] [INFO] [1747747890.427816200] [aruco_pose_transformer]: [Marker 4] Ricevuta posa: x=0.004, y=0.232, z=0.591
+[aruco_pose_estimator_node-3] [INFO] [1747747890.490474428] [aruco_pose_estimator]: Camera parameters received.
+[to_base-4] [INFO] [1747747890.498313504] [aruco_pose_transformer]: [Marker 2] Ricevuta posa: x=-0.193, y=0.196, z=0.511
+[to_base-4] [INFO] [1747747890.499657446] [aruco_pose_transformer]: [Marker 3] Ricevuta posa: x=0.151, y=0.260, z=0.652
+[to_base-4] [INFO] [1747747890.501475354] [aruco_pose_transformer]: [Marker 1] Ricevuta posa: x=-0.202, y=-0.051, z=0.408
+[to_base-4] [INFO] [1747747890.502681927] [aruco_pose_transformer]: [Marker 4] Ricevuta posa: x=0.004, y=0.232, z=0.591
+[aruco_pose_estimator_node-3] [INFO] [1747747890.565996548] [aruco_pose_estimator]: Camera parameters received.
+[to_base-4] [INFO] [1747747890.573223527] [aruco_pose_transformer]: [Marker 2] Ricevuta posa: x=-0.193, y=0.196, z=0.511
+[to_base-4] [INFO] [1747747890.574184118] [aruco_pose_transformer]: [Marker 1] Ricevuta posa: x=-0.202, y=-0.051, z=0.408
+[to_base-4] [INFO] [1747747890.574691573] [aruco_pose_transformer]: [Marker 3] Ricevuta posa: x=0.151, y=0.260, z=0.652
+[to_base-4] [INFO] [1747747890.575128251] [aruco_pose_transformer]: [Marker 4] Ricevuta posa: x=0.004, y=0.232, z=0.591
+[aruco_pose_estimator_node-3] [INFO] [1747747890.638581098] [aruco_pose_estimator]: Camera parameters received.
+[to_base-4] [INFO] [1747747890.657383517] [aruco_pose_transformer]: [Marker 2] Ricevuta posa: x=-0.193, y=0.196, z=0.511
+[to_base-4] [INFO] [1747747890.659181420] [aruco_pose_transformer]: [Marker 1] Ricevuta posa: x=-0.202, y=-0.051, z=0.408
+[to_base-4] [INFO] [1747747890.660738330] [aruco_pose_transformer]: [Marker 3] Ricevuta posa: x=0.151, y=0.260, z=0.652
+[to_base-4] [INFO] [1747747890.662033728] [aruco_pose_transformer]: [Marker 4] Ricevuta posa: x=0.004, y=0.232, z=0.591
+[aruco_pose_estimator_node-3] [INFO] [1747747890.667426327] [aruco_pose_estimator]: Camera parameters received.
+[to_base-4] [INFO] [1747747890.685037304] [aruco_pose_transformer]: [Marker 2] Ricevuta posa: x=-0.193, y=0.196, z=0.511
+[to_base-4] [INFO] [1747747890.686379909] [aruco_pose_transformer]: [Marker 3] Ricevuta posa: x=0.151, y=0.260, z=0.652
+[to_base-4] [INFO] [1747747890.688813249] [aruco_pose_transformer]: [Marker 1] Ricevuta posa: x=-0.202, y=-0.051, z=0.408
+[to_base-4] [INFO] [1747747890.690208290] [aruco_pose_transformer]: [Marker 4] Ricevuta posa: x=0.004, y=0.232, z=0.591
+[aruco_pose_estimator_node-3] [INFO] [1747747890.725896276] [aruco_pose_estimator]: Camera parameters received.
+[to_base-4] [INFO] [1747747890.735054711] [aruco_pose_transformer]: [Marker 2] Ricevuta posa: x=-0.193, y=0.196, z=0.511
+[to_base-4] [INFO] [1747747890.736426440] [aruco_pose_transformer]: [Marker 3] Ricevuta posa: x=0.151, y=0.260, z=0.652
+[to_base-4] [INFO] [1747747890.738242152] [aruco_pose_transformer]: [Marker 1] Ricevuta posa: x=-0.202, y=-0.051, z=0.408
+[to_base-4] [INFO] [1747747890.739558328] [aruco_pose_transformer]: [Marker 4] Ricevuta posa: x=0.004, y=0.232, z=0.591
+[aruco_pose_estimator_node-3] [INFO] [1747747890.789141940] [aruco_pose_estimator]: Camera parameters received.
+[to_base-4] [INFO] [1747747890.797512294] [aruco_pose_transformer]: [Marker 2] Ricevuta posa: x=-0.193, y=0.196, z=0.511
+[to_base-4] [INFO] [1747747890.798863275] [aruco_pose_transformer]: [Marker 3] Ricevuta posa: x=0.151, y=0.260, z=0.652
+[to_base-4] [INFO] [1747747890.800725885] [aruco_pose_transformer]: [Marker 1] Ricevuta posa: x=-0.202, y=-0.051, z=0.408
+[to_base-4] [INFO] [1747747890.802091896] [aruco_pose_transformer]: [Marker 4] Ricevuta posa: x=0.004, y=0.232, z=0.591
+[aruco_pose_estimator_node-3] [INFO] [1747747890.859681866] [aruco_pose_estimator]: Camera parameters received.
+[to_base-4] [INFO] [1747747890.868923469] [aruco_pose_transformer]: [Marker 2] Ricevuta posa: x=-0.193, y=0.196, z=0.511
+[to_base-4] [INFO] [1747747890.871258467] [aruco_pose_transformer]: [Marker 1] Ricevuta posa: x=-0.202, y=-0.051, z=0.408
+[to_base-4] [INFO] [1747747890.872722878] [aruco_pose_transformer]: [Marker 3] Ricevuta posa: x=0.151, y=0.260, z=0.652
+[to_base-4] [INFO] [1747747890.874154381] [aruco_pose_transformer]: [Marker 4] Ricevuta posa: x=0.004, y=0.232, z=0.591
+[aruco_pose_estimator_node-3] [INFO] [1747747890.914944680] [aruco_pose_estimator]: Camera parameters received.
+[to_base-4] [INFO] [1747747890.924243314] [aruco_pose_transformer]: [Marker 2] Ricevuta posa: x=-0.193, y=0.196, z=0.511
+[to_base-4] [INFO] [1747747890.925555410] [aruco_pose_transformer]: [Marker 1] Ricevuta posa: x=-0.202, y=-0.051, z=0.408
+[to_base-4] [INFO] [1747747890.926281837] [aruco_pose_transformer]: [Marker 3] Ricevuta posa: x=0.151, y=0.260, z=0.652
+[to_base-4] [INFO] [1747747890.926761796] [aruco_pose_transformer]: [Marker 4] Ricevuta posa: x=0.004, y=0.232, z=0.591
+[aruco_pose_estimator_node-3] [INFO] [1747747890.983809466] [aruco_pose_estimator]: Camera parameters received.
+[to_base-4] [INFO] [1747747890.985461540] [aruco_pose_transformer]: [TF] Marker 2: pubblicata posa trasformata.
+[to_base-4] [INFO] [1747747890.986960223] [aruco_pose_transformer]: [TF] Marker 3: pubblicata posa trasformata.
+[to_base-4] [INFO] [1747747890.988805483] [aruco_pose_transformer]: [TF] Marker 4: pubblicata posa trasformata.
+[to_base-4] [INFO] [1747747890.990609146] [aruco_pose_transformer]: [TF] Marker 1: pubblicata posa trasformata.
+[to_base-4] [INFO] [1747747891.003042676] [aruco_pose_transformer]: [Marker 2] Ricevuta posa: x=-0.193, y=0.196, z=0.511
+[to_base-4] [INFO] [1747747891.005610576] [aruco_pose_transformer]: [Marker 1] Ricevuta posa: x=-0.202, y=-0.051, z=0.408
+[to_base-4] [INFO] [1747747891.007209000] [aruco_pose_transformer]: [Marker 3] Ricevuta posa: x=0.151, y=0.260, z=0.652
+[to_base-4] [INFO] [1747747891.008647743] [aruco_pose_transformer]: [Marker 4] Ricevuta posa: x=0.004, y=0.232, z=0.591
+[aruco_pose_estimator_node-3] [INFO] [1747747891.036140577] [aruco_pose_estimator]: Camera parameters received.
+[to_base-4] [INFO] [1747747891.046912108] [aruco_pose_transformer]: [Marker 1] Ricevuta posa: x=-0.202, y=-0.051, z=0.408
+[to_base-4] [INFO] [1747747891.048391550] [aruco_pose_transformer]: [Marker 2] Ricevuta posa: x=-0.193, y=0.196, z=0.511
+[to_base-4] [INFO] [1747747891.049802543] [aruco_pose_transformer]: [Marker 3] Ricevuta posa: x=0.151, y=0.260, z=0.652
+[to_base-4] [INFO] [1747747891.051160851] [aruco_pose_transformer]: [Marker 4] Ricevuta posa: x=0.004, y=0.232, z=0.591
+[aruco_pose_estimator_node-3] [INFO] [1747747891.096743102] [aruco_pose_estimator]: Camera parameters received.
+[to_base-4] [INFO] [1747747891.115786013] [aruco_pose_transformer]: [Marker 2] Ricevuta posa: x=-0.193, y=0.196, z=0.511
+[to_base-4] [INFO] [1747747891.118625606] [aruco_pose_transformer]: [Marker 1] Ricevuta posa: x=-0.202, y=-0.051, z=0.408
+[to_base-4] [INFO] [1747747891.120647568] [aruco_pose_transformer]: [Marker 3] Ricevuta posa: x=0.151, y=0.260, z=0.652
+[to_base-4] [INFO] [1747747891.122601887] [aruco_pose_transformer]: [Marker 4] Ricevuta posa: x=0.004, y=0.232, z=0.591
+[aruco_pose_estimator_node-3] [INFO] [1747747891.162368823] [aruco_pose_estimator]: Camera parameters received.
+[to_base-4] [INFO] [1747747891.169977480] [aruco_pose_transformer]: [Marker 2] Ricevuta posa: x=-0.193, y=0.196, z=0.511
+[to_base-4] [INFO] [1747747891.171080036] [aruco_pose_transformer]: [Marker 1] Ricevuta posa: x=-0.202, y=-0.051, z=0.408
+[to_base-4] [INFO] [1747747891.171584852] [aruco_pose_transformer]: [Marker 3] Ricevuta posa: x=0.151, y=0.260, z=0.652
+[to_base-4] [INFO] [1747747891.172028840] [aruco_pose_transformer]: [Marker 4] Ricevuta posa: x=0.004, y=0.232, z=0.591
+[aruco_pose_estimator_node-3] [INFO] [1747747891.229179412] [aruco_pose_estimator]: Camera parameters received.
+[to_base-4] [INFO] [1747747891.238992630] [aruco_pose_transformer]: [Marker 2] Ricevuta posa: x=-0.193, y=0.196, z=0.511
+[to_base-4] [INFO] [1747747891.240435823] [aruco_pose_transformer]: [Marker 1] Ricevuta posa: x=-0.202, y=-0.051, z=0.408
+[to_base-4] [INFO] [1747747891.240921671] [aruco_pose_transformer]: [Marker 3] Ricevuta posa: x=0.151, y=0.260, z=0.652
+[to_base-4] [INFO] [1747747891.242005331] [aruco_pose_transformer]: [Marker 4] Ricevuta posa: x=0.004, y=0.232, z=0.591
+[aruco_pose_estimator_node-3] [INFO] [1747747891.300091410] [aruco_pose_estimator]: Camera parameters received.
+[to_base-4] [INFO] [1747747891.310385454] [aruco_pose_transformer]: [Marker 2] Ricevuta posa: x=-0.193, y=0.196, z=0.511
+[to_base-4] [INFO] [1747747891.311795355] [aruco_pose_transformer]: [Marker 1] Ricevuta posa: x=-0.202, y=-0.051, z=0.408
+[to_base-4] [INFO] [1747747891.312975421] [aruco_pose_transformer]: [Marker 3] Ricevuta posa: x=0.151, y=0.260, z=0.652
+[to_base-4] [INFO] [1747747891.314307852] [aruco_pose_transformer]: [Marker 4] Ricevuta posa: x=0.004, y=0.232, z=0.591
+[aruco_pose_estimator_node-3] [INFO] [1747747891.371469070] [aruco_pose_estimator]: Camera parameters received.
+[to_base-4] [INFO] [1747747891.380873498] [aruco_pose_transformer]: [Marker 2] Ricevuta posa: x=-0.193, y=0.196, z=0.511
+[to_base-4] [INFO] [1747747891.383277797] [aruco_pose_transformer]: [Marker 1] Ricevuta posa: x=-0.202, y=-0.051, z=0.408
+[to_base-4] [INFO] [1747747891.384531710] [aruco_pose_transformer]: [Marker 3] Ricevuta posa: x=0.151, y=0.260, z=0.652
+[to_base-4] [INFO] [1747747891.385795577] [aruco_pose_transformer]: [Marker 4] Ricevuta posa: x=0.004, y=0.232, z=0.591
+[aruco_pose_estimator_node-3] [INFO] [1747747891.421917999] [aruco_pose_estimator]: Camera parameters received.
+[to_base-4] [INFO] [1747747891.438322775] [aruco_pose_transformer]: [Marker 1] Ricevuta posa: x=-0.202, y=-0.051, z=0.408
+[to_base-4] [INFO] [1747747891.439648060] [aruco_pose_transformer]: [Marker 2] Ricevuta posa: x=-0.193, y=0.196, z=0.511
+[to_base-4] [INFO] [1747747891.440928204] [aruco_pose_transformer]: [Marker 3] Ricevuta posa: x=0.151, y=0.260, z=0.652
+[to_base-4] [INFO] [1747747891.442254211] [aruco_pose_transformer]: [Marker 4] Ricevuta posa: x=0.004, y=0.232, z=0.591
+[aruco_pose_estimator_node-3] [INFO] [1747747891.448035618] [aruco_pose_estimator]: Camera parameters received.
+[to_base-4] [INFO] [1747747891.455039130] [aruco_pose_transformer]: [Marker 2] Ricevuta posa: x=-0.193, y=0.196, z=0.511
+[to_base-4] [INFO] [1747747891.456715925] [aruco_pose_transformer]: [Marker 1] Ricevuta posa: x=-0.202, y=-0.051, z=0.408
+[to_base-4] [INFO] [1747747891.457763854] [aruco_pose_transformer]: [Marker 3] Ricevuta posa: x=0.151, y=0.260, z=0.652
+[to_base-4] [INFO] [1747747891.458847165] [aruco_pose_transformer]: [Marker 4] Ricevuta posa: x=0.004, y=0.232, z=0.591
+[aruco_pose_estimator_node-3] [INFO] [1747747891.513530699] [aruco_pose_estimator]: Camera parameters received.
+[to_base-4] [INFO] [1747747891.529015635] [aruco_pose_transformer]: [Marker 2] Ricevuta posa: x=-0.193, y=0.196, z=0.511
+[to_base-4] [INFO] [1747747891.530141000] [aruco_pose_transformer]: [Marker 3] Ricevuta posa: x=0.151, y=0.260, z=0.652
+[to_base-4] [INFO] [1747747891.531548397] [aruco_pose_transformer]: [Marker 4] Ricevuta posa: x=0.004, y=0.232, z=0.591
+[to_base-4] [INFO] [1747747891.533312254] [aruco_pose_transformer]: [Marker 1] Ricevuta posa: x=-0.202, y=-0.051, z=0.408
+[aruco_pose_estimator_node-3] [INFO] [1747747891.560856817] [aruco_pose_estimator]: Camera parameters received.
+[to_base-4] [INFO] [1747747891.571128951] [aruco_pose_transformer]: [Marker 2] Ricevuta posa: x=-0.193, y=0.196, z=0.511
+[to_base-4] [INFO] [1747747891.573163437] [aruco_pose_transformer]: [Marker 1] Ricevuta posa: x=-0.202, y=-0.051, z=0.408
+[to_base-4] [INFO] [1747747891.574708832] [aruco_pose_transformer]: [Marker 3] Ricevuta posa: x=0.151, y=0.260, z=0.652
+[to_base-4] [INFO] [1747747891.576363717] [aruco_pose_transformer]: [Marker 4] Ricevuta posa: x=0.004, y=0.232, z=0.591
+[aruco_pose_estimator_node-3] [INFO] [1747747891.623935527] [aruco_pose_estimator]: Camera parameters received.
+[to_base-4] [INFO] [1747747891.635185453] [aruco_pose_transformer]: [Marker 2] Ricevuta posa: x=-0.193, y=0.196, z=0.511
+[to_base-4] [INFO] [1747747891.637685023] [aruco_pose_transformer]: [Marker 1] Ricevuta posa: x=-0.202, y=-0.051, z=0.408
+[to_base-4] [INFO] [1747747891.639069482] [aruco_pose_transformer]: [Marker 3] Ricevuta posa: x=0.151, y=0.260, z=0.652
+[to_base-4] [INFO] [1747747891.640184254] [aruco_pose_transformer]: [Marker 4] Ricevuta posa: x=0.004, y=0.232, z=0.591
+[aruco_pose_estimator_node-3] [INFO] [1747747891.672848358] [aruco_pose_estimator]: Camera parameters received.
+[to_base-4] [INFO] [1747747891.684724904] [aruco_pose_transformer]: [Marker 2] Ricevuta posa: x=-0.193, y=0.196, z=0.511
+[to_base-4] [INFO] [1747747891.686935919] [aruco_pose_transformer]: [Marker 1] Ricevuta posa: x=-0.202, y=-0.051, z=0.408
+[to_base-4] [INFO] [1747747891.688467244] [aruco_pose_transformer]: [Marker 3] Ricevuta posa: x=0.151, y=0.260, z=0.652
+[to_base-4] [INFO] [1747747891.689424344] [aruco_pose_transformer]: [Marker 4] Ricevuta posa: x=0.004, y=0.232, z=0.591
+[aruco_pose_estimator_node-3] [INFO] [1747747891.723545903] [aruco_pose_estimator]: Camera parameters received.
+[test_robot-10] [INFO] [1747747891.729594568] [test_robot_node]: Publishing event: arrived_to_grasp
+[robot_state_machine-9] [INFO] [1747747891.732194516] [robot_state_machine_node]: Evento ricevuto: arrived_to_grasp
+[robot_state_machine-9] [INFO] [1747747891.733455643] [robot_state_machine_node]: Pubblicata pose 3 della sequenza.
+[to_base-4] [INFO] [1747747891.734116535] [aruco_pose_transformer]: [Marker 2] Ricevuta posa: x=-0.193, y=0.196, z=0.511
+[robot_state_machine-9] [INFO] [1747747891.734690561] [robot_state_machine_node]: Nessuna transizione per evento 'arrived_to_grasp' nello stato move_to_grasp
+[to_base-4] [INFO] [1747747891.735689919] [aruco_pose_transformer]: [Marker 3] Ricevuta posa: x=0.151, y=0.260, z=0.652
+[to_base-4] [INFO] [1747747891.737772994] [aruco_pose_transformer]: [Marker 1] Ricevuta posa: x=-0.202, y=-0.051, z=0.408
+[to_base-4] [INFO] [1747747891.739301931] [aruco_pose_transformer]: [Marker 4] Ricevuta posa: x=0.004, y=0.232, z=0.591
+[aruco_pose_estimator_node-3] [INFO] [1747747891.764581304] [aruco_pose_estimator]: Camera parameters received.
+[to_base-4] [INFO] [1747747891.780573801] [aruco_pose_transformer]: [Marker 2] Ricevuta posa: x=-0.193, y=0.196, z=0.511
+[to_base-4] [INFO] [1747747891.781791545] [aruco_pose_transformer]: [Marker 3] Ricevuta posa: x=0.151, y=0.260, z=0.652
+[to_base-4] [INFO] [1747747891.783483546] [aruco_pose_transformer]: [Marker 1] Ricevuta posa: x=-0.202, y=-0.051, z=0.408
+[to_base-4] [INFO] [1747747891.784786008] [aruco_pose_transformer]: [Marker 4] Ricevuta posa: x=0.004, y=0.232, z=0.591
+[aruco_pose_estimator_node-3] [INFO] [1747747891.789100841] [aruco_pose_estimator]: Camera parameters received.
+[to_base-4] [INFO] [1747747891.806578675] [aruco_pose_transformer]: [Marker 2] Ricevuta posa: x=-0.193, y=0.196, z=0.511
+[to_base-4] [INFO] [1747747891.808447750] [aruco_pose_transformer]: [Marker 1] Ricevuta posa: x=-0.202, y=-0.051, z=0.408
+[to_base-4] [INFO] [1747747891.809644016] [aruco_pose_transformer]: [Marker 3] Ricevuta posa: x=0.151, y=0.260, z=0.652
+[to_base-4] [INFO] [1747747891.810786587] [aruco_pose_transformer]: [Marker 4] Ricevuta posa: x=0.004, y=0.232, z=0.591
+[aruco_pose_estimator_node-3] [INFO] [1747747891.842778274] [aruco_pose_estimator]: Camera parameters received.
+[to_base-4] [INFO] [1747747891.850912016] [aruco_pose_transformer]: [Marker 2] Ricevuta posa: x=-0.193, y=0.196, z=0.511
+[to_base-4] [INFO] [1747747891.853122715] [aruco_pose_transformer]: [Marker 1] Ricevuta posa: x=-0.202, y=-0.051, z=0.408
+[to_base-4] [INFO] [1747747891.854464861] [aruco_pose_transformer]: [Marker 3] Ricevuta posa: x=0.151, y=0.260, z=0.652
+[to_base-4] [INFO] [1747747891.856156240] [aruco_pose_transformer]: [Marker 4] Ricevuta posa: x=0.004, y=0.232, z=0.591
+^C[WARNING] [launch]: user interrupted with ctrl-c (SIGINT)
+[kinematic1-8] Exception in Tkinter callback
