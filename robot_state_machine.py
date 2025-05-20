@@ -34,6 +34,9 @@ class RobotStateMachineNode(Node):
         self.aruco_pose_1 = None
         self.aruco_pose_2 = None
 
+        self.publisher.publish(String(data="initialize_gripper"))
+
+
     def event_callback(self, msg):
         evento = msg.data
         self.get_logger().info(f"Evento ricevuto: {evento}")
