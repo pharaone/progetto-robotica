@@ -6,9 +6,11 @@ from geometry_msgs.msg import PoseStamped
 class RobotStateMachineNode(Node):
     def __init__(self):
         super().__init__('robot_state_machine_node')
+
         self.stato_corrente = "initialize_gripper"
         self.current_target = 1
 
+        # Subscribers (se servono altri event/aruco topic aggiungili)
         self.subscription_event = self.create_subscription(
             String, '/event_topic', self.event_callback, 10)
         self.subscription_pose_1 = self.create_subscription(
@@ -16,13 +18,12 @@ class RobotStateMachineNode(Node):
         self.subscription_pose_2 = self.create_subscription(
             PoseStamped, '/aruco_pose_2', self.aruco_pose_2_callback, 10)
 
-        self.publisher = self.create_publisher(String, '/command_topic', 10)
+        # PUBs per TaskPlanner
         self.pose_pub = self.create_publisher(PoseStamped, '/target_pose', 10)
+        self.command_pub = self.create_publisher(String, '/command_topic', 10)
+
         self.aruco_pose_1 = None
         self.aruco_pose_2 = None
-
-        self.pose_sequence = []
-        self.current_pose_idx = 0
 
     def event_callback(self, msg):
         evento = msg.data
@@ -41,7 +42,7 @@ class RobotStateMachineNode(Node):
         if nuovo_stato != self.stato_corrente:
             self.get_logger().info(f"Transizione: {self.stato_corrente} -> {nuovo_stato}")
             self.stato_corrente = nuovo_stato
-            self.publisher.publish(String(data=nuovo_stato))
+            # Puoi anche pubblicare sul /event_topic qui se vuoi
         else:
             self.get_logger().info(f"Nessuna transizione per evento '{evento}' nello stato {self.stato_corrente}")
 
@@ -69,6 +70,7 @@ class RobotStateMachineNode(Node):
 
     def calculate_pose_with_offset_state(self, evento):
         if evento == "pose_calculated":
+            # Esempio di preparazione della pose
             if self.current_target == 1:
                 base_pose = self.aruco_pose_1.pose
                 header = self.aruco_pose_1.header
@@ -76,54 +78,23 @@ class RobotStateMachineNode(Node):
                 base_pose = self.aruco_pose_2.pose
                 header = self.aruco_pose_2.header
 
-            # Costruisci la sequenza: sopra > indietro e abbasso > avanti
-            pose_above = PoseStamped()
-            pose_above.header = header
-            pose_above.header.stamp = self.get_clock().now().to_msg()
-            pose_above.pose.position.x = base_pose.position.x - 0.1
-            pose_above.pose.position.y = base_pose.position.y
-            pose_above.pose.position.z = base_pose.position.z
-            pose_above.pose.orientation = base_pose.orientation
+            pose_stamped = PoseStamped()
+            pose_stamped.header = header
+            pose_stamped.header.stamp = self.get_clock().now().to_msg()
+            pose_stamped.pose.position.x = base_pose.position.x - 0.1
+            pose_stamped.pose.position.y = base_pose.position.y
+            pose_stamped.pose.position.z = base_pose.position.z
+            pose_stamped.pose.orientation = base_pose.orientation
 
-            pose_back = PoseStamped()
-            pose_back.header = header
-            pose_back.header.stamp = self.get_clock().now().to_msg()
-            pose_back.pose.position.x = base_pose.position.x - 0.1
-            pose_back.pose.position.y = base_pose.position.y
-            pose_back.pose.position.z = base_pose.position.z - 0.1
-            pose_back.pose.orientation = base_pose.orientation
+            self.get_logger().info(f"Pubblico pose offset su /target_pose e comando su /command_topic")
+            self.pose_pub.publish(pose_stamped)
+            self.command_pub.publish(String(data="grasp"))
 
-            pose_forward = PoseStamped()
-            pose_forward.header = header
-            pose_forward.header.stamp = self.get_clock().now().to_msg()
-            pose_forward.pose.position.x = base_pose.position.x
-            pose_forward.pose.position.y = base_pose.position.y
-            pose_forward.pose.position.z = base_pose.position.z - 0.1
-            pose_forward.pose.orientation = base_pose.orientation
-
-            self.pose_sequence = [pose_above, pose_back, pose_forward]
-            self.current_pose_idx = 0
-
-            # Pubblica SOLO la prima pose
-            self.pose_pub.publish(self.pose_sequence[0])
-            self.get_logger().info("Pubblicata prima pose della sequenza con offset.")
             return "move_to_grasp"
         return self.stato_corrente
 
     def move_to_grasp_state(self, evento):
-        # Dopo ogni arrivo, pubblica la successiva
         if evento == "arrived_to_grasp":
-            self.current_pose_idx += 1
-            if self.current_pose_idx < len(self.pose_sequence):
-                self.pose_pub.publish(self.pose_sequence[self.current_pose_idx])
-                self.get_logger().info(f"Pubblicata pose {self.current_pose_idx+1} della sequenza.")
-                return "move_to_grasp"
-            else:
-                return "go_ahead"
-        return self.stato_corrente
-
-    def go_ahead_state(self, evento):
-        if evento == "in_position":
             return "close_gripper"
         return self.stato_corrente
 
