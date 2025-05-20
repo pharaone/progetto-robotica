@@ -6,36 +6,23 @@ from geometry_msgs.msg import PoseStamped
 class RobotStateMachineNode(Node):
     def __init__(self):
         super().__init__('robot_state_machine_node')
-
         self.stato_corrente = "initialize_gripper"
         self.current_target = 1
 
         self.subscription_event = self.create_subscription(
-            String,
-            '/event_topic',
-            self.event_callback,
-            10)
-
+            String, '/event_topic', self.event_callback, 10)
         self.subscription_pose_1 = self.create_subscription(
-            PoseStamped,
-            '/aruco_pose_1',
-            self.aruco_pose_1_callback,
-            10)
-
+            PoseStamped, '/aruco_pose_1', self.aruco_pose_1_callback, 10)
         self.subscription_pose_2 = self.create_subscription(
-            PoseStamped,
-            '/aruco_pose_2',
-            self.aruco_pose_2_callback,
-            10)
+            PoseStamped, '/aruco_pose_2', self.aruco_pose_2_callback, 10)
 
         self.publisher = self.create_publisher(String, '/command_topic', 10)
         self.pose_pub = self.create_publisher(PoseStamped, '/target_pose', 10)
-
         self.aruco_pose_1 = None
         self.aruco_pose_2 = None
 
-        self.publisher.publish(String(data="initialize_gripper"))
-
+        self.pose_sequence = []
+        self.current_pose_idx = 0
 
     def event_callback(self, msg):
         evento = msg.data
@@ -79,8 +66,7 @@ class RobotStateMachineNode(Node):
                 return self.stato_corrente
             return "calculate_pose_with_offset"
         return self.stato_corrente
-        
-    	
+
     def calculate_pose_with_offset_state(self, evento):
         if evento == "pose_calculated":
             if self.current_target == 1:
@@ -90,7 +76,7 @@ class RobotStateMachineNode(Node):
                 base_pose = self.aruco_pose_2.pose
                 header = self.aruco_pose_2.header
 
-            # STEP 1: sopra la Coca Cola (+z)
+            # Costruisci la sequenza: sopra > indietro e abbasso > avanti
             pose_above = PoseStamped()
             pose_above.header = header
             pose_above.header.stamp = self.get_clock().now().to_msg()
@@ -99,71 +85,77 @@ class RobotStateMachineNode(Node):
             pose_above.pose.position.z = base_pose.position.z
             pose_above.pose.orientation = base_pose.orientation
 
-            # STEP 2: indietro su X
             pose_back = PoseStamped()
             pose_back.header = header
             pose_back.header.stamp = self.get_clock().now().to_msg()
             pose_back.pose.position.x = base_pose.position.x - 0.1
             pose_back.pose.position.y = base_pose.position.y
-            pose_back.pose.position.z = base_pose.position.z - 0.1  # stessa altezza di prima
+            pose_back.pose.position.z = base_pose.position.z - 0.1
             pose_back.pose.orientation = base_pose.orientation
 
-            # STEP 3: avanza su X per afferrare
             pose_forward = PoseStamped()
             pose_forward.header = header
             pose_forward.header.stamp = self.get_clock().now().to_msg()
             pose_forward.pose.position.x = base_pose.position.x
             pose_forward.pose.position.y = base_pose.position.y
-            pose_forward.pose.position.z = base_pose.position.z - 0.1 # stesso z abbassato
+            pose_forward.pose.position.z = base_pose.position.z - 0.1
             pose_forward.pose.orientation = base_pose.orientation
 
-            # PUBBLICA le 3 pose (una alla volta con timer o un nodo esterno le esegue)
-            self.pose_pub.publish(pose_above)
-            self.pose_pub.publish(pose_back)
-            self.pose_pub.publish(pose_forward)
+            self.pose_sequence = [pose_above, pose_back, pose_forward]
+            self.current_pose_idx = 0
 
-            self.get_logger().info("Pose con offset pubblicate in sequenza.")
-
+            # Pubblica SOLO la prima pose
+            self.pose_pub.publish(self.pose_sequence[0])
+            self.get_logger().info("Pubblicata prima pose della sequenza con offset.")
             return "move_to_grasp"
         return self.stato_corrente
 
-
     def move_to_grasp_state(self, evento):
-            if evento == "arrived_to_grasp":
+        # Dopo ogni arrivo, pubblica la successiva
+        if evento == "arrived_to_grasp":
+            self.current_pose_idx += 1
+            if self.current_pose_idx < len(self.pose_sequence):
+                self.pose_pub.publish(self.pose_sequence[self.current_pose_idx])
+                self.get_logger().info(f"Pubblicata pose {self.current_pose_idx+1} della sequenza.")
+                return "move_to_grasp"
+            else:
                 return "go_ahead"
-            return self.stato_corrente
+        return self.stato_corrente
+
+    def go_ahead_state(self, evento):
+        if evento == "in_position":
+            return "close_gripper"
+        return self.stato_corrente
 
     def close_gripper_state(self, evento):
-            if evento == "gripper_closed":
-                return "move_to_lift"
-            return self.stato_corrente
+        if evento == "gripper_closed":
+            return "move_to_lift"
+        return self.stato_corrente
 
     def move_to_lift_state(self, evento):
-            if evento == "lifted":
-                return "go_to_drop_zone"
-            return self.stato_corrente
+        if evento == "lifted":
+            return "go_to_drop_zone"
+        return self.stato_corrente
 
     def go_to_drop_zone_state(self, evento):
-            if evento == "arrived_to_drop_zone":
-                return "open_gripper"
-            return self.stato_corrente
+        if evento == "arrived_to_drop_zone":
+            return "open_gripper"
+        return self.stato_corrente
 
     def open_gripper_state(self, evento):
-            if evento == "gripper_opened":
-                return "task_done"
-            return self.stato_corrente
+        if evento == "gripper_opened":
+            return "task_done"
+        return self.stato_corrente
 
     def task_done_state(self, evento):
-            self.get_logger().info(f"Task completato per oggetto {self.current_target}.")
-
-            if self.current_target == 1:
-                self.get_logger().info("Passo al secondo oggetto.")
-                self.current_target = 2
-                return "wait_for_command"
-            else:
-                self.get_logger().info("Tutti i task completati.")
-                return self.stato_corrente
-
+        self.get_logger().info(f"Task completato per oggetto {self.current_target}.")
+        if self.current_target == 1:
+            self.get_logger().info("Passo al secondo oggetto.")
+            self.current_target = 2
+            return "wait_for_command"
+        else:
+            self.get_logger().info("Tutti i task completati.")
+            return self.stato_corrente
 
 def main(args=None):
     rclpy.init(args=args)
@@ -171,7 +163,6 @@ def main(args=None):
     rclpy.spin(node)
     node.destroy_node()
     rclpy.shutdown()
-
 
 if __name__ == '__main__':
     main()
