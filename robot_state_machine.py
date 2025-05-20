@@ -76,77 +76,90 @@ class RobotStateMachineNode(Node):
                 return self.stato_corrente
             return "calculate_pose_with_offset"
         return self.stato_corrente
-
+        
+    	
     def calculate_pose_with_offset_state(self, evento):
         if evento == "pose_calculated":
             if self.current_target == 1:
-                pose_stamped = PoseStamped()
-                pose_stamped.header = self.aruco_pose_1.header
-                pose_stamped.pose.position.x = self.aruco_pose_1.pose.position.x - 0.1
-                pose_stamped.pose.position.y = self.aruco_pose_1.pose.position.y
-                pose_stamped.pose.position.z = self.aruco_pose_1.pose.position.z
-                pose_stamped.pose.orientation = self.aruco_pose_1.pose.orientation
-                obj_str = "oggetto 1"
+                base_pose = self.aruco_pose_1.pose
+                header = self.aruco_pose_1.header
             else:
-                pose_stamped = PoseStamped()
-                pose_stamped.header = self.aruco_pose_2.header
-                pose_stamped.pose.position.x = self.aruco_pose_2.pose.position.x - 0.1
-                pose_stamped.pose.position.y = self.aruco_pose_2.pose.position.y
-                pose_stamped.pose.position.z = self.aruco_pose_2.pose.position.z
-                pose_stamped.pose.orientation = self.aruco_pose_2.pose.orientation
-                obj_str = "oggetto 2"
+                base_pose = self.aruco_pose_2.pose
+                header = self.aruco_pose_2.header
 
-            self.get_logger().info(
-                f"Posa con offset applicato per {obj_str}: "
-                f"x={pose_stamped.pose.position.x:.3f}, "
-                f"y={pose_stamped.pose.position.y:.3f}, "
-                f"z={pose_stamped.pose.position.z:.3f}")
+            # STEP 1: sopra la Coca Cola (+z)
+            pose_above = PoseStamped()
+            pose_above.header = header
+            pose_above.header.stamp = self.get_clock().now().to_msg()
+            pose_above.pose.position.x = base_pose.position.x - 0.1
+            pose_above.pose.position.y = base_pose.position.y
+            pose_above.pose.position.z = base_pose.position.z
+            pose_above.pose.orientation = base_pose.orientation
 
-            self.pose_pub.publish(pose_stamped)
+            # STEP 2: indietro su X
+            pose_back = PoseStamped()
+            pose_back.header = header
+            pose_back.header.stamp = self.get_clock().now().to_msg()
+            pose_back.pose.position.x = base_pose.position.x - 0.1
+            pose_back.pose.position.y = base_pose.position.y
+            pose_back.pose.position.z = base_pose.position.z - 0.1  # stessa altezza di prima
+            pose_back.pose.orientation = base_pose.orientation
+
+            # STEP 3: avanza su X per afferrare
+            pose_forward = PoseStamped()
+            pose_forward.header = header
+            pose_forward.header.stamp = self.get_clock().now().to_msg()
+            pose_forward.pose.position.x = base_pose.position.x
+            pose_forward.pose.position.y = base_pose.position.y
+            pose_forward.pose.position.z = base_pose.position.z - 0.1 # stesso z abbassato
+            pose_forward.pose.orientation = base_pose.orientation
+
+            # PUBBLICA le 3 pose (una alla volta con timer o un nodo esterno le esegue)
+            self.pose_pub.publish(pose_above)
+            self.pose_pub.publish(pose_back)
+            self.pose_pub.publish(pose_forward)
+
+            self.get_logger().info("Pose con offset pubblicate in sequenza.")
 
             return "move_to_grasp"
         return self.stato_corrente
 
-    def move_to_grasp_state(self, evento):
-        if evento == "arrived_to_grasp":
-            return "go_ahead"
-        return self.stato_corrente
 
-    def go_ahead_state(self, evento):
-        if evento == "in_position":
-            return "close_gripper"
-        return self.stato_corrente
+    def move_to_grasp_state(self, evento):
+            if evento == "arrived_to_grasp":
+                return "go_ahead"
+            return self.stato_corrente
 
     def close_gripper_state(self, evento):
-        if evento == "gripper_closed":
-            return "move_to_lift"
-        return self.stato_corrente
+            if evento == "gripper_closed":
+                return "move_to_lift"
+            return self.stato_corrente
 
     def move_to_lift_state(self, evento):
-        if evento == "lifted":
-            return "go_to_drop_zone"
-        return self.stato_corrente
+            if evento == "lifted":
+                return "go_to_drop_zone"
+            return self.stato_corrente
 
     def go_to_drop_zone_state(self, evento):
-        if evento == "arrived_to_drop_zone":
-            return "open_gripper"
-        return self.stato_corrente
+            if evento == "arrived_to_drop_zone":
+                return "open_gripper"
+            return self.stato_corrente
 
     def open_gripper_state(self, evento):
-        if evento == "gripper_opened":
-            return "task_done"
-        return self.stato_corrente
+            if evento == "gripper_opened":
+                return "task_done"
+            return self.stato_corrente
 
     def task_done_state(self, evento):
-        self.get_logger().info(f"Task completato per oggetto {self.current_target}.")
+            self.get_logger().info(f"Task completato per oggetto {self.current_target}.")
 
-        if self.current_target == 1:
-            self.get_logger().info("Passo al secondo oggetto.")
-            self.current_target = 2
-            return "wait_for_command"
-        else:
-            self.get_logger().info("Tutti i task completati.")
-            return self.stato_corrente
+            if self.current_target == 1:
+                self.get_logger().info("Passo al secondo oggetto.")
+                self.current_target = 2
+                return "wait_for_command"
+            else:
+                self.get_logger().info("Tutti i task completati.")
+                return self.stato_corrente
 
 
 def main(args=None):
