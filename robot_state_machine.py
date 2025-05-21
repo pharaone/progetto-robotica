@@ -15,6 +15,8 @@ class RobotStateMachineNode(Node):
             PoseStamped, '/aruco_pose_1', self.aruco_pose_1_callback, 10)
         self.subscription_pose_2 = self.create_subscription(
             PoseStamped, '/aruco_pose_2', self.aruco_pose_2_callback, 10)
+        self.subscription_arm = self.create_subscription(
+            String, '/arm_controller/joint_trajectory', self.event_callback, 10)
 
         self.publisher = self.create_publisher(String, '/command_topic', 10)
         self.pose_pub = self.create_publisher(PoseStamped, '/target_pose', 10)
@@ -73,7 +75,7 @@ class RobotStateMachineNode(Node):
                 base_pose = self.aruco_pose_1.pose
                 header = self.aruco_pose_1.header
             else:
-                base_pose = self.aruco_pose_2.pose
+                base_posarrived_to_graspe = self.aruco_pose_2.pose
                 header = self.aruco_pose_2.header
 
             # Costruisci la sequenza: sopra > indietro e abbasso > avanti
