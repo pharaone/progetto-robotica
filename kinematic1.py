@@ -4,7 +4,7 @@ from rclpy.node import Node
 from sensor_msgs.msg import JointState
 from geometry_msgs.msg import PoseStamped
 from trajectory_msgs.msg import JointTrajectory, JointTrajectoryPoint
-
+import roboticstoolbox as rtb
 from spatialmath import SE3
 from roboticstoolbox import ERobot
 
@@ -24,7 +24,7 @@ class KinematicPlanner(Node):
 
         # Subscriptions
         self.create_subscription(JointState, '/joint_states', self.joint_states_callback, 10)
-        self.create_subscription(PoseStamped, '/target_pose', self.target_pose_callback, 10)
+        self.create_subscription(PoseStamped, '/aruco_pose_1', self.target_pose_callback, 10)
 
         # Stato attuale dei giunti (vettore di 8: torso + 7 arm)
         self.current_joint_state = None  # np.array([torso, arm1, ..., arm7])
@@ -32,7 +32,7 @@ class KinematicPlanner(Node):
 
     def joint_states_callback(self, msg):
         # Estrae la configurazione attuale dei giunti rilevanti (ordine importante!)
-        joint_names = ['torso_lift_joint'] + [f'arm_{i+1}_joint' for i in range(7)]
+        joint_names = ['torso_lift_joint'] + [f'arm_{i+1}_joint' for i in range(7)] #solo 1 volta
         joint_pos = []
         for name in joint_names:
             if name in msg.name:
@@ -61,15 +61,16 @@ class KinematicPlanner(Node):
         target_se3 = SE3(pos.x, pos.y, pos.z)
 
         q0 = self.current_joint_state  # Stato attuale
+        T0 = self.robot.fkine(q0)  # Matrice di trasformazione attuale
         N = 40
-
+        Ts = rtb.ctraj(T0, target_se3, N)
         # Pianifica la traiettoria cartesiana dal punto attuale al target
-        Ts = self.robot.fkine(q0).interp(target_se3, N)
+        #Ts = self.robot.fkine(q0).interp(target_se3, N)
 
         q_traj = []
         q_curr = q0.copy()
         for T in Ts:
-            sol = self.robot.ik_NR(T, q0=q_curr, pinv=True)
+            sol = self.robot.ik_LM(T, q0=q_curr)
             if sol is not None and len(sol) > 0:
                 q_curr = sol[0]
                 q_traj.append(q_curr)
