@@ -3,10 +3,8 @@ import rclpy
 from rclpy.node import Node
 from std_msgs.msg import String
 from geometry_msgs.msg import PoseStamped
+from sensor_msgs.msg import JointState
 from trajectory_msgs.msg import JointTrajectory, JointTrajectoryPoint
-from control_msgs.action import FollowJointTrajectory
-from rclpy.action import ActionClient
-
 from spatialmath import SE3
 from roboticstoolbox import ERobot
 
@@ -14,51 +12,64 @@ class KinematicPlanner(Node):
     def __init__(self):
         super().__init__('kinematic_planner')
 
-        # Carica URDF (modifica path se necessario)
+        # Carica URDF del robot
         urdf_loc = '/home/davide/tiago_public_ws/src/my_robot_description/urdf/tiago_robot.urdf'
         self.robot = ERobot.URDF(urdf_loc)
-        self.get_logger().info("Robot caricato da URDF!")
+        self.get_logger().info('URDF caricato correttamente!')
 
-        # Subscribe ai topic della macchina a stati
+        # Publisher per arm e torso (SOLO publisher, NO ActionClient)
+        self.arm_pub = self.create_publisher(JointTrajectory, '/arm_controller/joint_trajectory', 10)
+        self.torso_pub = self.create_publisher(JointTrajectory, '/torso_controller/joint_trajectory', 10)
+        # Publisher opzionale per il gripper (puoi usare anche /gripper_controller/joint_trajectory)
+        self.gripper_pub = self.create_publisher(JointTrajectory, '/gripper_controller/joint_trajectory', 10)
+
+        # Subscriber
         self.create_subscription(PoseStamped, '/target_pose', self.pose_callback, 10)
-        self.create_subscription(String, '/command_topic', self.command_callback, 10)
+        self.create_subscription(String, '/command_topic', self.task_callback, 10)
+        self.create_subscription(JointState, '/joint_states', self.joint_states_callback, 10)
 
-        # Action client per arm, torso, gripper
-        self.arm_client = ActionClient(self, FollowJointTrajectory, '/arm_controller/follow_joint_trajectory')
-        self.torso_client = ActionClient(self, FollowJointTrajectory, '/torso_controller/follow_joint_trajectory')
-        self.gripper_client = ActionClient(self, FollowJointTrajectory, '/gripper_controller/follow_joint_trajectory')
-
-        # Salva ultimo comando e pose ricevuti
+        # Stato interno
         self.current_pose = None
         self.current_task = None
+        self.current_joint_state = None  # Verrà un vettore numpy con [torso, arm_1...7]
+
+    def joint_states_callback(self, msg):
+        # Prende SOLO i giunti che ti interessano (torso_lift_joint + arm_1..7)
+        joint_order = ['torso_lift_joint'] + [f'arm_{i+1}_joint' for i in range(7)]
+        joint_pos = []
+        for name in joint_order:
+            if name in msg.name:
+                idx = msg.name.index(name)
+                joint_pos.append(msg.position[idx])
+            else:
+                joint_pos.append(0.0)
+        self.current_joint_state = np.array(joint_pos)
 
     def pose_callback(self, msg):
         self.current_pose = msg
-        self.get_logger().info("Pose ricevuta.")
         self.try_execute()
 
-    def command_callback(self, msg):
+    def task_callback(self, msg):
         self.current_task = msg.data
-        self.get_logger().info(f"Task ricevuto: {self.current_task}")
         self.try_execute()
 
     def try_execute(self):
-        if self.current_pose is not None and self.current_task is not None:
+        if self.current_pose is not None and self.current_task is not None and self.current_joint_state is not None:
             if self.current_task in ['grasp', 'place', 'move_to_grasp']:
                 self.plan_and_send_arm_trajectory()
             elif self.current_task in ['open_gripper', 'close_gripper']:
                 self.send_gripper_command()
-            else:
-                self.get_logger().warn(f"Task sconosciuto: {self.current_task}")
 
     def plan_and_send_arm_trajectory(self):
+        # Usa la posizione attuale come q0 (torso + 7 arm)
+        q0 = self.current_joint_state.copy()
+        if len(q0) != 8:
+            self.get_logger().error("Joint state errato. Mi aspetto 8 joint (1 torso + 7 arm).")
+            return
+
         pose = self.current_pose.pose
         target_se3 = SE3(pose.position.x, pose.position.y, pose.position.z)
-        # Usa la configurazione centrale come esempio
-        q0 = np.zeros(self.robot.n)  # Cambia se vuoi una posizione diversa
-        N = 20  # passi della traiettoria
-
-        # Interpolazione cart. + IK
+        N = 30
         Ts = self.robot.fkine(q0).interp(target_se3, N)
         q_traj = []
         q_curr = q0
@@ -68,55 +79,34 @@ class KinematicPlanner(Node):
                 q_curr = sol[0]
                 q_traj.append(q_curr)
             else:
-                self.get_logger().warn("IK non trovata per uno step.")
+                self.get_logger().warn("IK non trovata per uno degli step.")
                 break
         if not q_traj:
-            self.get_logger().error("Nessuna soluzione trovata! Abbandono.")
+            self.get_logger().error("Nessuna soluzione IK trovata. Comando non inviato.")
             return
 
-        # Torso: prendi il valore del torso dalla soluzione, il resto per arm
-        torso_traj = []
-        arm_traj = []
-        for q in q_traj:
-            if len(q) == 8:
-                torso_traj.append([q[0]])
-                arm_traj.append(q[1:])  # [1:] = arm_1 ... arm_7
-            else:
-                torso_traj.append([0.0])
-                arm_traj.append(q)
-
-        # -- Prepara messaggio per TORSO --
+        # Costruisci messaggi separati per torso e arm
         torso_msg = JointTrajectory()
         torso_msg.joint_names = ['torso_lift_joint']
-        for i, tq in enumerate(torso_traj):
-            point = JointTrajectoryPoint()
-            point.positions = tq
-            point.time_from_start.sec = int(i * 0.1)
-            torso_msg.points.append(point)
-
-        # -- Prepara messaggio per ARM --
         arm_msg = JointTrajectory()
         arm_msg.joint_names = [f'arm_{i+1}_joint' for i in range(7)]
-        for i, aq in enumerate(arm_traj):
-            point = JointTrajectoryPoint()
-            point.positions = aq.tolist()
-            point.time_from_start.sec = int(i * 0.1)
-            arm_msg.points.append(point)
 
-        # -- Invia tramite Action Client --
-        # TORSO
-        torso_goal = FollowJointTrajectory.Goal()
-        torso_goal.trajectory = torso_msg
-        self.torso_client.wait_for_server()
-        self.torso_client.send_goal_async(torso_goal)
-        self.get_logger().info("Traiettoria torso inviata.")
+        for i, q in enumerate(q_traj):
+            # q[0]: torso, q[1:]: arm
+            pt_torso = JointTrajectoryPoint()
+            pt_torso.positions = [q[0]]
+            pt_torso.time_from_start.sec = int(i * 0.1)
+            torso_msg.points.append(pt_torso)
 
-        # ARM
-        arm_goal = FollowJointTrajectory.Goal()
-        arm_goal.trajectory = arm_msg
-        self.arm_client.wait_for_server()
-        self.arm_client.send_goal_async(arm_goal)
-        self.get_logger().info("Traiettoria braccio inviata.")
+            pt_arm = JointTrajectoryPoint()
+            pt_arm.positions = q[1:].tolist()
+            pt_arm.time_from_start.sec = int(i * 0.1)
+            arm_msg.points.append(pt_arm)
+
+        # PUBBLICA i messaggi sui due topic separati
+        self.torso_pub.publish(torso_msg)
+        self.arm_pub.publish(arm_msg)
+        self.get_logger().info("Inviata traiettoria a torso e arm via publisher.")
 
     def send_gripper_command(self):
         traj_msg = JointTrajectory()
@@ -128,10 +118,7 @@ class KinematicPlanner(Node):
         else:
             point.positions = [0.04, 0.04]
         traj_msg.points.append(point)
-        goal_msg = FollowJointTrajectory.Goal()
-        goal_msg.trajectory = traj_msg
-        self.gripper_client.wait_for_server()
-        self.gripper_client.send_goal_async(goal_msg)
+        self.gripper_pub.publish(traj_msg)
         self.get_logger().info("Comando gripper inviato.")
 
 def main(args=None):
@@ -141,5 +128,5 @@ def main(args=None):
     node.destroy_node()
     rclpy.shutdown()
 
-if __name__ == "__main__":
+if __name__ == '__main__':
     main()
