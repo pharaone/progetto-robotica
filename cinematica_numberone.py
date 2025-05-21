@@ -12,7 +12,7 @@ class KinematicPlanner(Node):
     def __init__(self):
         super().__init__('kinematic_planner')
 
-        self.get_logger().info("=== Nodo KinematicPlanner: Inizializzazione ===")
+        self.get_logger().info("Nodo KinematicPlanner: Inizializzazione ")
 
         urdf_loc = '/home/davide/tiago_public_ws/src/my_robot_description/urdf/tiago_robot.urdf'
         self.get_logger().info(f"Caricamento URDF da: {urdf_loc}")
@@ -28,7 +28,7 @@ class KinematicPlanner(Node):
         self.current_joint_state = None
         self.target_pose = None
 
-        self.get_logger().info("=== Nodo pronto, aspetto messaggi... ===")
+        self.get_logger().info(" Nodo pronto, aspetto messaggi... ")
 
     def joint_states_callback(self, msg):
         joint_names = ['torso_lift_joint'] + [f'arm_{i+1}_joint' for i in range(7)]
