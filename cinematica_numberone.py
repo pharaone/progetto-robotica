@@ -11,7 +11,7 @@ class KinematicTrajectoryPublisher(Node):
     def __init__(self):
         super().__init__('kinematic_traj_pub')
 
-        # Carica modello dal tuo URDF (metti il percorso giusto)
+        # Carica modello dal tuo URDF
         urdf_loc = '/home/davide/tiago_public_ws/src/my_robot_description/urdf/tiago_robot.urdf'
         self.robot = ERobot.URDF(urdf_loc)
         self.get_logger().info('[INIT] Robot URDF caricato')
@@ -24,16 +24,18 @@ class KinematicTrajectoryPublisher(Node):
         self.arm_pub = self.create_publisher(JointTrajectory, '/arm_controller/joint_trajectory', 10)
         self.torso_pub = self.create_publisher(JointTrajectory, '/torso_controller/joint_trajectory', 10)
 
-        # Stato
-        self.q0 = None   # posizione iniziale (salvata solo una volta)
+        # Stato iniziale
+        self.q0 = None
         self.target_pose = None
         self.traj_ready = False
         self.q_traj = None
-        self.index = 0
+
+        # Timer per pubblicare la posa target in loop
+        self.create_timer(0.1, self.loop_target_pose)
 
     def joint_states_callback(self, msg):
         if self.q0 is not None:
-            return  # Già acquisito!
+            return  # Salva una volta sola!
 
         joint_names = ['torso_lift_joint'] + [f'arm_{i+1}_joint' for i in range(7)]
         q_init = []
@@ -44,23 +46,23 @@ class KinematicTrajectoryPublisher(Node):
             else:
                 q_init.append(0.0)
         self.q0 = np.array(q_init)
-        self.get_logger().info(f"[JOINT INIT] Configurazione iniziale acquisita: {q_init}")
-        self.try_plan_traj()
+        self.get_logger().info(f"[JOINT INIT] q0 acquisito: {q_init}")
 
     def target_pose_callback(self, msg):
-        self.target_pose = msg
-        self.get_logger().info(f"[POSE] Target pose ricevuta: x={msg.pose.position.x}, y={msg.pose.position.y}, z={msg.pose.position.z}")
-        self.try_plan_traj()
+        if self.target_pose is None:
+            self.target_pose = msg
+            self.get_logger().info(f"[POSE INIT] Target pose salvata: x={msg.pose.position.x}, y={msg.pose.position.y}, z={msg.pose.position.z}")
 
-    def try_plan_traj(self):
-        if self.q0 is not None and self.target_pose is not None and not self.traj_ready:
-            # Costruisci SE3 target
-            pose = self.target_pose.pose
+    def loop_target_pose(self):
+        if self.q0 is None or self.target_pose is None:
+            return
+
+        if not self.traj_ready:
+            # Calcola traiettoria
             T0 = self.robot.fkine(self.q0)
+            pose = self.target_pose.pose
             Tf = SE3(pose.position.x, pose.position.y, pose.position.z)
-            self.get_logger().info(f"[TRAJ] Calcolo traiettoria tra:\n  T0={T0}\n  Tf={Tf}")
-            N = 60
-            Ts = ctraj(T0, Tf, N)
+            Ts = ctraj(T0, Tf, 60)
 
             q_traj = []
             q_curr = self.q0
@@ -69,19 +71,15 @@ class KinematicTrajectoryPublisher(Node):
                 if sol is not None and len(sol) > 0:
                     q_curr = sol[0]
                 q_traj.append(q_curr)
+
             self.q_traj = np.array(q_traj)
-            self.get_logger().info(f"[TRAJ] Traiettoria calcolata con {len(q_traj)} punti.")
             self.traj_ready = True
-            self.timer = self.create_timer(0.1, self.timer_callback)  # Start sending traj
+            self.index = 0
+            self.get_logger().info(f"[TRAJ READY] Traiettoria calcolata con {len(q_traj)} punti.")
 
-    def timer_callback(self):
-        if self.q_traj is None or self.index >= len(self.q_traj):
-            self.get_logger().info('[TRAJ] Traiettoria completata.')
-            self.destroy_timer(self.timer)
-            return
+        # Pubblica ciclicamente
+        q = self.q_traj[self.index % len(self.q_traj)]
 
-        q = self.q_traj[self.index]
-        # Torso su un topic, Arm su un altro (assume torso=idx0, arm=idx1:8)
         torso_traj = JointTrajectory()
         torso_traj.joint_names = ['torso_lift_joint']
         torso_point = JointTrajectoryPoint()
@@ -98,8 +96,10 @@ class KinematicTrajectoryPublisher(Node):
 
         self.torso_pub.publish(torso_traj)
         self.arm_pub.publish(arm_traj)
-        self.get_logger().info(f'[PUB] step {self.index} - Torso: {torso_point.positions}, Arm: {arm_point.positions}')
+        self.get_logger().info(f'[PUB LOOP] idx {self.index % len(self.q_traj)} - Torso: {torso_point.positions}, Arm: {arm_point.positions}')
+
         self.index += 1
+
 
 def main(args=None):
     rclpy.init(args=args)
