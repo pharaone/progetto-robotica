@@ -31,6 +31,10 @@ class KinematicPlanner(Node):
         self.get_logger().info(" Nodo pronto, aspetto messaggi... ")
 
     def joint_states_callback(self, msg):
+        if self.current_joint_state is not None:
+        # Hai già la configurazione iniziale, ignora i nuovi messaggi
+            return
+
         joint_names = ['torso_lift_joint'] + [f'arm_{i+1}_joint' for i in range(7)]
         joint_pos = []
         for name in joint_names:
@@ -40,7 +44,7 @@ class KinematicPlanner(Node):
             else:
                 joint_pos.append(0.0)
         self.current_joint_state = np.array(joint_pos)
-        self.get_logger().info(f"Ricevuto joint_states: {joint_pos}")
+        self.get_logger().info(f"[JOINT INIT] Salvata configurazione iniziale: {joint_pos}")
 
     def target_pose_callback(self, msg):
         self.target_pose = msg
