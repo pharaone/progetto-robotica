@@ -1,3 +1,4 @@
+from enum import Enum
 import numpy as np
 import rclpy
 from rclpy.node import Node
@@ -6,7 +7,23 @@ from geometry_msgs.msg import PoseStamped
 from trajectory_msgs.msg import JointTrajectory, JointTrajectoryPoint
 import roboticstoolbox as rtb
 from spatialmath import SE3
-from roboticstoolbox import ERobot
+from roboticstoolbox import ERobot, DHRobot, RevoluteDH
+from std_msgs.msg import Int32
+from scipy.spatial.transform import Rotation as R
+import numpy as np
+
+class State(Enum):
+    WAITING_FOR_ARUCO = 1
+    MOVE_TO_POSE_1 = 2
+    MOVE_TO_POSE_2 = 11
+    GRIP_OBJECT = 3
+    RELEASE_OBJECT = 4
+    MOVE_TO_HOME = 5
+    INITIALIZE_GRIPPER_2 = 6
+    MOVE_TO_POSE_2 = 7
+    GRIP_OBJECT_2 = 8
+    RELEASE_OBJECT_2 = 9
+    MOVE_TO_HOME_2 = 10
 
 class KinematicPlanner(Node):
     def __init__(self):
@@ -21,18 +38,60 @@ class KinematicPlanner(Node):
         # Publishers per i controller (arm e torso)
         self.arm_pub = self.create_publisher(JointTrajectory, '/arm_controller/joint_trajectory', 10)
         self.torso_pub = self.create_publisher(JointTrajectory, '/torso_controller/joint_trajectory', 10)
+        self.pose_pub = self.create_publisher(PoseStamped, '/target_pose', 10)
+        self.completed_command_topic = self.create_publisher(Int32, '/completed_command_topic', 10)
+
+        self.aruco_pose_1 = None
+        self.aruco_pose_2 = None
+        self.aruco_pose_3 = None
+        self.aruco_pose_4 = None
+
 
         # Subscriptions
         self.create_subscription(JointState, '/joint_states', self.joint_states_callback, 10)
-        self.create_subscription(PoseStamped, '/aruco_pose_1', self.target_pose_callback, 10)
+        self.create_subscription(PoseStamped, '/target_pose', self.target_pose_callback, 10)
+        self.create_subscription(Int32,'/command_topic', self.command_callback, 10)
+        self.aruco_sub_1 = self.create_subscription(PoseStamped, '/aruco_pose_1', self.aruco_pose_1_callback, 10)
+        self.aruco_sub_2=self.create_subscription(PoseStamped, '/aruco_pose_2', self.aruco_pose_2_callback, 10)
+        self.aruco_sub_3=self.create_subscription(PoseStamped, '/aruco_pose_3', self.aruco_pose_3_callback, 10)
+        self.aruco_sub_4=self.create_subscription(PoseStamped, '/aruco_pose_4', self.aruco_pose_4_callback, 10)
 
         # Stato attuale dei giunti (vettore di 8: torso + 7 arm)
         self.current_joint_state = None  # np.array([torso, arm1, ..., arm7])
         self.target_pose = None  # PoseStamped
 
+    def command_callback(self, msg):
+        self.get_logger().info("Ricevuto comando")
+        if msg.data == State.MOVE_TO_POSE_1.value:
+            self.get_logger().info("Comando ricevuto: MOVE_TO_POSE_1")
+            self.calculate_pose_with_offset_state(2, offset_x=0.01, offset_y=-0.1, offset_z=-0.15)
+        elif msg.data == State.MOVE_TO_POSE_2.value:
+            self.get_logger().info("Comando ricevuto: MOVE_TO_POSE_2")
+            self.calculate_pose_with_offset_state(2, offset_x=0, offset_y=0, offset_z=0)
+
+    def aruco_pose_1_callback(self, msg):
+        self.get_logger().info("Ricevuto aruco_pose_1")
+        self.aruco_pose_1 = msg
+
+
+    def aruco_pose_2_callback(self, msg):
+        self.get_logger().info("Ricevuto aruco_pose_2")
+        self.aruco_pose_2 = msg
+        command_completed = Int32()
+        command_completed.data = State.WAITING_FOR_ARUCO.value
+        self.completed_command_topic.publish(command_completed)
+
+    def aruco_pose_3_callback(self, msg):
+        self.aruco_pose_3 = msg
+
+    def aruco_pose_4_callback(self, msg):
+        self.aruco_pose_4 = msg
+
     def joint_states_callback(self, msg):
-        # Estrae la configurazione attuale dei giunti rilevanti (ordine importante!)
-        joint_names = ['torso_lift_joint'] + [f'arm_{i+1}_joint' for i in range(7)] #solo 1 volta
+        if self.current_joint_state is not None:
+        # Hai già la configurazione iniziale, ignora i nuovi messaggi
+            return
+        joint_names = ['torso_lift_joint'] + [f'arm_{i+1}_joint' for i in range(7)]
         joint_pos = []
         for name in joint_names:
             if name in msg.name:
@@ -41,71 +100,130 @@ class KinematicPlanner(Node):
             else:
                 joint_pos.append(0.0)
         self.current_joint_state = np.array(joint_pos)
-        self.get_logger().info(f"Lettura joint_states: {joint_pos}")
+        self.get_logger().info(f"[JOINT INIT] Salvata configurazione iniziale: {joint_pos}")
 
     def target_pose_callback(self, msg):
-        self.get_logger().info("✅ Funzione target_pose_callback chiamata!")
+        self.get_logger().info("Funzione target_pose_callback chiamata!")
         self.target_pose = msg
-        self.get_logger().info(f"✅ Ricevuta target_pose: {msg.pose.position}")
+        self.get_logger().info(f" Ricevuta target_pose: {msg.pose.position}")
         self.plan_and_publish_trajectory()
 
 
     def plan_and_publish_trajectory(self):
-        # Check che abbiamo tutto
+        self.get_logger().info("Pianificazione e pubblicazione della traiettoria...")
+
         if self.current_joint_state is None or self.target_pose is None:
             self.get_logger().warn("Joint state o target pose non ancora ricevuti.")
             return
 
-        # Costruisci SE3 della pose target (solo posizione, orientamento ignorato)
-        pos = self.target_pose.pose.position
-        target_se3 = SE3(pos.x, pos.y, pos.z)
+        q0 = self.current_joint_state.astype(float)  # [torso, arm1, ..., arm7]
 
-        q0 = self.current_joint_state  # Stato attuale
-        T0 = self.robot.fkine(q0)  # Matrice di trasformazione attuale
-        N = 40
-        Ts = rtb.ctraj(T0, target_se3, N)
-        # Pianifica la traiettoria cartesiana dal punto attuale al target
-        #Ts = self.robot.fkine(q0).interp(target_se3, N)
+        # 1. Calcola T0 (configurazione attuale)
+        try:
+            T0 = self.robot.fkine(q0)
+            self.get_logger().info(f"FKine calcolata: {T0}")
+        except Exception as e:
+            self.get_logger().error(f"Errore nel calcolo della fkine: {e}")
+            return
+
+        # 2. Estrai posizione e orientamento target
+        pos = self.target_pose.pose.position
+        ori = self.target_pose.pose.orientation
+        position = np.array([pos.x, pos.y, pos.z])  
+        quaternion = [ori.x, ori.y, ori.z, ori.w]
+
+        try:
+            rotation = R.from_quat(quaternion).as_matrix()
+            pi = np.pi
+            T_marker = SE3.Rt(rotation, position)
+            T_rot = SE3.Ry(pi/2) * SE3.Rz(-pi/2) 
+            TF = T_marker * T_rot
+            self.get_logger().info(f"TF calcolata: {TF}")
+        except Exception as e:
+            self.get_logger().error(f"Errore nella costruzione della trasformazione finale TF: {e}")
+            return
+
+        N = 10  
+        try:
+            trajectory = rtb.ctraj(T0, TF, N)
+        except Exception as e:
+            self.get_logger().error(f"Errore nella generazione della traiettoria: {e}")
+            return
 
         q_traj = []
-        q_curr = q0.copy()
-        for T in Ts:
+        q_curr = q0
+        '''try:
+            qf = self.robot.ik_LM(TF, q0=q_curr)
+            self.get_logger().info(f"Posizione finale calcolata: {qf}")
+        except Exception as e:
+            self.get_logger().error(f"Errore IK finale: {e}")
+            return'''
+
+        for i, T in enumerate(trajectory):
             sol = self.robot.ik_LM(T, q0=q_curr)
             if sol is not None and len(sol) > 0:
                 q_curr = sol[0]
                 q_traj.append(q_curr)
             else:
-                self.get_logger().warn("IK fallita per uno step della traiettoria!")
-                break
+                self.get_logger().warning(f"IK fallita al punto {i}. Riutilizzo configurazione precedente")
+                q_traj.append(q_curr.copy())
 
-        if not q_traj:
-            self.get_logger().error("IK non trovata, nessuna traiettoria pubblicata.")
-            return
+        q_traj = np.array(q_traj)
+        self.get_logger().info(f"Traiettoria generata con successo: {q_traj}")
 
-        # Prepara messaggi JointTrajectory per torso e arm SEPARATI!
-        # --- TORSO ---
-        torso_traj = JointTrajectory()
-        torso_traj.joint_names = ['torso_lift_joint']
-        # --- ARM ---
-        arm_traj = JointTrajectory()
-        arm_traj.joint_names = [f'arm_{i+1}_joint' for i in range(7)]
+        # Prepara e pubblica SOLO l'ultimo punto della traiettoria
+        traj_arm = JointTrajectory()
+        traj_torso = JointTrajectory()
+        traj_arm.joint_names = [f'arm_{i+1}_joint' for i in range(7)]
+        traj_torso.joint_names = ['torso_lift_joint']
 
-        for i, q in enumerate(q_traj):
-            t = i * 0.1  # 0.1s per step
-            # TORSO point
-            torso_point = JointTrajectoryPoint()
-            torso_point.positions = [float(q[0])]
-            torso_point.time_from_start.sec = int(t)
-            torso_traj.points.append(torso_point)
-            # ARM point
-            arm_point = JointTrajectoryPoint()
-            arm_point.positions = [float(x) for x in q[1:]]
-            arm_point.time_from_start.sec = int(t)
-            arm_traj.points.append(arm_point)
+        q = q_traj[-1]
+        point_arm = JointTrajectoryPoint()
+        point_torso = JointTrajectoryPoint()
+        point_arm.positions = [float(p) for p in q[1:]]
+        point_torso.positions = [float(q[0])]
 
-        self.torso_pub.publish(torso_traj)
-        self.arm_pub.publish(arm_traj)
-        self.get_logger().info("Pubblicate JointTrajectory su torso e arm controller.")
+        point_arm.time_from_start.sec = 5
+        point_arm.time_from_start.nanosec = 0
+        point_torso.time_from_start.sec = 5
+        point_torso.time_from_start.nanosec = 0
+
+        traj_arm.points.append(point_arm)
+        traj_torso.points.append(point_torso)
+
+        self.arm_pub.publish(traj_arm)
+        self.torso_pub.publish(traj_torso)
+        self.get_logger().info("ultimo punto della traiettoria è stato pubblicato")
+
+
+
+    def calculate_pose_with_offset_state(self, target, offset_x, offset_y, offset_z):
+        self.get_logger().info("Calcolo la posa con offset...")
+        if target == 1:
+            base_pose = self.aruco_pose_1.pose
+            header = self.aruco_pose_1.header
+        else:
+            base_pose = self.aruco_pose_2.pose
+            header = self.aruco_pose_2.header
+
+            # Creazione della nuova posa con offset
+            target_pose_out = PoseStamped()
+            target_pose_out.header.stamp = self.get_clock().now().to_msg()
+            target_pose_out.header.frame_id = header.frame_id
+
+            # Copia la posizione e aggiunge offset in z
+            target_pose_out.pose.position.x = base_pose.position.x + offset_x
+            target_pose_out.pose.position.y = base_pose.position.y + offset_y
+            target_pose_out.pose.position.z = base_pose.position.z + offset_z
+
+            # Copia l'orientamento
+            target_pose_out.pose.orientation = base_pose.orientation
+
+            # Ciclo per il controllo
+            self.pose_pub.publish(target_pose_out)
+            self.get_logger().info(" Posa target pubblicata su /target_pose")
+
+            return "go_to_pose"
 
 def main(args=None):
     rclpy.init(args=args)
