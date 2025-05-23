@@ -7,10 +7,9 @@ from geometry_msgs.msg import PoseStamped
 from trajectory_msgs.msg import JointTrajectory, JointTrajectoryPoint
 import roboticstoolbox as rtb
 from spatialmath import SE3
-from roboticstoolbox import ERobot, DHRobot, RevoluteDH
+from roboticstoolbox import ERobot
 from std_msgs.msg import Int32
 from scipy.spatial.transform import Rotation as R
-import numpy as np
 import time
 
 class State(Enum):
@@ -31,7 +30,6 @@ class KinematicPlanner(Node):
         super().__init__('kinematic_planner')
         self.get_logger().info("Inizializzazione Kinematic Planner...")
 
-        # Carica modello URDF
         urdf_loc = '/home/davide/tiago_public_ws/src/my_robot_description/urdf/tiago_robot.urdf'
         self.robot = ERobot.URDF(urdf_loc)
         self.get_logger().info("URDF caricato correttamente!")
@@ -47,43 +45,45 @@ class KinematicPlanner(Node):
         self.aruco_pose_3 = None
         self.aruco_pose_4 = None
 
-
-        # Subscriptions
-        self.create_subscription(JointState, '/joint_states', self.joint_states_callback, 10)
-        self.create_subscription(PoseStamped, '/target_pose', self.target_pose_callback, 10)
-        self.create_subscription(Int32,'/command_topic', self.command_callback, 10)
-        self.aruco_sub_1 = self.create_subscription(PoseStamped, '/aruco_pose_1', self.aruco_pose_1_callback, 10)
-        self.aruco_sub_2=self.create_subscription(PoseStamped, '/aruco_pose_2', self.aruco_pose_2_callback, 10)
-        self.aruco_sub_3=self.create_subscription(PoseStamped, '/aruco_pose_3', self.aruco_pose_3_callback, 10)
-        self.aruco_sub_4=self.create_subscription(PoseStamped, '/aruco_pose_4', self.aruco_pose_4_callback, 10)
-
         # Stato attuale dei giunti (vettore di 8: torso + 7 arm)
         self.current_joint_state = None  # np.array([torso, arm1, ..., arm7])
         self.target_pose = None  # PoseStamped
 
+        # Variabile per salvare la rotazione fissa dell'end effector
+        self.fixed_orientation_quat = None
+
+        # Subscriptions
+        self.create_subscription(JointState, '/joint_states', self.joint_states_callback, 10)
+        self.create_subscription(PoseStamped, '/target_pose', self.target_pose_callback, 10)
+        self.create_subscription(Int32, '/command_topic', self.command_callback, 10)
+        self.aruco_sub_1 = self.create_subscription(PoseStamped, '/aruco_pose_1', self.aruco_pose_1_callback, 10)
+        self.aruco_sub_2 = self.create_subscription(PoseStamped, '/aruco_pose_2', self.aruco_pose_2_callback, 10)
+        self.aruco_sub_3 = self.create_subscription(PoseStamped, '/aruco_pose_3', self.aruco_pose_3_callback, 10)
+        self.aruco_sub_4 = self.create_subscription(PoseStamped, '/aruco_pose_4', self.aruco_pose_4_callback, 10)
+
     def command_callback(self, msg):
         self.get_logger().info("Ricevuto comando")
 
-        while True:
-            if msg.data == State.MOVE_TO_POSE_1.value:
-                self.get_logger().info("Comando ricevuto: MOVE_TO_POSE_1")
-                self.calculate_pose_with_offset_state(2, offset_x=0.01, offset_y=-0.1, offset_z=0.0)
-                time.sleep(10)
-                # Attendi il comando successivo (che sarà MOVE_DOWN)
-                #return  # Esce dalla callback per attendere il prossimo messaggio
-
-            if msg.data == State.MOVE_DOWN.value:
-                self.get_logger().info("Comando ricevuto: MOVE_DOWN")
-                self.calculate_pose_with_offset_state(1, offset_x=0.0, offset_y=0.0, offset_z=-0.15)
-                break  # Esci solo dopo MOVE_DOWN
-
+        if msg.data == State.MOVE_TO_POSE_1.value:
+            self.get_logger().info("Comando ricevuto: MOVE_TO_POSE_1")
+            # Calcola e salva la rotazione al primo movimento
+            q = self.calculate_pose_with_offset_state(
+                2, offset_x=0.01, offset_y=-0.1, offset_z=0.0, save_orientation=True
+            )
+            self.fixed_orientation_quat = q  # Salva il quaternione usato
+            time.sleep(10)
+        elif msg.data == State.MOVE_DOWN.value:
+            self.get_logger().info("Comando ricevuto: MOVE_DOWN")
+            # Usa la rotazione salvata!
+            self.calculate_pose_with_offset_state(
+                2, offset_x=0.0, offset_y=0.0, offset_z=-0.15, fixed_orientation=self.fixed_orientation_quat
+            )
+        else:
             self.get_logger().warning("Comando sconosciuto")
-            break
 
     def aruco_pose_1_callback(self, msg):
         self.get_logger().info("Ricevuto aruco_pose_1")
         self.aruco_pose_1 = msg
-
 
     def aruco_pose_2_callback(self, msg):
         self.get_logger().info("Ricevuto aruco_pose_2")
@@ -100,7 +100,7 @@ class KinematicPlanner(Node):
 
     def joint_states_callback(self, msg):
         if self.current_joint_state is not None:
-        # Hai già la configurazione iniziale, ignora i nuovi messaggi
+            # Hai già la configurazione iniziale, ignora i nuovi messaggi
             return
         joint_names = ['torso_lift_joint'] + [f'arm_{i+1}_joint' for i in range(7)]
         joint_pos = []
@@ -118,7 +118,6 @@ class KinematicPlanner(Node):
         self.target_pose = msg
         self.get_logger().info(f" Ricevuta target_pose: {msg.pose.position}")
         self.plan_and_publish_trajectory()
-
 
     def plan_and_publish_trajectory(self):
         self.get_logger().info("Pianificazione e pubblicazione della traiettoria...")
@@ -140,21 +139,21 @@ class KinematicPlanner(Node):
         # 2. Estrai posizione e orientamento target
         pos = self.target_pose.pose.position
         ori = self.target_pose.pose.orientation
-        position = np.array([pos.x, pos.y, pos.z])  
+        position = np.array([pos.x, pos.y, pos.z])
         quaternion = [ori.x, ori.y, ori.z, ori.w]
 
         try:
             rotation = R.from_quat(quaternion).as_matrix()
             pi = np.pi
             T_marker = SE3.Rt(rotation, position)
-            T_rot = SE3.Ry(pi/2) * SE3.Rz(-pi/2) 
+            T_rot = SE3.Ry(pi/2) * SE3.Rz(-pi/2)
             TF = T_marker * T_rot
             self.get_logger().info(f"TF calcolata: {TF}")
         except Exception as e:
             self.get_logger().error(f"Errore nella costruzione della trasformazione finale TF: {e}")
             return
 
-        N = 10  
+        N = 10
         try:
             trajectory = rtb.ctraj(T0, TF, N)
         except Exception as e:
@@ -163,12 +162,6 @@ class KinematicPlanner(Node):
 
         q_traj = []
         q_curr = q0
-        '''try:
-            qf = self.robot.ik_LM(TF, q0=q_curr)
-            self.get_logger().info(f"Posizione finale calcolata: {qf}")
-        except Exception as e:
-            self.get_logger().error(f"Errore IK finale: {e}")
-            return'''
 
         for i, T in enumerate(trajectory):
             sol = self.robot.ik_LM(T, q0=q_curr)
@@ -206,9 +199,7 @@ class KinematicPlanner(Node):
         self.torso_pub.publish(traj_torso)
         self.get_logger().info("ultimo punto della traiettoria è stato pubblicato")
 
-
-
-    def calculate_pose_with_offset_state(self, target, offset_x, offset_y, offset_z):
+    def calculate_pose_with_offset_state(self, target, offset_x, offset_y, offset_z, save_orientation=False, fixed_orientation=None):
         self.get_logger().info("Calcolo la posa con offset...")
         if target == 1:
             base_pose = self.aruco_pose_1.pose
@@ -217,24 +208,34 @@ class KinematicPlanner(Node):
             base_pose = self.aruco_pose_2.pose
             header = self.aruco_pose_2.header
 
-            # Creazione della nuova posa con offset
-            target_pose_out = PoseStamped()
-            target_pose_out.header.stamp = self.get_clock().now().to_msg()
-            target_pose_out.header.frame_id = header.frame_id
+        target_pose_out = PoseStamped()
+        target_pose_out.header.stamp = self.get_clock().now().to_msg()
+        target_pose_out.header.frame_id = header.frame_id
+        target_pose_out.pose.position.x = base_pose.position.x + offset_x
+        target_pose_out.pose.position.y = base_pose.position.y + offset_y
+        target_pose_out.pose.position.z = base_pose.position.z + offset_z
 
-            # Copia la posizione e aggiunge offset in z
-            target_pose_out.pose.position.x = base_pose.position.x + offset_x
-            target_pose_out.pose.position.y = base_pose.position.y + offset_y
-            target_pose_out.pose.position.z = base_pose.position.z + offset_z
-
-            # Copia l'orientamento
+        # Scegli l'orientamento: fisso se presente, altrimenti quello del marker
+        if fixed_orientation is not None:
+            target_pose_out.pose.orientation.x = fixed_orientation[0]
+            target_pose_out.pose.orientation.y = fixed_orientation[1]
+            target_pose_out.pose.orientation.z = fixed_orientation[2]
+            target_pose_out.pose.orientation.w = fixed_orientation[3]
+        else:
             target_pose_out.pose.orientation = base_pose.orientation
 
-            # Ciclo per il controllo
-            self.pose_pub.publish(target_pose_out)
-            self.get_logger().info(" Posa target pubblicata su /target_pose")
+        self.pose_pub.publish(target_pose_out)
+        self.get_logger().info(" Posa target pubblicata su /target_pose")
 
-            return "go_to_pose"
+        # Se vuoi salvare la rotazione (solo la prima volta)
+        if save_orientation:
+            q = [
+                base_pose.orientation.x,
+                base_pose.orientation.y,
+                base_pose.orientation.z,
+                base_pose.orientation.w
+            ]
+            return q
 
 def main(args=None):
     rclpy.init(args=args)
