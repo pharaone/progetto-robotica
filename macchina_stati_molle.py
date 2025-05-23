@@ -1,132 +1,109 @@
+from enum import Enum
+import time
 import rclpy
 from rclpy.node import Node
-from std_msgs.msg import String
-from geometry_msgs.msg import PoseStamped
+from std_msgs.msg import Int32
+import threading
+
+class State(Enum):
+    WAITING_FOR_ARUCO = 1
+    MOVE_TO_POSE_1 = 2
+    MOVE_DOWN = 11
+    GRIP_OBJECT = 3
+    RELEASE_OBJECT = 4
+    MOVE_TO_HOME = 5
+    INITIALIZE_GRIPPER_2 = 6
+    MOVE_TO_POSE_2 = 7
+    GRIP_OBJECT_2 = 8
+    RELEASE_OBJECT_2 = 9
+    MOVE_TO_HOME_2 = 10
 
 class RobotStateMachineNode(Node):
     def __init__(self):
         super().__init__('robot_state_machine_node')
+        self.get_logger().info("Avvio Robot State Machine...")
+        self.stato_corrente = State.WAITING_FOR_ARUCO
+        self.ultimo_stato = None
 
-        self.stato_corrente = "initialize_gripper"
-        self.current_target = 1
+        self.publisher = self.create_publisher(Int32, '/command_topic', 10)
+        self.create_subscription(Int32, '/completed_command_topic', self.completed_command_callback, 10)
 
-        # Subscribers (se servono altri event/aruco topic aggiungili)
-        self.subscription_event = self.create_subscription(
-            String, '/event_topic', self.event_callback, 10)
-        self.subscription_pose_1 = self.create_subscription(
-            PoseStamped, '/aruco_pose_1', self.aruco_pose_1_callback, 10)
-        self.subscription_pose_2 = self.create_subscription(
-            PoseStamped, '/aruco_pose_2', self.aruco_pose_2_callback, 10)
+        # Start the while loop in a separate thread to avoid blocking ROS
+        self.thread = threading.Thread(target=self.state_machine_loop)
+        self.thread.daemon = True
+        self.thread.start()
 
-        # PUBs per TaskPlanner
-        self.pose_pub = self.create_publisher(PoseStamped, '/target_pose', 10)
-        self.command_pub = self.create_publisher(String, '/command_topic', 10)
+    def state_machine_loop(self):
+        while rclpy.ok():
+            if self.stato_corrente != self.ultimo_stato:
+                self.get_logger().info(f"Nuovo stato: {self.stato_corrente.name}")
+                if self.stato_corrente == State.MOVE_TO_POSE_1:
+                    self.move_to_pose_1()
+                elif self.stato_corrente == State.MOVE_DOWN:
+                    self.move_down()
+                elif self.stato_corrente == State.GRIP_OBJECT:
+                    self.grip_object()
+                elif self.stato_corrente == State.RELEASE_OBJECT:
+                    self.release_object()
+                elif self.stato_corrente == State.MOVE_TO_HOME:
+                    self.move_to_home()
+                elif self.stato_corrente == State.INITIALIZE_GRIPPER_2:
+                    self.initialize_gripper_2()
+                elif self.stato_corrente == State.MOVE_TO_POSE_2:
+                    self.move_to_pose_2()
+                elif self.stato_corrente == State.GRIP_OBJECT_2:
+                    self.grip_object_2()
+                elif self.stato_corrente == State.RELEASE_OBJECT_2:
+                    self.release_object_2()
+                elif self.stato_corrente == State.MOVE_TO_HOME_2:
+                    self.move_to_home_2()
+                self.ultimo_stato = self.stato_corrente
+            # Sleep to avoid maxing out the CPU (adjust as needed)
+            time.sleep(0.1)
 
-        self.aruco_pose_1 = None
-        self.aruco_pose_2 = None
+    def completed_command_callback(self, msg):
+        # Logica per passare allo stato successivo in base al comando completato
+        if msg.data == State.WAITING_FOR_ARUCO.value:
+            self.stato_corrente = State.MOVE_TO_POSE_1
+        elif msg.data == State.MOVE_TO_POSE_1.value:
+            self.stato_corrente = State.MOVE_DOWN
+        elif msg.data == State.MOVE_DOWN.value:
+            self.stato_corrente = State.GRIP_OBJECT
+        elif msg.data == State.GRIP_OBJECT.value:
+            self.stato_corrente = State.RELEASE_OBJECT
+        elif msg.data == State.RELEASE_OBJECT.value:
+            self.stato_corrente = State.MOVE_TO_HOME
+        elif msg.data == State.MOVE_TO_HOME.value:
+            self.stato_corrente = State.INITIALIZE_GRIPPER_2
+        elif msg.data == State.INITIALIZE_GRIPPER_2.value:
+            self.stato_corrente = State.MOVE_TO_POSE_2
+        elif msg.data == State.MOVE_TO_POSE_2.value:
+            self.stato_corrente = State.GRIP_OBJECT_2
+        elif msg.data == State.GRIP_OBJECT_2.value:
+            self.stato_corrente = State.RELEASE_OBJECT_2
+        elif msg.data == State.RELEASE_OBJECT_2.value:
+            self.stato_corrente = State.MOVE_TO_HOME_2
+        elif msg.data == State.MOVE_TO_HOME_2.value:
+            self.stato_corrente = State.WAITING_FOR_ARUCO
 
-    def event_callback(self, msg):
-        evento = msg.data
-        self.get_logger().info(f"Evento ricevuto: {evento}")
-        self.transition(evento)
-
-    def aruco_pose_1_callback(self, msg):
-        self.aruco_pose_1 = msg
-
-    def aruco_pose_2_callback(self, msg):
-        self.aruco_pose_2 = msg
-
-    def transition(self, evento):
-        metodo_stato = getattr(self, f"{self.stato_corrente}_state")
-        nuovo_stato = metodo_stato(evento)
-        if nuovo_stato != self.stato_corrente:
-            self.get_logger().info(f"Transizione: {self.stato_corrente} -> {nuovo_stato}")
-            self.stato_corrente = nuovo_stato
-            # Puoi anche pubblicare sul /event_topic qui se vuoi
-        else:
-            self.get_logger().info(f"Nessuna transizione per evento '{evento}' nello stato {self.stato_corrente}")
-
-    def initialize_gripper_state(self, evento):
-        if evento == "gripper_initialized":
-            return "wait_for_command"
-        self.get_logger().info("Sto aprendo il gripper all'avvio...")
-        return self.stato_corrente
-
-    def wait_for_command_state(self, evento):
-        if evento == "command_received":
-            return "detect_aruco"
-        return self.stato_corrente
-
-    def detect_aruco_state(self, evento):
-        if evento == "aruco_detected":
-            if self.current_target == 1 and self.aruco_pose_1 is None:
-                self.get_logger().warn("ArUco 1 non ancora ricevuto!")
-                return self.stato_corrente
-            if self.current_target == 2 and self.aruco_pose_2 is None:
-                self.get_logger().warn("ArUco 2 non ancora ricevuto!")
-                return self.stato_corrente
-            return "calculate_pose_with_offset"
-        return self.stato_corrente
-
-    def calculate_pose_with_offset_state(self, evento):
-        if evento == "pose_calculated":
-            # Esempio di preparazione della pose
-            if self.current_target == 1:
-                base_pose = self.aruco_pose_1.pose
-                header = self.aruco_pose_1.header
-            else:
-                base_pose = self.aruco_pose_2.pose
-                header = self.aruco_pose_2.header
-
-            pose_stamped = PoseStamped()
-            pose_stamped.header = header
-            pose_stamped.header.stamp = self.get_clock().now().to_msg()
-            pose_stamped.pose.position.x = base_pose.position.x - 0.1
-            pose_stamped.pose.position.y = base_pose.position.y
-            pose_stamped.pose.position.z = base_pose.position.z
-            pose_stamped.pose.orientation = base_pose.orientation
-
-            self.get_logger().info(f"Pubblico pose offset su /target_pose e comando su /command_topic")
-            self.pose_pub.publish(pose_stamped)
-            self.command_pub.publish(String(data="grasp"))
-
-            return "move_to_grasp"
-        return self.stato_corrente
-
-    def move_to_grasp_state(self, evento):
-        if evento == "arrived_to_grasp":
-            return "close_gripper"
-        return self.stato_corrente
-
-    def close_gripper_state(self, evento):
-        if evento == "gripper_closed":
-            return "move_to_lift"
-        return self.stato_corrente
-
-    def move_to_lift_state(self, evento):
-        if evento == "lifted":
-            return "go_to_drop_zone"
-        return self.stato_corrente
-
-    def go_to_drop_zone_state(self, evento):
-        if evento == "arrived_to_drop_zone":
-            return "open_gripper"
-        return self.stato_corrente
-
-    def open_gripper_state(self, evento):
-        if evento == "gripper_opened":
-            return "task_done"
-        return self.stato_corrente
-
-    def task_done_state(self, evento):
-        self.get_logger().info(f"Task completato per oggetto {self.current_target}.")
-        if self.current_target == 1:
-            self.get_logger().info("Passo al secondo oggetto.")
-            self.current_target = 2
-            return "wait_for_command"
-        else:
-            self.get_logger().info("Tutti i task completati.")
-            return self.stato_corrente
+    def move_to_pose_1(self):
+        self.get_logger().info("Muovo verso la posa 1.")
+        msg = Int32()
+        msg.data = State.MOVE_TO_POSE_1.value
+        self.publisher.publish(msg)
+    def move_down(self):
+        self.get_logger().info("Muovo verso il basso.")
+        msg = Int32()
+        msg.data = State.MOVE_DOWN.value
+        self.publisher.publish(msg)
+    def grip_object(self): pass
+    def release_object(self): pass
+    def move_to_home(self): pass
+    def initialize_gripper_2(self): pass
+    def move_to_pose_2(self): pass
+    def grip_object_2(self): pass
+    def release_object_2(self): pass
+    def move_to_home_2(self): pass
 
 def main(args=None):
     rclpy.init(args=args)
