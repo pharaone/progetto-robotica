@@ -44,16 +44,16 @@ class KinematicPlanner(Node):
         self.aruco_pose_3 = None
         self.aruco_pose_4 = None
 
-        self.current_joint_state = None  # np.array([torso, arm1, ..., arm7])
-        self.target_pose = None  # PoseStamped
+        self.current_joint_state = None
+        self.target_pose = None
 
-        # Variabile per salvare l'orientazione raggiunta dall'end-effector
+        # Qui salvi il quaternione raggiunto dopo MOVE_TO_POSE_1
         self.last_reached_orientation = None
+        self.waiting_move_down = False
 
-        # Subscriptions
         self.create_subscription(JointState, '/joint_states', self.joint_states_callback, 10)
         self.create_subscription(PoseStamped, '/target_pose', self.target_pose_callback, 10)
-        self.create_subscription(Int32, '/command_topic', self.command_callback, 10)
+        self.create_subscription(Int32,'/command_topic', self.command_callback, 10)
         self.aruco_sub_1 = self.create_subscription(PoseStamped, '/aruco_pose_1', self.aruco_pose_1_callback, 10)
         self.aruco_sub_2 = self.create_subscription(PoseStamped, '/aruco_pose_2', self.aruco_pose_2_callback, 10)
         self.aruco_sub_3 = self.create_subscription(PoseStamped, '/aruco_pose_3', self.aruco_pose_3_callback, 10)
@@ -62,15 +62,27 @@ class KinematicPlanner(Node):
     def command_callback(self, msg):
         self.get_logger().info("Ricevuto comando")
 
+        # MOVE_TO_POSE_1: vai al marker (con orientamento marker) e poi prepara il MOVE_DOWN
         if msg.data == State.MOVE_TO_POSE_1.value:
             self.get_logger().info("Comando ricevuto: MOVE_TO_POSE_1")
-            # Primo movimento: usa orientamento del marker
+            # Usa orientamento marker
             self.calculate_pose_with_offset_state(2, offset_x=0.01, offset_y=-0.1, offset_z=0.0, use_last_orientation=False)
+            # Dopo 10 secondi, attiva il MOVE_DOWN in automatico
+            self.waiting_move_down = True
+            self.get_logger().info("Attendo 10s prima di scendere...")
             time.sleep(10)
+            # Chiamo direttamente MOVE_DOWN come se ricevessi il comando!
+            self.command_callback(Int32(data=State.MOVE_DOWN.value))
+            self.waiting_move_down = False
+
+        # MOVE_DOWN: solo traslazione in Z, orientamento rimane quello raggiunto dopo il primo movimento
         elif msg.data == State.MOVE_DOWN.value:
             self.get_logger().info("Comando ricevuto: MOVE_DOWN")
-            # Usa la rotazione raggiunta precedentemente (Nessuna nuova rotazione!)
-            self.calculate_pose_with_offset_state(2, offset_x=0.0, offset_y=0.0, offset_z=-0.15, use_last_orientation=True)
+            if self.last_reached_orientation is not None:
+                self.calculate_pose_with_offset_state(2, offset_x=0.0, offset_y=0.0, offset_z=-0.15, use_last_orientation=True)
+            else:
+                self.get_logger().warning("Orientamento non ancora salvato, impossibile scendere senza ruotare!")
+
         else:
             self.get_logger().warning("Comando sconosciuto")
 
@@ -109,7 +121,7 @@ class KinematicPlanner(Node):
         self.get_logger().info("Funzione target_pose_callback chiamata!")
         self.target_pose = msg
         self.get_logger().info(f" Ricevuta target_pose: {msg.pose.position}")
-        # Salva l'orientamento effettivamente raggiunto (ogni volta che ricevi la target_pose)
+        # Salva sempre l'orientamento raggiunto più recente (per il prossimo MOVE_DOWN)
         self.last_reached_orientation = [
             msg.pose.orientation.x,
             msg.pose.orientation.y,
@@ -136,7 +148,7 @@ class KinematicPlanner(Node):
 
         pos = self.target_pose.pose.position
         ori = self.target_pose.pose.orientation
-        position = np.array([pos.x, pos.y, pos.z])
+        position = np.array([pos.x, pos.y, pos.z])  
         quaternion = [ori.x, ori.y, ori.z, ori.w]
 
         try:
@@ -150,7 +162,7 @@ class KinematicPlanner(Node):
             self.get_logger().error(f"Errore nella costruzione della trasformazione finale TF: {e}")
             return
 
-        N = 10
+        N = 10  
         try:
             trajectory = rtb.ctraj(T0, TF, N)
         except Exception as e:
@@ -212,7 +224,7 @@ class KinematicPlanner(Node):
         target_pose_out.pose.position.y = base_pose.position.y + offset_y
         target_pose_out.pose.position.z = base_pose.position.z + offset_z
 
-        # Mantieni orientamento raggiunto, se richiesto
+        # SOLO SE use_last_orientation è True, uso l’orientamento raggiunto, NON quello del marker!
         if use_last_orientation and self.last_reached_orientation is not None:
             target_pose_out.pose.orientation.x = self.last_reached_orientation[0]
             target_pose_out.pose.orientation.y = self.last_reached_orientation[1]
