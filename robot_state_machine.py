@@ -7,15 +7,18 @@ from std_msgs.msg import Int32
 class State(Enum):
     WAITING_FOR_ARUCO = 1
     MOVE_TO_POSE_1 = 2
-    MOVE_TO_POSE_2 = 11
+    MOVE_DOWN = 11
     GRIP_OBJECT = 3
     RELEASE_OBJECT = 4
     MOVE_TO_HOME = 5
     INITIALIZE_GRIPPER_2 = 6
-    MOVE_TO_POSE_3 = 7
+    MOVE_TO_POSE_2 = 7
     GRIP_OBJECT_2 = 8
     RELEASE_OBJECT_2 = 9
     MOVE_TO_HOME_2 = 10
+
+contatore = 0
+print("Contatore:")
 
 class RobotStateMachineNode(Node):
     def __init__(self):
@@ -33,13 +36,16 @@ class RobotStateMachineNode(Node):
 
         self.timer = self.create_timer(1.0, self.loop)
 
-    def loop(self):         
+    def loop(self): 
+        global contatore        
         if self.stato_corrente != self.ultimo_stato:
             self.get_logger().info(f"Stato corrente: {self.stato_corrente}")
-            if self.stato_corrente == State.MOVE_TO_POSE_1:
-                self.move_to_pose_1()
-            elif self.stato_currente == State.MOVE_TO_POSE_2:
-                self.move_to_pose_2()
+            if self.stato_corrente == State.MOVE_TO_POSE_1 and contatore == 0:
+                self.move_to_pose_1() 
+                contatore += 1
+                print("GODO")
+            elif self.stato_corrente == State.MOVE_DOWN:
+                self.move_down()
             elif self.stato_corrente == State.GRIP_OBJECT:
                 self.grip_object()
             elif self.stato_corrente == State.RELEASE_OBJECT:
@@ -65,8 +71,8 @@ class RobotStateMachineNode(Node):
         if msg.data == State.WAITING_FOR_ARUCO.value:
             self.stato_corrente = State.MOVE_TO_POSE_1
         elif msg.data == State.MOVE_TO_POSE_1.value:
-            self.stato_corrente = State.MOVE_TO_POSE_2
-        elif msg.data == State.MOVE_TO_POSE_1.value:
+            self.stato_corrente = State.MOVE_DOWN
+        elif msg.data == State.MOVE_DOWN.value:
             self.stato_corrente = State.GRIP_OBJECT
         elif msg.data == State.GRIP_OBJECT.value:
             self.stato_corrente = State.RELEASE_OBJECT
@@ -95,11 +101,11 @@ class RobotStateMachineNode(Node):
         msg = Int32()
         msg.data = State.MOVE_TO_POSE_1.value
         self.publisher.publish(msg)
-        
-    def move_to_pose_2(self):
-        self.get_logger().info("Muovo verso la posa 2.")
+    
+    def move_down(self):
+        self.get_logger().info("Muovo verso il basso.")
         msg = Int32()
-        msg.data = State.MOVE_TO_POSE_2.value
+        msg.data = State.MOVE_DOWN.value
         self.publisher.publish(msg)
 
     def grip_object(self):
