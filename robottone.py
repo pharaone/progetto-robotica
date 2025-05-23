@@ -34,7 +34,6 @@ class KinematicPlanner(Node):
         self.robot = ERobot.URDF(urdf_loc)
         self.get_logger().info("URDF caricato correttamente!")
 
-        # Publishers per i controller (arm e torso)
         self.arm_pub = self.create_publisher(JointTrajectory, '/arm_controller/joint_trajectory', 10)
         self.torso_pub = self.create_publisher(JointTrajectory, '/torso_controller/joint_trajectory', 10)
         self.pose_pub = self.create_publisher(PoseStamped, '/target_pose', 10)
@@ -45,12 +44,11 @@ class KinematicPlanner(Node):
         self.aruco_pose_3 = None
         self.aruco_pose_4 = None
 
-        # Stato attuale dei giunti (vettore di 8: torso + 7 arm)
         self.current_joint_state = None  # np.array([torso, arm1, ..., arm7])
         self.target_pose = None  # PoseStamped
 
-        # Variabile per salvare la rotazione fissa dell'end effector
-        self.fixed_orientation_quat = None
+        # Variabile per salvare l'orientazione raggiunta dall'end-effector
+        self.last_reached_orientation = None
 
         # Subscriptions
         self.create_subscription(JointState, '/joint_states', self.joint_states_callback, 10)
@@ -66,18 +64,13 @@ class KinematicPlanner(Node):
 
         if msg.data == State.MOVE_TO_POSE_1.value:
             self.get_logger().info("Comando ricevuto: MOVE_TO_POSE_1")
-            # Calcola e salva la rotazione al primo movimento
-            q = self.calculate_pose_with_offset_state(
-                2, offset_x=0.01, offset_y=-0.1, offset_z=0.0, save_orientation=True
-            )
-            self.fixed_orientation_quat = q  # Salva il quaternione usato
+            # Primo movimento: usa orientamento del marker
+            self.calculate_pose_with_offset_state(2, offset_x=0.01, offset_y=-0.1, offset_z=0.0, use_last_orientation=False)
             time.sleep(10)
         elif msg.data == State.MOVE_DOWN.value:
             self.get_logger().info("Comando ricevuto: MOVE_DOWN")
-            # Usa la rotazione salvata!
-            self.calculate_pose_with_offset_state(
-                2, offset_x=0.0, offset_y=0.0, offset_z=-0.15, fixed_orientation=self.fixed_orientation_quat
-            )
+            # Usa la rotazione raggiunta precedentemente (Nessuna nuova rotazione!)
+            self.calculate_pose_with_offset_state(2, offset_x=0.0, offset_y=0.0, offset_z=-0.15, use_last_orientation=True)
         else:
             self.get_logger().warning("Comando sconosciuto")
 
@@ -100,7 +93,6 @@ class KinematicPlanner(Node):
 
     def joint_states_callback(self, msg):
         if self.current_joint_state is not None:
-            # Hai già la configurazione iniziale, ignora i nuovi messaggi
             return
         joint_names = ['torso_lift_joint'] + [f'arm_{i+1}_joint' for i in range(7)]
         joint_pos = []
@@ -117,6 +109,13 @@ class KinematicPlanner(Node):
         self.get_logger().info("Funzione target_pose_callback chiamata!")
         self.target_pose = msg
         self.get_logger().info(f" Ricevuta target_pose: {msg.pose.position}")
+        # Salva l'orientamento effettivamente raggiunto (ogni volta che ricevi la target_pose)
+        self.last_reached_orientation = [
+            msg.pose.orientation.x,
+            msg.pose.orientation.y,
+            msg.pose.orientation.z,
+            msg.pose.orientation.w,
+        ]
         self.plan_and_publish_trajectory()
 
     def plan_and_publish_trajectory(self):
@@ -128,7 +127,6 @@ class KinematicPlanner(Node):
 
         q0 = self.current_joint_state.astype(float)  # [torso, arm1, ..., arm7]
 
-        # 1. Calcola T0 (configurazione attuale)
         try:
             T0 = self.robot.fkine(q0)
             self.get_logger().info(f"FKine calcolata: {T0}")
@@ -136,7 +134,6 @@ class KinematicPlanner(Node):
             self.get_logger().error(f"Errore nel calcolo della fkine: {e}")
             return
 
-        # 2. Estrai posizione e orientamento target
         pos = self.target_pose.pose.position
         ori = self.target_pose.pose.orientation
         position = np.array([pos.x, pos.y, pos.z])
@@ -199,7 +196,7 @@ class KinematicPlanner(Node):
         self.torso_pub.publish(traj_torso)
         self.get_logger().info("ultimo punto della traiettoria è stato pubblicato")
 
-    def calculate_pose_with_offset_state(self, target, offset_x, offset_y, offset_z, save_orientation=False, fixed_orientation=None):
+    def calculate_pose_with_offset_state(self, target, offset_x, offset_y, offset_z, use_last_orientation=False):
         self.get_logger().info("Calcolo la posa con offset...")
         if target == 1:
             base_pose = self.aruco_pose_1.pose
@@ -215,27 +212,17 @@ class KinematicPlanner(Node):
         target_pose_out.pose.position.y = base_pose.position.y + offset_y
         target_pose_out.pose.position.z = base_pose.position.z + offset_z
 
-        # Scegli l'orientamento: fisso se presente, altrimenti quello del marker
-        if fixed_orientation is not None:
-            target_pose_out.pose.orientation.x = fixed_orientation[0]
-            target_pose_out.pose.orientation.y = fixed_orientation[1]
-            target_pose_out.pose.orientation.z = fixed_orientation[2]
-            target_pose_out.pose.orientation.w = fixed_orientation[3]
+        # Mantieni orientamento raggiunto, se richiesto
+        if use_last_orientation and self.last_reached_orientation is not None:
+            target_pose_out.pose.orientation.x = self.last_reached_orientation[0]
+            target_pose_out.pose.orientation.y = self.last_reached_orientation[1]
+            target_pose_out.pose.orientation.z = self.last_reached_orientation[2]
+            target_pose_out.pose.orientation.w = self.last_reached_orientation[3]
         else:
             target_pose_out.pose.orientation = base_pose.orientation
 
         self.pose_pub.publish(target_pose_out)
         self.get_logger().info(" Posa target pubblicata su /target_pose")
-
-        # Se vuoi salvare la rotazione (solo la prima volta)
-        if save_orientation:
-            q = [
-                base_pose.orientation.x,
-                base_pose.orientation.y,
-                base_pose.orientation.z,
-                base_pose.orientation.w
-            ]
-            return q
 
 def main(args=None):
     rclpy.init(args=args)
