@@ -26,10 +26,11 @@ class State(Enum):
     MOVE_TO_POSE_3 = 7
     MOVE_TO_POSE_4 = 14
     GRIP_OBJECT_2 = 8
-    MOVE_UP_PRINGLES=16
     MOVE_PRINGLES_TO_FINISH = 15
     RELEASE_OBJECT_2 = 9
     MOVE_TO_HOME_2 = 10
+    MOVE_UP_PRINGLES = 17
+    INITIALIZE_GRIPPER = 16
 
 class KinematicPlanner(Node):
     def __init__(self):
@@ -87,7 +88,7 @@ class KinematicPlanner(Node):
         elif msg.data == State.MOVE_UP_COLA.value:
             self.get_logger().info("Comando ricevuto: MOVE_UP_COLA")
             self.current_state = State.MOVE_UP_COLA
-            self.calculate_pose_with_offset_state(2, offset_x=0, offset_y=-0.05, offset_z=0.2)
+            self.calculate_pose_with_offset_state(2, offset_x=0, offset_y=-0.05, offset_z=0.1)
         elif msg.data == State.MOVE_COLA_TO_FINISH.value:
             self.get_logger().info("Comando ricevuto: MOVE_COLA_TO_FINISH")
             self.current_state = State.MOVE_COLA_TO_FINISH
@@ -103,11 +104,11 @@ class KinematicPlanner(Node):
         elif msg.data == State.MOVE_TO_POSE_3.value:
             self.get_logger().info("Comando ricevuto: MOVE_TO_POSE_3")
             self.current_state = State.MOVE_TO_POSE_3
-            self.calculate_pose_with_offset_state(1, offset_x=-0.08, offset_y=0.1, offset_z=-0.1)
+            self.calculate_pose_with_offset_state(1, offset_x=-0.08, offset_y=0.15, offset_z=-0.1)
         elif msg.data == State.MOVE_TO_POSE_4.value:
             self.get_logger().info("Comando ricevuto: MOVE_TO_POSE_4")
             self.current_state = State.MOVE_TO_POSE_4
-            self.calculate_pose_with_offset_state(1, offset_x=-0.06, offset_y=0.1, offset_z=-0.22)
+            self.calculate_pose_with_offset_state(1, offset_x=-0.06, offset_y=0.15, offset_z=-0.1)
         elif msg.data == State.GRIP_OBJECT_2.value:
             self.get_logger().info("Comando ricevuto: GRIP_OBJECT_2")
             self.current_state = State.GRIP_OBJECT_2
@@ -115,7 +116,7 @@ class KinematicPlanner(Node):
         elif msg.data == State.MOVE_UP_PRINGLES.value:
             self.get_logger().info("Comando ricevuto: MOVE_UP_PRINGLES")
             self.current_state = State.MOVE_UP_PRINGLES
-            self.calculate_pose_with_offset_state(1, offset_x=0, offset_y=0.0, offset_z=-0.1)
+            self.calculate_pose_with_offset_state(1, offset_x=-0.06, offset_y=0.15, offset_z=0.1)
         elif msg.data == State.MOVE_PRINGLES_TO_FINISH.value:
             self.get_logger().info("Comando ricevuto: MOVE_PRINGLES_TO_FINISH")
             self.current_state = State.MOVE_PRINGLES_TO_FINISH
@@ -133,6 +134,7 @@ class KinematicPlanner(Node):
     def aruco_pose_1_callback(self, msg):
         self.get_logger().info("Ricevuto aruco_pose_1")
         self.aruco_pose_1 = msg
+
 
     def aruco_pose_2_callback(self, msg):
         self.get_logger().info("Ricevuto aruco_pose_2")
@@ -200,7 +202,7 @@ class KinematicPlanner(Node):
         try:
             rotation = R.from_quat(quaternion).as_matrix()
             T_marker = SE3.Rt(rotation, position)
-            if self.current_state in [State.MOVE_COLA_TO_FINISH, State.MOVE_PRINGLES_TO_FINISH]:
+            if self.current_state == State.MOVE_COLA_TO_FINISH or self.current_state == State.MOVE_PRINGLES_TO_FINISH:
                 T_rot = SE3.Rx(np.pi/2) * SE3.Rz(np.pi)
             else:
                 T_rot = SE3.Ry(np.pi/2) * SE3.Rz(-(np.pi/2))
@@ -210,7 +212,7 @@ class KinematicPlanner(Node):
             self.get_logger().error(f"Errore nella costruzione della trasformazione finale TF: {e}")
             return
 
-        N = 20  
+        N = 10  
         try:
             trajectory = rtb.ctraj(T0, TF, N)
         except Exception as e:
