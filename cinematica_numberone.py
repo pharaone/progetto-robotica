@@ -1,4 +1,5 @@
 from enum import Enum
+import time
 import numpy as np
 import rclpy
 from rclpy.node import Node
@@ -11,18 +12,22 @@ from roboticstoolbox import ERobot, DHRobot, RevoluteDH
 from std_msgs.msg import Int32
 from scipy.spatial.transform import Rotation as R
 import numpy as np
-import time
 
 class State(Enum):
     WAITING_FOR_ARUCO = 1
     MOVE_TO_POSE_1 = 2
-    MOVE_DOWN = 11
+    MOVE_TO_POSE_2 = 11
     GRIP_OBJECT = 3
+    MOVE_UP_COLA = 12
+    MOVE_COLA_TO_FINISH = 13
     RELEASE_OBJECT = 4
     MOVE_TO_HOME = 5
     INITIALIZE_GRIPPER_2 = 6
-    MOVE_TO_POSE_2 = 7
+    MOVE_TO_POSE_3 = 7
+    MOVE_TO_POSE_4 = 14
     GRIP_OBJECT_2 = 8
+    MOVE_UP_PRINGLES=16
+    MOVE_PRINGLES_TO_FINISH = 15
     RELEASE_OBJECT_2 = 9
     MOVE_TO_HOME_2 = 10
 
@@ -30,6 +35,8 @@ class KinematicPlanner(Node):
     def __init__(self):
         super().__init__('kinematic_planner')
         self.get_logger().info("Inizializzazione Kinematic Planner...")
+
+        self.current_state = State.WAITING_FOR_ARUCO
 
         # Carica modello URDF
         urdf_loc = '/home/davide/tiago_public_ws/src/my_robot_description/urdf/tiago_robot.urdf'
@@ -56,46 +63,91 @@ class KinematicPlanner(Node):
         self.aruco_sub_2=self.create_subscription(PoseStamped, '/aruco_pose_2', self.aruco_pose_2_callback, 10)
         self.aruco_sub_3=self.create_subscription(PoseStamped, '/aruco_pose_3', self.aruco_pose_3_callback, 10)
         self.aruco_sub_4=self.create_subscription(PoseStamped, '/aruco_pose_4', self.aruco_pose_4_callback, 10)
+        self.gripper_pub = self.create_publisher(JointTrajectory, '/gripper_controller/joint_trajectory', 10)
 
         # Stato attuale dei giunti (vettore di 8: torso + 7 arm)
         self.current_joint_state = None  # np.array([torso, arm1, ..., arm7])
         self.target_pose = None  # PoseStamped
 
+
     def command_callback(self, msg):
         self.get_logger().info("Ricevuto comando")
+        if msg.data == State.MOVE_TO_POSE_1.value:
+            self.get_logger().info("Comando ricevuto: MOVE_TO_POSE_1")
+            self.current_state = State.MOVE_TO_POSE_1
+            self.calculate_pose_with_offset_state(2, offset_x=0, offset_y=-0.05, offset_z=0)
+        elif msg.data == State.MOVE_TO_POSE_2.value:
+            self.get_logger().info("Comando ricevuto: MOVE_TO_POSE_2")
+            self.current_state = State.MOVE_TO_POSE_2
+            self.calculate_pose_with_offset_state(2, offset_x=0, offset_y=-0.05, offset_z=-0.15)
+        elif msg.data == State.GRIP_OBJECT.value:
+            self.get_logger().info("Comando ricevuto: GRIP_OBJECT")
+            self.current_state = State.GRIP_OBJECT
+            self.close_gripper()
+        elif msg.data == State.MOVE_UP_COLA.value:
+            self.get_logger().info("Comando ricevuto: MOVE_UP_COLA")
+            self.current_state = State.MOVE_UP_COLA
+            self.calculate_pose_with_offset_state(2, offset_x=0, offset_y=-0.05, offset_z=0.2)
+        elif msg.data == State.MOVE_COLA_TO_FINISH.value:
+            self.get_logger().info("Comando ricevuto: MOVE_COLA_TO_FINISH")
+            self.current_state = State.MOVE_COLA_TO_FINISH
+            self.calculate_pose_with_offset_state(3, offset_x=0.0, offset_y=0, offset_z=0.05)
+        elif msg.data == State.RELEASE_OBJECT.value:
+            self.get_logger().info("Comando ricevuto: RELEASE_OBJECT")
+            self.current_state = State.RELEASE_OBJECT
+            self.open_gripper()
+        elif msg.data == State.MOVE_TO_HOME.value:
+            self.get_logger().info("Comando ricevuto: MOVE_TO_HOME")
+            self.current_state = State.MOVE_TO_HOME
+            self.move_to_home()
+        elif msg.data == State.MOVE_TO_POSE_3.value:
+            self.get_logger().info("Comando ricevuto: MOVE_TO_POSE_3")
+            self.current_state = State.MOVE_TO_POSE_3
+            self.calculate_pose_with_offset_state(1, offset_x=-0.08, offset_y=0.1, offset_z=-0.1)
+        elif msg.data == State.MOVE_TO_POSE_4.value:
+            self.get_logger().info("Comando ricevuto: MOVE_TO_POSE_4")
+            self.current_state = State.MOVE_TO_POSE_4
+            self.calculate_pose_with_offset_state(1, offset_x=-0.06, offset_y=0.1, offset_z=-0.22)
+        elif msg.data == State.GRIP_OBJECT_2.value:
+            self.get_logger().info("Comando ricevuto: GRIP_OBJECT_2")
+            self.current_state = State.GRIP_OBJECT_2
+            self.close_gripper()
+        elif msg.data == State.MOVE_UP_PRINGLES.value:
+            self.get_logger().info("Comando ricevuto: MOVE_UP_PRINGLES")
+            self.current_state = State.MOVE_UP_PRINGLES
+            self.calculate_pose_with_offset_state(1, offset_x=0, offset_y=0.0, offset_z=-0.1)
+        elif msg.data == State.MOVE_PRINGLES_TO_FINISH.value:
+            self.get_logger().info("Comando ricevuto: MOVE_PRINGLES_TO_FINISH")
+            self.current_state = State.MOVE_PRINGLES_TO_FINISH
+            self.calculate_pose_with_offset_state(4, offset_x=0, offset_y=0.0, offset_z=0.05)
+        elif msg.data == State.RELEASE_OBJECT_2.value:
+            self.get_logger().info("Comando ricevuto: RELEASE_OBJECT_2")
+            self.current_state = State.RELEASE_OBJECT_2
+            self.open_gripper()
+        elif msg.data == State.MOVE_TO_HOME_2.value:
+            self.get_logger().info("Comando ricevuto: MOVE_TO_HOME_2")
+            self.current_state = State.MOVE_TO_HOME_2
+            self.move_to_home()
 
-        while True:
-            if msg.data == State.MOVE_TO_POSE_1.value:
-                self.get_logger().info("Comando ricevuto: MOVE_TO_POSE_1")
-                self.calculate_pose_with_offset_state(2, offset_x=0.01, offset_y=-0.1, offset_z=0.0)
-                time.sleep(10)
-                # Attendi il comando successivo (che sarà MOVE_DOWN)
-                #return  # Esce dalla callback per attendere il prossimo messaggio
-
-            if msg.data == State.MOVE_DOWN.value:
-                self.get_logger().info("Comando ricevuto: MOVE_DOWN")
-                self.calculate_pose_with_offset_state(1, offset_x=0.0, offset_y=0.0, offset_z=-0.15)
-                break  # Esci solo dopo MOVE_DOWN
-
-            self.get_logger().warning("Comando sconosciuto")
-            break
 
     def aruco_pose_1_callback(self, msg):
         self.get_logger().info("Ricevuto aruco_pose_1")
         self.aruco_pose_1 = msg
 
-
     def aruco_pose_2_callback(self, msg):
         self.get_logger().info("Ricevuto aruco_pose_2")
         self.aruco_pose_2 = msg
         command_completed = Int32()
-        command_completed.data = State.WAITING_FOR_ARUCO.value
-        self.completed_command_topic.publish(command_completed)
+        if self.current_state == State.WAITING_FOR_ARUCO:
+            command_completed.data = State.WAITING_FOR_ARUCO.value
+            self.completed_command_topic.publish(command_completed)
 
     def aruco_pose_3_callback(self, msg):
+        self.get_logger().info("Ricevuto aruco_pose_3")
         self.aruco_pose_3 = msg
 
     def aruco_pose_4_callback(self, msg):
+        self.get_logger().info("Ricevuto aruco_pose_4")
         self.aruco_pose_4 = msg
 
     def joint_states_callback(self, msg):
@@ -117,6 +169,8 @@ class KinematicPlanner(Node):
         self.get_logger().info("Funzione target_pose_callback chiamata!")
         self.target_pose = msg
         self.get_logger().info(f" Ricevuta target_pose: {msg.pose.position}")
+        while self.current_joint_state is None:
+            time.sleep(0.1)  # Attendi che il joint state sia inizializzato
         self.plan_and_publish_trajectory()
 
 
@@ -145,16 +199,18 @@ class KinematicPlanner(Node):
 
         try:
             rotation = R.from_quat(quaternion).as_matrix()
-            pi = np.pi
             T_marker = SE3.Rt(rotation, position)
-            T_rot = SE3.Ry(pi/2) * SE3.Rz(-pi/2) 
+            if self.current_state in [State.MOVE_COLA_TO_FINISH, State.MOVE_PRINGLES_TO_FINISH]:
+                T_rot = SE3.Rx(np.pi/2) * SE3.Rz(np.pi)
+            else:
+                T_rot = SE3.Ry(np.pi/2) * SE3.Rz(-(np.pi/2))
             TF = T_marker * T_rot
             self.get_logger().info(f"TF calcolata: {TF}")
         except Exception as e:
             self.get_logger().error(f"Errore nella costruzione della trasformazione finale TF: {e}")
             return
 
-        N = 10  
+        N = 20  
         try:
             trajectory = rtb.ctraj(T0, TF, N)
         except Exception as e:
@@ -205,6 +261,12 @@ class KinematicPlanner(Node):
         self.arm_pub.publish(traj_arm)
         self.torso_pub.publish(traj_torso)
         self.get_logger().info("ultimo punto della traiettoria è stato pubblicato")
+        time.sleep(10)
+        command_completed = Int32()
+        command_completed.data = self.current_state.value
+        self.get_logger().info(f"Comando completato: {command_completed.data}")
+        self.completed_command_topic.publish(command_completed)
+
 
 
 
@@ -213,28 +275,125 @@ class KinematicPlanner(Node):
         if target == 1:
             base_pose = self.aruco_pose_1.pose
             header = self.aruco_pose_1.header
-        else:
+        elif target == 2:
             base_pose = self.aruco_pose_2.pose
             header = self.aruco_pose_2.header
+        elif target == 3:
+            base_pose = self.aruco_pose_3.pose
+            header = self.aruco_pose_3.header
+        elif target == 4:
+            base_pose = self.aruco_pose_4.pose
+            header = self.aruco_pose_4.header
 
-            # Creazione della nuova posa con offset
-            target_pose_out = PoseStamped()
-            target_pose_out.header.stamp = self.get_clock().now().to_msg()
-            target_pose_out.header.frame_id = header.frame_id
+        # Creazione della nuova posa con offset
+        target_pose_out = PoseStamped()
+        target_pose_out.header.stamp = self.get_clock().now().to_msg()
+        target_pose_out.header.frame_id = header.frame_id
 
-            # Copia la posizione e aggiunge offset in z
-            target_pose_out.pose.position.x = base_pose.position.x + offset_x
-            target_pose_out.pose.position.y = base_pose.position.y + offset_y
-            target_pose_out.pose.position.z = base_pose.position.z + offset_z
+        # Copia la posizione e aggiunge offset in z
+        target_pose_out.pose.position.x = base_pose.position.x + offset_x
+        target_pose_out.pose.position.y = base_pose.position.y + offset_y
+        target_pose_out.pose.position.z = base_pose.position.z + offset_z
 
-            # Copia l'orientamento
-            target_pose_out.pose.orientation = base_pose.orientation
+        # Copia l'orientamento
+        target_pose_out.pose.orientation = base_pose.orientation
 
-            # Ciclo per il controllo
-            self.pose_pub.publish(target_pose_out)
-            self.get_logger().info(" Posa target pubblicata su /target_pose")
+        # Ciclo per il controllo
+        self.pose_pub.publish(target_pose_out)
+        self.get_logger().info(" Posa target pubblicata su /target_pose")
 
-            return "go_to_pose"
+        return "go_to_pose"
+    
+    def close_gripper(self):
+        self.get_logger().info("Chiusura gripper in corso...")
+
+        traj = JointTrajectory()
+        traj.joint_names = ['gripper_left_finger_joint', 'gripper_right_finger_joint']
+
+        point = JointTrajectoryPoint()
+        point.positions = [0.044, 0.036]  # Valori richiesti
+        point.time_from_start.sec = 2
+        point.time_from_start.nanosec = 0
+
+        traj.points.append(point)
+
+        # Attendi un attimo che il publisher si connetta (best practice in ROS2)
+        time.sleep(0.5)
+
+        self.gripper_pub.publish(traj)
+        self.get_logger().info("Comando di chiusura gripper pubblicato.")
+
+        time.sleep(3)
+
+        command_completed = Int32()
+        command_completed.data = self.current_state.value
+        self.get_logger().info(f"Comando completato: {command_completed.data}")
+        self.completed_command_topic.publish(command_completed)
+
+    def open_gripper(self):
+        self.get_logger().info("Apertura a gripper in corso...")
+
+        traj = JointTrajectory()
+        traj.joint_names = ['gripper_left_finger_joint', 'gripper_right_finger_joint']
+
+        point = JointTrajectoryPoint()
+        point.positions = [0.044, 0.044]  # Valori richiesti
+        point.time_from_start.sec = 2
+        point.time_from_start.nanosec = 0
+
+        traj.points.append(point)
+
+        # Attendi un attimo che il publisher si connetta (best practice in ROS2)
+        time.sleep(0.5)
+
+        self.gripper_pub.publish(traj)
+        self.get_logger().info("Comando di apertura gripper pubblicato.")
+
+        time.sleep(3)
+
+        command_completed = Int32()
+        command_completed.data = self.current_state.value
+        self.get_logger().info(f"Comando completato: {command_completed.data}")
+        self.completed_command_topic.publish(command_completed)
+
+    def move_to_home(self):
+        self.get_logger().info("Ritorno alla posa finale predefinita...")
+
+        # Prepara trajectory per torso
+        traj_torso = JointTrajectory()
+        traj_torso.joint_names = ['torso_lift_joint']
+
+        point_torso = JointTrajectoryPoint()
+        point_torso.positions = [0.35]
+        point_torso.time_from_start.sec = 3
+        point_torso.time_from_start.nanosec = 0
+
+        traj_torso.points.append(point_torso)
+
+        # Prepara trajectory per braccio
+        traj_arm = JointTrajectory()
+        traj_arm.joint_names = [f'arm_{i+1}_joint' for i in range(7)]
+
+        point_arm = JointTrajectoryPoint()
+        point_arm.positions = [0.07, 0.1, -3.1, 1.36, 2.05, 0.01, -0.05]
+        point_arm.time_from_start.sec = 3
+        point_arm.time_from_start.nanosec = 0
+
+        traj_arm.points.append(point_arm)
+
+        # Pubblica
+        self.arm_pub.publish(traj_arm)
+        self.torso_pub.publish(traj_torso)
+
+        self.get_logger().info("Traiettoria di ritorno pubblicata su torso e braccio.")
+        time.sleep(10)
+
+        command_completed = Int32()
+        command_completed.data = self.current_state.value
+        self.get_logger().info(f"Comando completato: {command_completed.data}")
+        self.completed_command_topic.publish(command_completed)
+
+
 
 def main(args=None):
     rclpy.init(args=args)
