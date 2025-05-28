@@ -18,9 +18,10 @@ class State(Enum):
     MOVE_TO_POSE_4 = 14
     GRIP_OBJECT_2 = 8
     MOVE_PRINGLES_TO_FINISH = 15
-    MOVE_UP_PRINGLES = 16
     RELEASE_OBJECT_2 = 9
     MOVE_TO_HOME_2 = 10
+    INITIALIZE_GRIPPER = 16
+    MOVE_UP_PRINGLES = 17
 
 class RobotStateMachineNode(Node):
     def __init__(self):
@@ -106,7 +107,7 @@ class RobotStateMachineNode(Node):
 
         elif msg.data == State.GRIP_OBJECT_2.value:
             self.stato_corrente = State.MOVE_UP_PRINGLES
-
+        
         elif msg.data == State.MOVE_UP_PRINGLES.value:
             self.stato_corrente = State.MOVE_PRINGLES_TO_FINISH
 
@@ -119,6 +120,11 @@ class RobotStateMachineNode(Node):
     def initialize_gripper(self):
         self.get_logger().info("Inizializzo gripper.")
         self.stato_corrente = State.MOVE_TO_POSE_1
+        pass
+
+    def initialize_gripper_2(self):
+        self.get_logger().info("Inizializzo gripper 2.")
+        self.stato_corrente = State.MOVE_TO_POSE_3
         pass
 
     def move_to_pose_1(self):
@@ -191,7 +197,7 @@ class RobotStateMachineNode(Node):
         self.publisher.publish(msg)
 
     def move_up_pringles(self):
-        self.get_logger().info("Muovo su le pringles.")
+        self.get_logger().info("Muovo verso l'alto le patatine.")
         msg = Int32()
         msg.data = State.MOVE_UP_PRINGLES.value
         self.publisher.publish(msg)
