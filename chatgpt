@@ -1,265 +1,434 @@
-[to_base-4] [INFO] [1747747888.859361274] [aruco_pose_transformer]: [Marker 1] Ricevuta posa: x=-0.202, y=-0.051, z=0.408
-[to_base-4] [INFO] [1747747888.860003704] [aruco_pose_transformer]: [Marker 3] Ricevuta posa: x=0.151, y=0.260, z=0.652
-[to_base-4] [INFO] [1747747888.860968957] [aruco_pose_transformer]: [Marker 4] Ricevuta posa: x=0.004, y=0.232, z=0.591
-[aruco_pose_estimator_node-3] [INFO] [1747747888.938688339] [aruco_pose_estimator]: Camera parameters received.
-[to_base-4] [INFO] [1747747888.948652704] [aruco_pose_transformer]: [Marker 2] Ricevuta posa: x=-0.193, y=0.196, z=0.511
-[to_base-4] [INFO] [1747747888.951200345] [aruco_pose_transformer]: [Marker 1] Ricevuta posa: x=-0.202, y=-0.051, z=0.408
-[to_base-4] [INFO] [1747747888.952796018] [aruco_pose_transformer]: [Marker 3] Ricevuta posa: x=0.151, y=0.260, z=0.652
-[to_base-4] [INFO] [1747747888.953564663] [aruco_pose_transformer]: [Marker 4] Ricevuta posa: x=0.004, y=0.232, z=0.591
-[to_base-4] [INFO] [1747747888.985191254] [aruco_pose_transformer]: [TF] Marker 2: pubblicata posa trasformata.
-[to_base-4] [INFO] [1747747888.985946802] [aruco_pose_transformer]: [TF] Marker 3: pubblicata posa trasformata.
-[to_base-4] [INFO] [1747747888.986728082] [aruco_pose_transformer]: [TF] Marker 4: pubblicata posa trasformata.
-[to_base-4] [INFO] [1747747888.987561545] [aruco_pose_transformer]: [TF] Marker 1: pubblicata posa trasformata.
-[aruco_pose_estimator_node-3] [INFO] [1747747889.005584474] [aruco_pose_estimator]: Camera parameters received.
-[to_base-4] [INFO] [1747747889.016739803] [aruco_pose_transformer]: [Marker 2] Ricevuta posa: x=-0.193, y=0.196, z=0.511
-[to_base-4] [INFO] [1747747889.018905384] [aruco_pose_transformer]: [Marker 1] Ricevuta posa: x=-0.202, y=-0.051, z=0.408
-[to_base-4] [INFO] [1747747889.020321206] [aruco_pose_transformer]: [Marker 3] Ricevuta posa: x=0.151, y=0.260, z=0.652
-[to_base-4] [INFO] [1747747889.021716180] [aruco_pose_transformer]: [Marker 4] Ricevuta posa: x=0.004, y=0.232, z=0.591
-[aruco_pose_estimator_node-3] [INFO] [1747747889.061226108] [aruco_pose_estimator]: Camera parameters received.
-[to_base-4] [INFO] [1747747889.071841600] [aruco_pose_transformer]: [Marker 2] Ricevuta posa: x=-0.193, y=0.196, z=0.511
-[to_base-4] [INFO] [1747747889.074246777] [aruco_pose_transformer]: [Marker 1] Ricevuta posa: x=-0.202, y=-0.051, z=0.408
-[to_base-4] [INFO] [1747747889.075940120] [aruco_pose_transformer]: [Marker 3] Ricevuta posa: x=0.151, y=0.260, z=0.652
-[to_base-4] [INFO] [1747747889.077603707] [aruco_pose_transformer]: [Marker 4] Ricevuta posa: x=0.004, y=0.232, z=0.591
-[aruco_pose_estimator_node-3] [INFO] [1747747889.123053841] [aruco_pose_estimator]: Camera parameters received.
-[to_base-4] [INFO] [1747747889.134931406] [aruco_pose_transformer]: [Marker 2] Ricevuta posa: x=-0.193, y=0.196, z=0.511
-[to_base-4] [INFO] [1747747889.136992354] [aruco_pose_transformer]: [Marker 1] Ricevuta posa: x=-0.202, y=-0.051, z=0.408
-[to_base-4] [INFO] [1747747889.138275634] [aruco_pose_transformer]: [Marker 3] Ricevuta posa: x=0.151, y=0.260, z=0.652
-[to_base-4] [INFO] [1747747889.139685825] [aruco_pose_transformer]: [Marker 4] Ricevuta posa: x=0.004, y=0.232, z=0.591
-[aruco_pose_estimator_node-3] [INFO] [1747747889.210974364] [aruco_pose_estimator]: Camera parameters received.
-[to_base-4] [INFO] [1747747889.220628028] [aruco_pose_transformer]: [Marker 2] Ricevuta posa: x=-0.193, y=0.196, z=0.511
-[to_base-4] [INFO] [1747747889.222764540] [aruco_pose_transformer]: [Marker 1] Ricevuta posa: x=-0.202, y=-0.051, z=0.408
-[to_base-4] [INFO] [1747747889.224213422] [aruco_pose_transformer]: [Marker 3] Ricevuta posa: x=0.151, y=0.260, z=0.652
-[to_base-4] [INFO] [1747747889.225528752] [aruco_pose_transformer]: [Marker 4] Ricevuta posa: x=0.004, y=0.232, z=0.591
-[aruco_pose_estimator_node-3] [INFO] [1747747889.276663529] [aruco_pose_estimator]: Camera parameters received.
-[to_base-4] [INFO] [1747747889.287487165] [aruco_pose_transformer]: [Marker 2] Ricevuta posa: x=-0.193, y=0.196, z=0.511
-[to_base-4] [INFO] [1747747889.289100582] [aruco_pose_transformer]: [Marker 1] Ricevuta posa: x=-0.202, y=-0.051, z=0.408
-[to_base-4] [INFO] [1747747889.290045433] [aruco_pose_transformer]: [Marker 3] Ricevuta posa: x=0.151, y=0.260, z=0.652
-[to_base-4] [INFO] [1747747889.290730891] [aruco_pose_transformer]: [Marker 4] Ricevuta posa: x=0.004, y=0.232, z=0.591
-[aruco_pose_estimator_node-3] [INFO] [1747747889.348107191] [aruco_pose_estimator]: Camera parameters received.
-[to_base-4] [INFO] [1747747889.367354192] [aruco_pose_transformer]: [Marker 2] Ricevuta posa: x=-0.193, y=0.196, z=0.511
-[to_base-4] [INFO] [1747747889.369826312] [aruco_pose_transformer]: [Marker 1] Ricevuta posa: x=-0.202, y=-0.051, z=0.408
-[to_base-4] [INFO] [1747747889.371274441] [aruco_pose_transformer]: [Marker 3] Ricevuta posa: x=0.151, y=0.260, z=0.652
-[to_base-4] [INFO] [1747747889.372571889] [aruco_pose_transformer]: [Marker 4] Ricevuta posa: x=0.004, y=0.232, z=0.591
-[aruco_pose_estimator_node-3] [INFO] [1747747889.432710843] [aruco_pose_estimator]: Camera parameters received.
-[to_base-4] [INFO] [1747747889.444734223] [aruco_pose_transformer]: [Marker 2] Ricevuta posa: x=-0.193, y=0.196, z=0.511
-[to_base-4] [INFO] [1747747889.447156995] [aruco_pose_transformer]: [Marker 1] Ricevuta posa: x=-0.202, y=-0.051, z=0.408
-[to_base-4] [INFO] [1747747889.448857317] [aruco_pose_transformer]: [Marker 3] Ricevuta posa: x=0.151, y=0.260, z=0.652
-[to_base-4] [INFO] [1747747889.450453111] [aruco_pose_transformer]: [Marker 4] Ricevuta posa: x=0.004, y=0.232, z=0.591
-[aruco_pose_estimator_node-3] [INFO] [1747747889.508650239] [aruco_pose_estimator]: Camera parameters received.
-[to_base-4] [INFO] [1747747889.517383484] [aruco_pose_transformer]: [Marker 1] Ricevuta posa: x=-0.202, y=-0.051, z=0.408
-[to_base-4] [INFO] [1747747889.519007781] [aruco_pose_transformer]: [Marker 2] Ricevuta posa: x=-0.193, y=0.196, z=0.511
-[to_base-4] [INFO] [1747747889.520775047] [aruco_pose_transformer]: [Marker 3] Ricevuta posa: x=0.151, y=0.260, z=0.652
-[to_base-4] [INFO] [1747747889.522362711] [aruco_pose_transformer]: [Marker 4] Ricevuta posa: x=0.004, y=0.232, z=0.591
-[aruco_pose_estimator_node-3] [INFO] [1747747889.580308916] [aruco_pose_estimator]: Camera parameters received.
-[to_base-4] [INFO] [1747747889.601075084] [aruco_pose_transformer]: [Marker 2] Ricevuta posa: x=-0.193, y=0.196, z=0.511
-[to_base-4] [INFO] [1747747889.601793570] [aruco_pose_transformer]: [Marker 3] Ricevuta posa: x=0.151, y=0.260, z=0.652
-[to_base-4] [INFO] [1747747889.603612035] [aruco_pose_transformer]: [Marker 1] Ricevuta posa: x=-0.202, y=-0.051, z=0.408
-[to_base-4] [INFO] [1747747889.605458548] [aruco_pose_transformer]: [Marker 4] Ricevuta posa: x=0.004, y=0.232, z=0.591
-[aruco_pose_estimator_node-3] [INFO] [1747747889.625372541] [aruco_pose_estimator]: Camera parameters received.
-[to_base-4] [INFO] [1747747889.636046080] [aruco_pose_transformer]: [Marker 2] Ricevuta posa: x=-0.193, y=0.196, z=0.511
-[to_base-4] [INFO] [1747747889.640088151] [aruco_pose_transformer]: [Marker 1] Ricevuta posa: x=-0.202, y=-0.051, z=0.408
-[to_base-4] [INFO] [1747747889.640892466] [aruco_pose_transformer]: [Marker 3] Ricevuta posa: x=0.151, y=0.260, z=0.652
-[to_base-4] [INFO] [1747747889.641618128] [aruco_pose_transformer]: [Marker 4] Ricevuta posa: x=0.004, y=0.232, z=0.591
-[aruco_pose_estimator_node-3] [INFO] [1747747889.690817779] [aruco_pose_estimator]: Camera parameters received.
-[to_base-4] [INFO] [1747747889.704481550] [aruco_pose_transformer]: [Marker 2] Ricevuta posa: x=-0.193, y=0.196, z=0.511
-[to_base-4] [INFO] [1747747889.706698014] [aruco_pose_transformer]: [Marker 1] Ricevuta posa: x=-0.202, y=-0.051, z=0.408
-[to_base-4] [INFO] [1747747889.708295687] [aruco_pose_transformer]: [Marker 3] Ricevuta posa: x=0.151, y=0.260, z=0.652
-[to_base-4] [INFO] [1747747889.710117625] [aruco_pose_transformer]: [Marker 4] Ricevuta posa: x=0.004, y=0.232, z=0.591
-[test_robot-10] [INFO] [1747747889.729840443] [test_robot_node]: Publishing event: arrived_to_grasp
-[robot_state_machine-9] [INFO] [1747747889.731983974] [robot_state_machine_node]: Evento ricevuto: arrived_to_grasp
-[robot_state_machine-9] [INFO] [1747747889.732947287] [robot_state_machine_node]: Pubblicata pose 2 della sequenza.
-[robot_state_machine-9] [INFO] [1747747889.733317027] [robot_state_machine_node]: Nessuna transizione per evento 'arrived_to_grasp' nello stato move_to_grasp
-[aruco_pose_estimator_node-3] [INFO] [1747747889.761238494] [aruco_pose_estimator]: Camera parameters received.
-[to_base-4] [INFO] [1747747889.772426228] [aruco_pose_transformer]: [Marker 1] Ricevuta posa: x=-0.202, y=-0.051, z=0.408
-[to_base-4] [INFO] [1747747889.773576517] [aruco_pose_transformer]: [Marker 2] Ricevuta posa: x=-0.193, y=0.196, z=0.511
-[to_base-4] [INFO] [1747747889.774657460] [aruco_pose_transformer]: [Marker 3] Ricevuta posa: x=0.151, y=0.260, z=0.652
-[to_base-4] [INFO] [1747747889.775664437] [aruco_pose_transformer]: [Marker 4] Ricevuta posa: x=0.004, y=0.232, z=0.591
-[aruco_pose_estimator_node-3] [INFO] [1747747889.834789660] [aruco_pose_estimator]: Camera parameters received.
-[to_base-4] [INFO] [1747747889.855749508] [aruco_pose_transformer]: [Marker 1] Ricevuta posa: x=-0.202, y=-0.051, z=0.408
-[to_base-4] [INFO] [1747747889.857952447] [aruco_pose_transformer]: [Marker 2] Ricevuta posa: x=-0.193, y=0.196, z=0.511
-[to_base-4] [INFO] [1747747889.859874116] [aruco_pose_transformer]: [Marker 3] Ricevuta posa: x=0.151, y=0.260, z=0.652
-[to_base-4] [INFO] [1747747889.861902585] [aruco_pose_transformer]: [Marker 4] Ricevuta posa: x=0.004, y=0.232, z=0.591
-[aruco_pose_estimator_node-3] [INFO] [1747747889.885776223] [aruco_pose_estimator]: Camera parameters received.
-[to_base-4] [INFO] [1747747889.903852037] [aruco_pose_transformer]: [Marker 2] Ricevuta posa: x=-0.193, y=0.196, z=0.511
-[to_base-4] [INFO] [1747747889.906112657] [aruco_pose_transformer]: [Marker 1] Ricevuta posa: x=-0.202, y=-0.051, z=0.408
-[to_base-4] [INFO] [1747747889.907265860] [aruco_pose_transformer]: [Marker 3] Ricevuta posa: x=0.151, y=0.260, z=0.652
-[to_base-4] [INFO] [1747747889.908107424] [aruco_pose_transformer]: [Marker 4] Ricevuta posa: x=0.004, y=0.232, z=0.591
-[aruco_pose_estimator_node-3] [INFO] [1747747889.943753319] [aruco_pose_estimator]: Camera parameters received.
-[to_base-4] [INFO] [1747747889.961318314] [aruco_pose_transformer]: [Marker 2] Ricevuta posa: x=-0.193, y=0.196, z=0.511
-[to_base-4] [INFO] [1747747889.962576782] [aruco_pose_transformer]: [Marker 1] Ricevuta posa: x=-0.202, y=-0.051, z=0.408
-[to_base-4] [INFO] [1747747889.963182574] [aruco_pose_transformer]: [Marker 3] Ricevuta posa: x=0.151, y=0.260, z=0.652
-[to_base-4] [INFO] [1747747889.963719557] [aruco_pose_transformer]: [Marker 4] Ricevuta posa: x=0.004, y=0.232, z=0.591
-[to_base-4] [INFO] [1747747889.985978424] [aruco_pose_transformer]: [TF] Marker 2: pubblicata posa trasformata.
-[to_base-4] [INFO] [1747747889.986758637] [aruco_pose_transformer]: [TF] Marker 3: pubblicata posa trasformata.
-[to_base-4] [INFO] [1747747889.987455346] [aruco_pose_transformer]: [TF] Marker 4: pubblicata posa trasformata.
-[to_base-4] [INFO] [1747747889.988086277] [aruco_pose_transformer]: [TF] Marker 1: pubblicata posa trasformata.
-[aruco_pose_estimator_node-3] [INFO] [1747747889.995066575] [aruco_pose_estimator]: Camera parameters received.
-[to_base-4] [INFO] [1747747890.003456663] [aruco_pose_transformer]: [Marker 2] Ricevuta posa: x=-0.193, y=0.196, z=0.511
-[to_base-4] [INFO] [1747747890.005877911] [aruco_pose_transformer]: [Marker 1] Ricevuta posa: x=-0.202, y=-0.051, z=0.408
-[to_base-4] [INFO] [1747747890.007802685] [aruco_pose_transformer]: [Marker 3] Ricevuta posa: x=0.151, y=0.260, z=0.652
-[to_base-4] [INFO] [1747747890.009651682] [aruco_pose_transformer]: [Marker 4] Ricevuta posa: x=0.004, y=0.232, z=0.591
-[aruco_pose_estimator_node-3] [INFO] [1747747890.081916351] [aruco_pose_estimator]: Camera parameters received.
-[to_base-4] [INFO] [1747747890.091580796] [aruco_pose_transformer]: [Marker 2] Ricevuta posa: x=-0.193, y=0.196, z=0.511
-[to_base-4] [INFO] [1747747890.092713434] [aruco_pose_transformer]: [Marker 1] Ricevuta posa: x=-0.202, y=-0.051, z=0.408
-[to_base-4] [INFO] [1747747890.093200527] [aruco_pose_transformer]: [Marker 3] Ricevuta posa: x=0.151, y=0.260, z=0.652
-[to_base-4] [INFO] [1747747890.094108600] [aruco_pose_transformer]: [Marker 4] Ricevuta posa: x=0.004, y=0.232, z=0.591
-[aruco_pose_estimator_node-3] [INFO] [1747747890.149068059] [aruco_pose_estimator]: Camera parameters received.
-[to_base-4] [INFO] [1747747890.157551910] [aruco_pose_transformer]: [Marker 2] Ricevuta posa: x=-0.193, y=0.196, z=0.511
-[to_base-4] [INFO] [1747747890.159543270] [aruco_pose_transformer]: [Marker 1] Ricevuta posa: x=-0.202, y=-0.051, z=0.408
-[to_base-4] [INFO] [1747747890.160222905] [aruco_pose_transformer]: [Marker 3] Ricevuta posa: x=0.151, y=0.260, z=0.652
-[to_base-4] [INFO] [1747747890.160785051] [aruco_pose_transformer]: [Marker 4] Ricevuta posa: x=0.004, y=0.232, z=0.591
-[aruco_pose_estimator_node-3] [INFO] [1747747890.215841413] [aruco_pose_estimator]: Camera parameters received.
-[to_base-4] [INFO] [1747747890.225441928] [aruco_pose_transformer]: [Marker 2] Ricevuta posa: x=-0.193, y=0.196, z=0.511
-[to_base-4] [INFO] [1747747890.228121939] [aruco_pose_transformer]: [Marker 1] Ricevuta posa: x=-0.202, y=-0.051, z=0.408
-[to_base-4] [INFO] [1747747890.229889214] [aruco_pose_transformer]: [Marker 3] Ricevuta posa: x=0.151, y=0.260, z=0.652
-[to_base-4] [INFO] [1747747890.231302210] [aruco_pose_transformer]: [Marker 4] Ricevuta posa: x=0.004, y=0.232, z=0.591
-[aruco_pose_estimator_node-3] [INFO] [1747747890.291874827] [aruco_pose_estimator]: Camera parameters received.
-[to_base-4] [INFO] [1747747890.301492129] [aruco_pose_transformer]: [Marker 2] Ricevuta posa: x=-0.193, y=0.196, z=0.511
-[to_base-4] [INFO] [1747747890.302692998] [aruco_pose_transformer]: [Marker 1] Ricevuta posa: x=-0.202, y=-0.051, z=0.408
-[to_base-4] [INFO] [1747747890.303331857] [aruco_pose_transformer]: [Marker 3] Ricevuta posa: x=0.151, y=0.260, z=0.652
-[to_base-4] [INFO] [1747747890.304251008] [aruco_pose_transformer]: [Marker 4] Ricevuta posa: x=0.004, y=0.232, z=0.591
-[aruco_pose_estimator_node-3] [INFO] [1747747890.342376446] [aruco_pose_estimator]: Camera parameters received.
-[to_base-4] [INFO] [1747747890.359517843] [aruco_pose_transformer]: [Marker 2] Ricevuta posa: x=-0.193, y=0.196, z=0.511
-[to_base-4] [INFO] [1747747890.360861543] [aruco_pose_transformer]: [Marker 3] Ricevuta posa: x=0.151, y=0.260, z=0.652
-[to_base-4] [INFO] [1747747890.361865806] [aruco_pose_transformer]: [Marker 1] Ricevuta posa: x=-0.202, y=-0.051, z=0.408
-[to_base-4] [INFO] [1747747890.363587795] [aruco_pose_transformer]: [Marker 4] Ricevuta posa: x=0.004, y=0.232, z=0.591
-[aruco_pose_estimator_node-3] [INFO] [1747747890.415308129] [aruco_pose_estimator]: Camera parameters received.
-[to_base-4] [INFO] [1747747890.423132332] [aruco_pose_transformer]: [Marker 2] Ricevuta posa: x=-0.193, y=0.196, z=0.511
-[to_base-4] [INFO] [1747747890.424507212] [aruco_pose_transformer]: [Marker 3] Ricevuta posa: x=0.151, y=0.260, z=0.652
-[to_base-4] [INFO] [1747747890.426547513] [aruco_pose_transformer]: [Marker 1] Ricevuta posa: x=-0.202, y=-0.051, z=0.408
-[to_base-4] [INFO] [1747747890.427816200] [aruco_pose_transformer]: [Marker 4] Ricevuta posa: x=0.004, y=0.232, z=0.591
-[aruco_pose_estimator_node-3] [INFO] [1747747890.490474428] [aruco_pose_estimator]: Camera parameters received.
-[to_base-4] [INFO] [1747747890.498313504] [aruco_pose_transformer]: [Marker 2] Ricevuta posa: x=-0.193, y=0.196, z=0.511
-[to_base-4] [INFO] [1747747890.499657446] [aruco_pose_transformer]: [Marker 3] Ricevuta posa: x=0.151, y=0.260, z=0.652
-[to_base-4] [INFO] [1747747890.501475354] [aruco_pose_transformer]: [Marker 1] Ricevuta posa: x=-0.202, y=-0.051, z=0.408
-[to_base-4] [INFO] [1747747890.502681927] [aruco_pose_transformer]: [Marker 4] Ricevuta posa: x=0.004, y=0.232, z=0.591
-[aruco_pose_estimator_node-3] [INFO] [1747747890.565996548] [aruco_pose_estimator]: Camera parameters received.
-[to_base-4] [INFO] [1747747890.573223527] [aruco_pose_transformer]: [Marker 2] Ricevuta posa: x=-0.193, y=0.196, z=0.511
-[to_base-4] [INFO] [1747747890.574184118] [aruco_pose_transformer]: [Marker 1] Ricevuta posa: x=-0.202, y=-0.051, z=0.408
-[to_base-4] [INFO] [1747747890.574691573] [aruco_pose_transformer]: [Marker 3] Ricevuta posa: x=0.151, y=0.260, z=0.652
-[to_base-4] [INFO] [1747747890.575128251] [aruco_pose_transformer]: [Marker 4] Ricevuta posa: x=0.004, y=0.232, z=0.591
-[aruco_pose_estimator_node-3] [INFO] [1747747890.638581098] [aruco_pose_estimator]: Camera parameters received.
-[to_base-4] [INFO] [1747747890.657383517] [aruco_pose_transformer]: [Marker 2] Ricevuta posa: x=-0.193, y=0.196, z=0.511
-[to_base-4] [INFO] [1747747890.659181420] [aruco_pose_transformer]: [Marker 1] Ricevuta posa: x=-0.202, y=-0.051, z=0.408
-[to_base-4] [INFO] [1747747890.660738330] [aruco_pose_transformer]: [Marker 3] Ricevuta posa: x=0.151, y=0.260, z=0.652
-[to_base-4] [INFO] [1747747890.662033728] [aruco_pose_transformer]: [Marker 4] Ricevuta posa: x=0.004, y=0.232, z=0.591
-[aruco_pose_estimator_node-3] [INFO] [1747747890.667426327] [aruco_pose_estimator]: Camera parameters received.
-[to_base-4] [INFO] [1747747890.685037304] [aruco_pose_transformer]: [Marker 2] Ricevuta posa: x=-0.193, y=0.196, z=0.511
-[to_base-4] [INFO] [1747747890.686379909] [aruco_pose_transformer]: [Marker 3] Ricevuta posa: x=0.151, y=0.260, z=0.652
-[to_base-4] [INFO] [1747747890.688813249] [aruco_pose_transformer]: [Marker 1] Ricevuta posa: x=-0.202, y=-0.051, z=0.408
-[to_base-4] [INFO] [1747747890.690208290] [aruco_pose_transformer]: [Marker 4] Ricevuta posa: x=0.004, y=0.232, z=0.591
-[aruco_pose_estimator_node-3] [INFO] [1747747890.725896276] [aruco_pose_estimator]: Camera parameters received.
-[to_base-4] [INFO] [1747747890.735054711] [aruco_pose_transformer]: [Marker 2] Ricevuta posa: x=-0.193, y=0.196, z=0.511
-[to_base-4] [INFO] [1747747890.736426440] [aruco_pose_transformer]: [Marker 3] Ricevuta posa: x=0.151, y=0.260, z=0.652
-[to_base-4] [INFO] [1747747890.738242152] [aruco_pose_transformer]: [Marker 1] Ricevuta posa: x=-0.202, y=-0.051, z=0.408
-[to_base-4] [INFO] [1747747890.739558328] [aruco_pose_transformer]: [Marker 4] Ricevuta posa: x=0.004, y=0.232, z=0.591
-[aruco_pose_estimator_node-3] [INFO] [1747747890.789141940] [aruco_pose_estimator]: Camera parameters received.
-[to_base-4] [INFO] [1747747890.797512294] [aruco_pose_transformer]: [Marker 2] Ricevuta posa: x=-0.193, y=0.196, z=0.511
-[to_base-4] [INFO] [1747747890.798863275] [aruco_pose_transformer]: [Marker 3] Ricevuta posa: x=0.151, y=0.260, z=0.652
-[to_base-4] [INFO] [1747747890.800725885] [aruco_pose_transformer]: [Marker 1] Ricevuta posa: x=-0.202, y=-0.051, z=0.408
-[to_base-4] [INFO] [1747747890.802091896] [aruco_pose_transformer]: [Marker 4] Ricevuta posa: x=0.004, y=0.232, z=0.591
-[aruco_pose_estimator_node-3] [INFO] [1747747890.859681866] [aruco_pose_estimator]: Camera parameters received.
-[to_base-4] [INFO] [1747747890.868923469] [aruco_pose_transformer]: [Marker 2] Ricevuta posa: x=-0.193, y=0.196, z=0.511
-[to_base-4] [INFO] [1747747890.871258467] [aruco_pose_transformer]: [Marker 1] Ricevuta posa: x=-0.202, y=-0.051, z=0.408
-[to_base-4] [INFO] [1747747890.872722878] [aruco_pose_transformer]: [Marker 3] Ricevuta posa: x=0.151, y=0.260, z=0.652
-[to_base-4] [INFO] [1747747890.874154381] [aruco_pose_transformer]: [Marker 4] Ricevuta posa: x=0.004, y=0.232, z=0.591
-[aruco_pose_estimator_node-3] [INFO] [1747747890.914944680] [aruco_pose_estimator]: Camera parameters received.
-[to_base-4] [INFO] [1747747890.924243314] [aruco_pose_transformer]: [Marker 2] Ricevuta posa: x=-0.193, y=0.196, z=0.511
-[to_base-4] [INFO] [1747747890.925555410] [aruco_pose_transformer]: [Marker 1] Ricevuta posa: x=-0.202, y=-0.051, z=0.408
-[to_base-4] [INFO] [1747747890.926281837] [aruco_pose_transformer]: [Marker 3] Ricevuta posa: x=0.151, y=0.260, z=0.652
-[to_base-4] [INFO] [1747747890.926761796] [aruco_pose_transformer]: [Marker 4] Ricevuta posa: x=0.004, y=0.232, z=0.591
-[aruco_pose_estimator_node-3] [INFO] [1747747890.983809466] [aruco_pose_estimator]: Camera parameters received.
-[to_base-4] [INFO] [1747747890.985461540] [aruco_pose_transformer]: [TF] Marker 2: pubblicata posa trasformata.
-[to_base-4] [INFO] [1747747890.986960223] [aruco_pose_transformer]: [TF] Marker 3: pubblicata posa trasformata.
-[to_base-4] [INFO] [1747747890.988805483] [aruco_pose_transformer]: [TF] Marker 4: pubblicata posa trasformata.
-[to_base-4] [INFO] [1747747890.990609146] [aruco_pose_transformer]: [TF] Marker 1: pubblicata posa trasformata.
-[to_base-4] [INFO] [1747747891.003042676] [aruco_pose_transformer]: [Marker 2] Ricevuta posa: x=-0.193, y=0.196, z=0.511
-[to_base-4] [INFO] [1747747891.005610576] [aruco_pose_transformer]: [Marker 1] Ricevuta posa: x=-0.202, y=-0.051, z=0.408
-[to_base-4] [INFO] [1747747891.007209000] [aruco_pose_transformer]: [Marker 3] Ricevuta posa: x=0.151, y=0.260, z=0.652
-[to_base-4] [INFO] [1747747891.008647743] [aruco_pose_transformer]: [Marker 4] Ricevuta posa: x=0.004, y=0.232, z=0.591
-[aruco_pose_estimator_node-3] [INFO] [1747747891.036140577] [aruco_pose_estimator]: Camera parameters received.
-[to_base-4] [INFO] [1747747891.046912108] [aruco_pose_transformer]: [Marker 1] Ricevuta posa: x=-0.202, y=-0.051, z=0.408
-[to_base-4] [INFO] [1747747891.048391550] [aruco_pose_transformer]: [Marker 2] Ricevuta posa: x=-0.193, y=0.196, z=0.511
-[to_base-4] [INFO] [1747747891.049802543] [aruco_pose_transformer]: [Marker 3] Ricevuta posa: x=0.151, y=0.260, z=0.652
-[to_base-4] [INFO] [1747747891.051160851] [aruco_pose_transformer]: [Marker 4] Ricevuta posa: x=0.004, y=0.232, z=0.591
-[aruco_pose_estimator_node-3] [INFO] [1747747891.096743102] [aruco_pose_estimator]: Camera parameters received.
-[to_base-4] [INFO] [1747747891.115786013] [aruco_pose_transformer]: [Marker 2] Ricevuta posa: x=-0.193, y=0.196, z=0.511
-[to_base-4] [INFO] [1747747891.118625606] [aruco_pose_transformer]: [Marker 1] Ricevuta posa: x=-0.202, y=-0.051, z=0.408
-[to_base-4] [INFO] [1747747891.120647568] [aruco_pose_transformer]: [Marker 3] Ricevuta posa: x=0.151, y=0.260, z=0.652
-[to_base-4] [INFO] [1747747891.122601887] [aruco_pose_transformer]: [Marker 4] Ricevuta posa: x=0.004, y=0.232, z=0.591
-[aruco_pose_estimator_node-3] [INFO] [1747747891.162368823] [aruco_pose_estimator]: Camera parameters received.
-[to_base-4] [INFO] [1747747891.169977480] [aruco_pose_transformer]: [Marker 2] Ricevuta posa: x=-0.193, y=0.196, z=0.511
-[to_base-4] [INFO] [1747747891.171080036] [aruco_pose_transformer]: [Marker 1] Ricevuta posa: x=-0.202, y=-0.051, z=0.408
-[to_base-4] [INFO] [1747747891.171584852] [aruco_pose_transformer]: [Marker 3] Ricevuta posa: x=0.151, y=0.260, z=0.652
-[to_base-4] [INFO] [1747747891.172028840] [aruco_pose_transformer]: [Marker 4] Ricevuta posa: x=0.004, y=0.232, z=0.591
-[aruco_pose_estimator_node-3] [INFO] [1747747891.229179412] [aruco_pose_estimator]: Camera parameters received.
-[to_base-4] [INFO] [1747747891.238992630] [aruco_pose_transformer]: [Marker 2] Ricevuta posa: x=-0.193, y=0.196, z=0.511
-[to_base-4] [INFO] [1747747891.240435823] [aruco_pose_transformer]: [Marker 1] Ricevuta posa: x=-0.202, y=-0.051, z=0.408
-[to_base-4] [INFO] [1747747891.240921671] [aruco_pose_transformer]: [Marker 3] Ricevuta posa: x=0.151, y=0.260, z=0.652
-[to_base-4] [INFO] [1747747891.242005331] [aruco_pose_transformer]: [Marker 4] Ricevuta posa: x=0.004, y=0.232, z=0.591
-[aruco_pose_estimator_node-3] [INFO] [1747747891.300091410] [aruco_pose_estimator]: Camera parameters received.
-[to_base-4] [INFO] [1747747891.310385454] [aruco_pose_transformer]: [Marker 2] Ricevuta posa: x=-0.193, y=0.196, z=0.511
-[to_base-4] [INFO] [1747747891.311795355] [aruco_pose_transformer]: [Marker 1] Ricevuta posa: x=-0.202, y=-0.051, z=0.408
-[to_base-4] [INFO] [1747747891.312975421] [aruco_pose_transformer]: [Marker 3] Ricevuta posa: x=0.151, y=0.260, z=0.652
-[to_base-4] [INFO] [1747747891.314307852] [aruco_pose_transformer]: [Marker 4] Ricevuta posa: x=0.004, y=0.232, z=0.591
-[aruco_pose_estimator_node-3] [INFO] [1747747891.371469070] [aruco_pose_estimator]: Camera parameters received.
-[to_base-4] [INFO] [1747747891.380873498] [aruco_pose_transformer]: [Marker 2] Ricevuta posa: x=-0.193, y=0.196, z=0.511
-[to_base-4] [INFO] [1747747891.383277797] [aruco_pose_transformer]: [Marker 1] Ricevuta posa: x=-0.202, y=-0.051, z=0.408
-[to_base-4] [INFO] [1747747891.384531710] [aruco_pose_transformer]: [Marker 3] Ricevuta posa: x=0.151, y=0.260, z=0.652
-[to_base-4] [INFO] [1747747891.385795577] [aruco_pose_transformer]: [Marker 4] Ricevuta posa: x=0.004, y=0.232, z=0.591
-[aruco_pose_estimator_node-3] [INFO] [1747747891.421917999] [aruco_pose_estimator]: Camera parameters received.
-[to_base-4] [INFO] [1747747891.438322775] [aruco_pose_transformer]: [Marker 1] Ricevuta posa: x=-0.202, y=-0.051, z=0.408
-[to_base-4] [INFO] [1747747891.439648060] [aruco_pose_transformer]: [Marker 2] Ricevuta posa: x=-0.193, y=0.196, z=0.511
-[to_base-4] [INFO] [1747747891.440928204] [aruco_pose_transformer]: [Marker 3] Ricevuta posa: x=0.151, y=0.260, z=0.652
-[to_base-4] [INFO] [1747747891.442254211] [aruco_pose_transformer]: [Marker 4] Ricevuta posa: x=0.004, y=0.232, z=0.591
-[aruco_pose_estimator_node-3] [INFO] [1747747891.448035618] [aruco_pose_estimator]: Camera parameters received.
-[to_base-4] [INFO] [1747747891.455039130] [aruco_pose_transformer]: [Marker 2] Ricevuta posa: x=-0.193, y=0.196, z=0.511
-[to_base-4] [INFO] [1747747891.456715925] [aruco_pose_transformer]: [Marker 1] Ricevuta posa: x=-0.202, y=-0.051, z=0.408
-[to_base-4] [INFO] [1747747891.457763854] [aruco_pose_transformer]: [Marker 3] Ricevuta posa: x=0.151, y=0.260, z=0.652
-[to_base-4] [INFO] [1747747891.458847165] [aruco_pose_transformer]: [Marker 4] Ricevuta posa: x=0.004, y=0.232, z=0.591
-[aruco_pose_estimator_node-3] [INFO] [1747747891.513530699] [aruco_pose_estimator]: Camera parameters received.
-[to_base-4] [INFO] [1747747891.529015635] [aruco_pose_transformer]: [Marker 2] Ricevuta posa: x=-0.193, y=0.196, z=0.511
-[to_base-4] [INFO] [1747747891.530141000] [aruco_pose_transformer]: [Marker 3] Ricevuta posa: x=0.151, y=0.260, z=0.652
-[to_base-4] [INFO] [1747747891.531548397] [aruco_pose_transformer]: [Marker 4] Ricevuta posa: x=0.004, y=0.232, z=0.591
-[to_base-4] [INFO] [1747747891.533312254] [aruco_pose_transformer]: [Marker 1] Ricevuta posa: x=-0.202, y=-0.051, z=0.408
-[aruco_pose_estimator_node-3] [INFO] [1747747891.560856817] [aruco_pose_estimator]: Camera parameters received.
-[to_base-4] [INFO] [1747747891.571128951] [aruco_pose_transformer]: [Marker 2] Ricevuta posa: x=-0.193, y=0.196, z=0.511
-[to_base-4] [INFO] [1747747891.573163437] [aruco_pose_transformer]: [Marker 1] Ricevuta posa: x=-0.202, y=-0.051, z=0.408
-[to_base-4] [INFO] [1747747891.574708832] [aruco_pose_transformer]: [Marker 3] Ricevuta posa: x=0.151, y=0.260, z=0.652
-[to_base-4] [INFO] [1747747891.576363717] [aruco_pose_transformer]: [Marker 4] Ricevuta posa: x=0.004, y=0.232, z=0.591
-[aruco_pose_estimator_node-3] [INFO] [1747747891.623935527] [aruco_pose_estimator]: Camera parameters received.
-[to_base-4] [INFO] [1747747891.635185453] [aruco_pose_transformer]: [Marker 2] Ricevuta posa: x=-0.193, y=0.196, z=0.511
-[to_base-4] [INFO] [1747747891.637685023] [aruco_pose_transformer]: [Marker 1] Ricevuta posa: x=-0.202, y=-0.051, z=0.408
-[to_base-4] [INFO] [1747747891.639069482] [aruco_pose_transformer]: [Marker 3] Ricevuta posa: x=0.151, y=0.260, z=0.652
-[to_base-4] [INFO] [1747747891.640184254] [aruco_pose_transformer]: [Marker 4] Ricevuta posa: x=0.004, y=0.232, z=0.591
-[aruco_pose_estimator_node-3] [INFO] [1747747891.672848358] [aruco_pose_estimator]: Camera parameters received.
-[to_base-4] [INFO] [1747747891.684724904] [aruco_pose_transformer]: [Marker 2] Ricevuta posa: x=-0.193, y=0.196, z=0.511
-[to_base-4] [INFO] [1747747891.686935919] [aruco_pose_transformer]: [Marker 1] Ricevuta posa: x=-0.202, y=-0.051, z=0.408
-[to_base-4] [INFO] [1747747891.688467244] [aruco_pose_transformer]: [Marker 3] Ricevuta posa: x=0.151, y=0.260, z=0.652
-[to_base-4] [INFO] [1747747891.689424344] [aruco_pose_transformer]: [Marker 4] Ricevuta posa: x=0.004, y=0.232, z=0.591
-[aruco_pose_estimator_node-3] [INFO] [1747747891.723545903] [aruco_pose_estimator]: Camera parameters received.
-[test_robot-10] [INFO] [1747747891.729594568] [test_robot_node]: Publishing event: arrived_to_grasp
-[robot_state_machine-9] [INFO] [1747747891.732194516] [robot_state_machine_node]: Evento ricevuto: arrived_to_grasp
-[robot_state_machine-9] [INFO] [1747747891.733455643] [robot_state_machine_node]: Pubblicata pose 3 della sequenza.
-[to_base-4] [INFO] [1747747891.734116535] [aruco_pose_transformer]: [Marker 2] Ricevuta posa: x=-0.193, y=0.196, z=0.511
-[robot_state_machine-9] [INFO] [1747747891.734690561] [robot_state_machine_node]: Nessuna transizione per evento 'arrived_to_grasp' nello stato move_to_grasp
-[to_base-4] [INFO] [1747747891.735689919] [aruco_pose_transformer]: [Marker 3] Ricevuta posa: x=0.151, y=0.260, z=0.652
-[to_base-4] [INFO] [1747747891.737772994] [aruco_pose_transformer]: [Marker 1] Ricevuta posa: x=-0.202, y=-0.051, z=0.408
-[to_base-4] [INFO] [1747747891.739301931] [aruco_pose_transformer]: [Marker 4] Ricevuta posa: x=0.004, y=0.232, z=0.591
-[aruco_pose_estimator_node-3] [INFO] [1747747891.764581304] [aruco_pose_estimator]: Camera parameters received.
-[to_base-4] [INFO] [1747747891.780573801] [aruco_pose_transformer]: [Marker 2] Ricevuta posa: x=-0.193, y=0.196, z=0.511
-[to_base-4] [INFO] [1747747891.781791545] [aruco_pose_transformer]: [Marker 3] Ricevuta posa: x=0.151, y=0.260, z=0.652
-[to_base-4] [INFO] [1747747891.783483546] [aruco_pose_transformer]: [Marker 1] Ricevuta posa: x=-0.202, y=-0.051, z=0.408
-[to_base-4] [INFO] [1747747891.784786008] [aruco_pose_transformer]: [Marker 4] Ricevuta posa: x=0.004, y=0.232, z=0.591
-[aruco_pose_estimator_node-3] [INFO] [1747747891.789100841] [aruco_pose_estimator]: Camera parameters received.
-[to_base-4] [INFO] [1747747891.806578675] [aruco_pose_transformer]: [Marker 2] Ricevuta posa: x=-0.193, y=0.196, z=0.511
-[to_base-4] [INFO] [1747747891.808447750] [aruco_pose_transformer]: [Marker 1] Ricevuta posa: x=-0.202, y=-0.051, z=0.408
-[to_base-4] [INFO] [1747747891.809644016] [aruco_pose_transformer]: [Marker 3] Ricevuta posa: x=0.151, y=0.260, z=0.652
-[to_base-4] [INFO] [1747747891.810786587] [aruco_pose_transformer]: [Marker 4] Ricevuta posa: x=0.004, y=0.232, z=0.591
-[aruco_pose_estimator_node-3] [INFO] [1747747891.842778274] [aruco_pose_estimator]: Camera parameters received.
-[to_base-4] [INFO] [1747747891.850912016] [aruco_pose_transformer]: [Marker 2] Ricevuta posa: x=-0.193, y=0.196, z=0.511
-[to_base-4] [INFO] [1747747891.853122715] [aruco_pose_transformer]: [Marker 1] Ricevuta posa: x=-0.202, y=-0.051, z=0.408
-[to_base-4] [INFO] [1747747891.854464861] [aruco_pose_transformer]: [Marker 3] Ricevuta posa: x=0.151, y=0.260, z=0.652
-[to_base-4] [INFO] [1747747891.856156240] [aruco_pose_transformer]: [Marker 4] Ricevuta posa: x=0.004, y=0.232, z=0.591
-^C[WARNING] [launch]: user interrupted with ctrl-c (SIGINT)
-[kinematic1-8] Exception in Tkinter callback
+from enum import Enum
+import os
+import time
+import numpy as np
+import rclpy
+from rclpy.node import Node
+from sensor_msgs.msg import JointState
+from geometry_msgs.msg import PoseStamped
+from trajectory_msgs.msg import JointTrajectory, JointTrajectoryPoint
+import roboticstoolbox as rtb
+from spatialmath import SE3
+from roboticstoolbox import ERobot, DHRobot, RevoluteDH
+from std_msgs.msg import Int32
+from scipy.spatial.transform import Rotation as R
+import numpy as np
+from std_msgs.msg import Bool
+from gazebo_ros_link_attacher.srv import Attach
+
+
+class State(Enum):
+    WAITING_FOR_ARUCO = 1
+    MOVE_TO_POSE_1 = 2
+    MOVE_TO_POSE_2 = 11
+    GRIP_OBJECT = 3
+    MOVE_UP_COLA = 12
+    MOVE_COLA_TO_FINISH = 13
+    RELEASE_OBJECT = 4
+    MOVE_TO_HOME = 5
+    INITIALIZE_GRIPPER_2 = 6
+    MOVE_TO_POSE_3 = 7
+    MOVE_TO_POSE_4 = 14
+    GRIP_OBJECT_2 = 8
+    MOVE_PRINGLES_TO_FINISH = 15
+    RELEASE_OBJECT_2 = 9
+    MOVE_TO_HOME_2 = 10
+    MOVE_UP_PRINGLES = 17
+    INITIALIZE_GRIPPER = 16
+
+
+class KinematicPlanner(Node):
+    def __init__(self):
+        super().__init__('kinematic_planner')
+        self.get_logger().info("Inizializzazione Kinematic Planner...")
+
+        self.current_state = State.WAITING_FOR_ARUCO
+
+        # Carica modello URDF
+        urdf_loc = '/home/davide/tiago_public_ws/src/my_robot_description/urdf/tiago_robot.urdf'
+        self.robot = ERobot.URDF(urdf_loc)
+        self.get_logger().info("URDF caricato correttamente!")
+
+        # Publishers per i controller (arm e torso)
+        self.arm_pub = self.create_publisher(JointTrajectory, '/arm_controller/joint_trajectory', 10)
+        self.torso_pub = self.create_publisher(JointTrajectory, '/torso_controller/joint_trajectory', 10)
+        self.pose_pub = self.create_publisher(PoseStamped, '/target_pose', 10)
+        self.completed_command_topic = self.create_publisher(Int32, '/completed_command_topic', 10)
+
+
+        self.aruco_pose_1 = None
+        self.aruco_pose_2 = None
+        self.aruco_pose_3 = None
+        self.aruco_pose_4 = None
+
+
+        # Subscriptions
+        self.create_subscription(JointState, '/joint_states', self.joint_states_callback, 10)
+        self.create_subscription(PoseStamped, '/target_pose', self.target_pose_callback, 10)
+        self.create_subscription(Int32,'/command_topic', self.command_callback, 10)
+        self.aruco_sub_1 = self.create_subscription(PoseStamped, '/aruco_pose_1', self.aruco_pose_1_callback, 10)
+        self.aruco_sub_2=self.create_subscription(PoseStamped, '/aruco_pose_2', self.aruco_pose_2_callback, 10)
+        self.aruco_sub_3=self.create_subscription(PoseStamped, '/aruco_pose_3', self.aruco_pose_3_callback, 10)
+        self.aruco_sub_4=self.create_subscription(PoseStamped, '/aruco_pose_4', self.aruco_pose_4_callback, 10)
+        self.gripper_pub = self.create_publisher(JointTrajectory, '/gripper_controller/joint_trajectory', 10)
+
+        # Stato attuale dei giunti (vettore di 8: torso + 7 arm)
+        self.current_joint_state = None  # np.array([torso, arm1, ..., arm7])
+        self.target_pose = None  # PoseStamped
+
+        self.attach_client = self.create_client(Attach, 'attach')
+        while not self.attach_client.wait_for_service(timeout_sec=1.0):
+            self.get_logger().info('Aspettando che il servizio /attach sia disponibile...')
+
+        self.detach_client = self.create_client(Attach, 'detach')
+        while not self.detach_client.wait_for_service(timeout_sec=1.0):
+            self.get_logger().info('Aspettando che il servizio /detach sia disponibile...')
+        
+
+
+    def command_callback(self, msg):
+        self.get_logger().info("Ricevuto comando")
+        if msg.data == State.MOVE_TO_POSE_1.value:
+            self.get_logger().info("Comando ricevuto: MOVE_TO_POSE_1")
+            self.current_state = State.MOVE_TO_POSE_1
+            self.calculate_pose_with_offset_state(2, offset_x=0, offset_y=-0.05, offset_z=0)
+        elif msg.data == State.MOVE_TO_POSE_2.value:
+            self.get_logger().info("Comando ricevuto: MOVE_TO_POSE_2")
+            self.current_state = State.MOVE_TO_POSE_2
+            self.calculate_pose_with_offset_state(2, offset_x=0, offset_y=-0.05, offset_z=-0.15)
+        elif msg.data == State.GRIP_OBJECT.value:
+            self.get_logger().info("Comando ricevuto: GRIP_OBJECT")
+            self.current_state = State.GRIP_OBJECT
+            self.close_gripper()
+        elif msg.data == State.MOVE_UP_COLA.value:
+            self.get_logger().info("Comando ricevuto: MOVE_UP_COLA")
+            self.current_state = State.MOVE_UP_COLA
+            self.calculate_pose_with_offset_state(2, offset_x=0, offset_y=-0.05, offset_z=0.1)
+        elif msg.data == State.MOVE_COLA_TO_FINISH.value:
+            self.get_logger().info("Comando ricevuto: MOVE_COLA_TO_FINISH")
+            self.current_state = State.MOVE_COLA_TO_FINISH
+            self.calculate_pose_with_offset_state(3, offset_x=0.0, offset_y=0, offset_z=0.01)
+        elif msg.data == State.RELEASE_OBJECT.value:
+            self.get_logger().info("Comando ricevuto: RELEASE_OBJECT")
+            self.current_state = State.RELEASE_OBJECT
+            self.open_gripper()
+        elif msg.data == State.MOVE_TO_HOME.value:
+            self.get_logger().info("Comando ricevuto: MOVE_TO_HOME")
+            self.current_state = State.MOVE_TO_HOME
+            self.move_to_home()
+        elif msg.data == State.MOVE_TO_POSE_3.value:
+            self.get_logger().info("Comando ricevuto: MOVE_TO_POSE_3")
+            self.current_state = State.MOVE_TO_POSE_3
+            self.calculate_pose_with_offset_state(1, offset_x=-0.07, offset_y=0.10, offset_z=-0.12)
+        elif msg.data == State.MOVE_TO_POSE_4.value:
+            self.get_logger().info("Comando ricevuto: MOVE_TO_POSE_4")
+            self.current_state = State.MOVE_TO_POSE_4
+            self.calculate_pose_with_offset_state(1, offset_x=-0.06, offset_y=0.10, offset_z=-0.20)
+        elif msg.data == State.GRIP_OBJECT_2.value:
+            self.get_logger().info("Comando ricevuto: GRIP_OBJECT_2")
+            self.current_state = State.GRIP_OBJECT_2
+            self.close_gripper()
+        elif msg.data == State.MOVE_UP_PRINGLES.value:
+            self.get_logger().info("Comando ricevuto: MOVE_UP_PRINGLES")
+            self.current_state = State.MOVE_UP_PRINGLES
+            self.calculate_pose_with_offset_state(1, offset_x=-0.06, offset_y=0.15, offset_z=0.1)
+        elif msg.data == State.MOVE_PRINGLES_TO_FINISH.value:
+            self.get_logger().info("Comando ricevuto: MOVE_PRINGLES_TO_FINISH")
+            self.current_state = State.MOVE_PRINGLES_TO_FINISH
+            self.calculate_pose_with_offset_state(4, offset_x=0, offset_y=0.0, offset_z=0.13)
+        elif msg.data == State.RELEASE_OBJECT_2.value:
+            self.get_logger().info("Comando ricevuto: RELEASE_OBJECT_2")
+            self.current_state = State.RELEASE_OBJECT_2
+            self.open_gripper()
+        elif msg.data == State.MOVE_TO_HOME_2.value:
+            self.get_logger().info("Comando ricevuto: MOVE_TO_HOME_2")
+            self.current_state = State.MOVE_TO_HOME_2
+            self.move_to_home()
+
+
+    def aruco_pose_1_callback(self, msg):
+        self.get_logger().info("Ricevuto aruco_pose_1")
+        self.aruco_pose_1 = msg
+
+
+    def aruco_pose_2_callback(self, msg):
+        self.get_logger().info("Ricevuto aruco_pose_2")
+        self.aruco_pose_2 = msg
+        command_completed = Int32()
+        if self.current_state == State.WAITING_FOR_ARUCO:
+            command_completed.data = State.WAITING_FOR_ARUCO.value
+            self.completed_command_topic.publish(command_completed)
+
+    def aruco_pose_3_callback(self, msg):
+        self.get_logger().info("Ricevuto aruco_pose_3")
+        self.aruco_pose_3 = msg
+
+    def aruco_pose_4_callback(self, msg):
+        self.get_logger().info("Ricevuto aruco_pose_4")
+        self.aruco_pose_4 = msg
+
+    def joint_states_callback(self, msg):
+        if self.current_joint_state is not None:
+        # Hai già la configurazione iniziale, ignora i nuovi messaggi
+            return
+        joint_names = ['torso_lift_joint'] + [f'arm_{i+1}_joint' for i in range(7)]
+        joint_pos = []
+        for name in joint_names:
+            if name in msg.name:
+                idx = msg.name.index(name)
+                joint_pos.append(msg.position[idx])
+            else:
+                joint_pos.append(0.0)
+        self.current_joint_state = np.array(joint_pos)
+        self.get_logger().info(f"[JOINT INIT] Salvata configurazione iniziale: {joint_pos}")
+
+    def target_pose_callback(self, msg):
+        self.get_logger().info("Funzione target_pose_callback chiamata!")
+        self.target_pose = msg
+        self.get_logger().info(f" Ricevuta target_pose: {msg.pose.position}")
+        while self.current_joint_state is None:
+            time.sleep(0.1)  # Attendi che il joint state sia inizializzato
+        self.plan_and_publish_trajectory()
+
+
+    def plan_and_publish_trajectory(self):
+        self.get_logger().info("Pianificazione e pubblicazione della traiettoria...")
+
+        if self.current_joint_state is None or self.target_pose is None:
+            self.get_logger().warn("Joint state o target pose non ancora ricevuti.")
+            return
+
+        q0 = self.current_joint_state.astype(float)  # [torso, arm1, ..., arm7]
+
+        # 1. Calcola T0 (configurazione attuale)
+        try:
+            T0 = self.robot.fkine(q0)
+            self.get_logger().info(f"FKine calcolata: {T0}")
+        except Exception as e:
+            self.get_logger().error(f"Errore nel calcolo della fkine: {e}")
+            return
+
+        # 2. Estrai posizione e orientamento target
+        pos = self.target_pose.pose.position
+        ori = self.target_pose.pose.orientation
+        position = np.array([pos.x, pos.y, pos.z])  
+        quaternion = [ori.x, ori.y, ori.z, ori.w]
+
+        try:
+            rotation = R.from_quat(quaternion).as_matrix()
+            T_marker = SE3.Rt(rotation, position)
+            if self.current_state == State.MOVE_COLA_TO_FINISH or self.current_state == State.MOVE_PRINGLES_TO_FINISH:
+                T_rot = SE3.Rx(np.pi/2) * SE3.Rz(np.pi)
+            else:
+                T_rot = SE3.Ry(np.pi/2) * SE3.Rz(-(np.pi/2))
+            TF = T_marker * T_rot
+            self.get_logger().info(f"TF calcolata: {TF}")
+        except Exception as e:
+            self.get_logger().error(f"Errore nella costruzione della trasformazione finale TF: {e}")
+            return
+
+        N = 20  
+        try:
+            trajectory = rtb.ctraj(T0, TF, N)
+        except Exception as e:
+            self.get_logger().error(f"Errore nella generazione della traiettoria: {e}")
+            return
+
+        q_traj = []
+        q_curr = q0
+        '''try:
+            qf = self.robot.ik_LM(TF, q0=q_curr)
+            self.get_logger().info(f"Posizione finale calcolata: {qf}")
+        except Exception as e:
+            self.get_logger().error(f"Errore IK finale: {e}")
+            return'''
+
+        for i, T in enumerate(trajectory):
+            sol = self.robot.ik_LM(T, q0=q_curr)
+            if sol is not None and len(sol) > 0:
+                q_curr = sol[0]
+                q_traj.append(q_curr)
+            else:
+                self.get_logger().warning(f"IK fallita al punto {i}. Riutilizzo configurazione precedente")
+                q_traj.append(q_curr.copy())
+
+        q_traj = np.array(q_traj)
+        self.get_logger().info(f"Traiettoria generata con successo: {q_traj}")
+
+        # Prepara e pubblica SOLO l'ultimo punto della traiettoria
+        traj_arm = JointTrajectory()
+        traj_torso = JointTrajectory()
+        traj_arm.joint_names = [f'arm_{i+1}_joint' for i in range(7)]
+        traj_torso.joint_names = ['torso_lift_joint']
+
+        q = q_traj[-1]
+        point_arm = JointTrajectoryPoint()
+        point_torso = JointTrajectoryPoint()
+        point_arm.positions = [float(p) for p in q[1:]]
+        point_torso.positions = [float(q[0])]
+
+        point_arm.time_from_start.sec = 5
+        point_arm.time_from_start.nanosec = 0
+        point_torso.time_from_start.sec = 5
+        point_torso.time_from_start.nanosec = 0
+
+        traj_arm.points.append(point_arm)
+        traj_torso.points.append(point_torso)
+
+        self.arm_pub.publish(traj_arm)
+        self.torso_pub.publish(traj_torso)
+        self.get_logger().info("ultimo punto della traiettoria è stato pubblicato")
+        time.sleep(10)
+        command_completed = Int32()
+        command_completed.data = self.current_state.value
+        self.get_logger().info(f"Comando completato: {command_completed.data}")
+        self.completed_command_topic.publish(command_completed)
+
+
+
+
+    def calculate_pose_with_offset_state(self, target, offset_x, offset_y, offset_z):
+        self.get_logger().info("Calcolo la posa con offset...")
+        if target == 1:
+            base_pose = self.aruco_pose_1.pose
+            header = self.aruco_pose_1.header
+        elif target == 2:
+            base_pose = self.aruco_pose_2.pose
+            header = self.aruco_pose_2.header
+        elif target == 3:
+            base_pose = self.aruco_pose_3.pose
+            header = self.aruco_pose_3.header
+        elif target == 4:
+            base_pose = self.aruco_pose_4.pose
+            header = self.aruco_pose_4.header
+
+        # Creazione della nuova posa con offset
+        target_pose_out = PoseStamped()
+        target_pose_out.header.stamp = self.get_clock().now().to_msg()
+        target_pose_out.header.frame_id = header.frame_id
+
+        # Copia la posizione e aggiunge offset in z
+        target_pose_out.pose.position.x = base_pose.position.x + offset_x
+        target_pose_out.pose.position.y = base_pose.position.y + offset_y
+        target_pose_out.pose.position.z = base_pose.position.z + offset_z
+
+        # Copia l'orientamento
+        target_pose_out.pose.orientation = base_pose.orientation
+
+        # Ciclo per il controllo
+        self.pose_pub.publish(target_pose_out)
+        self.get_logger().info(" Posa target pubblicata su /target_pose")
+
+        return "go_to_pose"
+    
+    def close_gripper(self):
+        self.get_logger().info("Chiusura gripper in corso...")
+
+        # Movimento gripper
+        traj = JointTrajectory()
+        traj.joint_names = ['gripper_left_finger_joint', 'gripper_right_finger_joint']
+        point = JointTrajectoryPoint()
+        point.positions = [0.041, 0.041]
+        point.time_from_start.sec = 2
+        traj.points.append(point)
+        time.sleep(0.5)
+        self.gripper_pub.publish(traj)
+
+        time.sleep(3)
+    
+        if self.current_state == State.GRIP_OBJECT:
+            object_name = "cocacola"
+        elif self.current_state == State.GRIP_OBJECT_2:
+            object_name = "pringles"
+        
+        
+        os.system("ros2 service call /attach gazebo_ros_link_attacher/srv/Attach \"{model_name_1: tiago, link_name_1: gripper_left_finger_link, model_name_2: "+ str(object_name)+", link_name_2: link}\"")
+        self.get_logger().info("Invio richiesta al servizio /attach...")
+        time.sleep(1)
+        
+        
+        command_completed = Int32()
+        command_completed.data = self.current_state.value
+        self.completed_command_topic.publish(command_completed)
+
+    def open_gripper(self):
+        self.get_logger().info("Apertura a gripper in corso...")
+
+        # Movimento gripper
+        traj = JointTrajectory()
+        traj.joint_names = ['gripper_left_finger_joint', 'gripper_right_finger_joint']
+        point = JointTrajectoryPoint()
+        point.positions = [0.044, 0.044]
+        point.time_from_start.sec = 2
+        traj.points.append(point)
+        time.sleep(0.5)
+        self.gripper_pub.publish(traj)
+
+        time.sleep(3)
+
+        object_name = None
+
+        if self.current_state == State.RELEASE_OBJECT:
+            object_name = "cocacola"
+        elif self.current_state == State.RELEASE_OBJECT_2:
+            object_name = "pringles"
+        
+        
+        os.system("ros2 service call /detach gazebo_ros_link_attacher/srv/Attach \"{model_name_1: tiago, link_name_1: gripper_left_finger_link, model_name_2: "+ str(object_name)+", link_name_2: link}\"")
+        self.get_logger().info("Invio richiesta al servizio /detach...")
+        time.sleep(1)
+
+
+        command_completed = Int32()
+        command_completed.data = self.current_state.value
+        self.completed_command_topic.publish(command_completed)
+
+
+    def move_to_home(self):
+        self.get_logger().info("Ritorno alla posa finale predefinita...")
+
+        # Prepara trajectory per torso
+        traj_torso = JointTrajectory()
+        traj_torso.joint_names = ['torso_lift_joint']
+
+        point_torso = JointTrajectoryPoint()
+        point_torso.positions = [0.35]
+        point_torso.time_from_start.sec = 3
+        point_torso.time_from_start.nanosec = 0
+
+        traj_torso.points.append(point_torso)
+
+        # Prepara trajectory per braccio
+        traj_arm = JointTrajectory()
+        traj_arm.joint_names = [f'arm_{i+1}_joint' for i in range(7)]
+
+        point_arm = JointTrajectoryPoint()
+        point_arm.positions = [0.07, 0.1, -3.1, 1.36, 2.05, 0.01, -0.05]
+        point_arm.time_from_start.sec = 3
+        point_arm.time_from_start.nanosec = 0
+
+        traj_arm.points.append(point_arm)
+
+        # Pubblica
+        self.arm_pub.publish(traj_arm)
+        self.torso_pub.publish(traj_torso)
+
+        self.get_logger().info("Traiettoria di ritorno pubblicata su torso e braccio.")
+        time.sleep(10)
+
+        command_completed = Int32()
+        command_completed.data = self.current_state.value
+        self.get_logger().info(f"Comando completato: {command_completed.data}")
+        self.completed_command_topic.publish(command_completed)
+
+
+
+def main(args=None):
+    rclpy.init(args=args)
+    node = KinematicPlanner()
+    rclpy.spin(node)
+    node.destroy_node()
+    rclpy.shutdown()
+
+if __name__ == '__main__':
+    main()
