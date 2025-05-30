@@ -1,4 +1,5 @@
 from enum import Enum
+import os
 import time
 import numpy as np
 import rclpy
@@ -12,6 +13,9 @@ from roboticstoolbox import ERobot, DHRobot, RevoluteDH
 from std_msgs.msg import Int32
 from scipy.spatial.transform import Rotation as R
 import numpy as np
+from std_msgs.msg import Bool
+from gazebo_ros_link_attacher.srv import Attach
+
 
 class State(Enum):
     WAITING_FOR_ARUCO = 1
@@ -32,6 +36,7 @@ class State(Enum):
     MOVE_UP_PRINGLES = 17
     INITIALIZE_GRIPPER = 16
 
+
 class KinematicPlanner(Node):
     def __init__(self):
         super().__init__('kinematic_planner')
@@ -49,6 +54,7 @@ class KinematicPlanner(Node):
         self.torso_pub = self.create_publisher(JointTrajectory, '/torso_controller/joint_trajectory', 10)
         self.pose_pub = self.create_publisher(PoseStamped, '/target_pose', 10)
         self.completed_command_topic = self.create_publisher(Int32, '/completed_command_topic', 10)
+
 
         self.aruco_pose_1 = None
         self.aruco_pose_2 = None
@@ -69,6 +75,15 @@ class KinematicPlanner(Node):
         # Stato attuale dei giunti (vettore di 8: torso + 7 arm)
         self.current_joint_state = None  # np.array([torso, arm1, ..., arm7])
         self.target_pose = None  # PoseStamped
+
+        self.attach_client = self.create_client(Attach, 'attach')
+        while not self.attach_client.wait_for_service(timeout_sec=1.0):
+            self.get_logger().info('Aspettando che il servizio /attach sia disponibile...')
+
+        self.detach_client = self.create_client(Attach, 'detach')
+        while not self.detach_client.wait_for_service(timeout_sec=1.0):
+            self.get_logger().info('Aspettando che il servizio /detach sia disponibile...')
+        
 
 
     def command_callback(self, msg):
@@ -92,7 +107,7 @@ class KinematicPlanner(Node):
         elif msg.data == State.MOVE_COLA_TO_FINISH.value:
             self.get_logger().info("Comando ricevuto: MOVE_COLA_TO_FINISH")
             self.current_state = State.MOVE_COLA_TO_FINISH
-            self.calculate_pose_with_offset_state(3, offset_x=0.0, offset_y=0, offset_z=0.05)
+            self.calculate_pose_with_offset_state(3, offset_x=-0.02, offset_y=0, offset_z=0.005)
         elif msg.data == State.RELEASE_OBJECT.value:
             self.get_logger().info("Comando ricevuto: RELEASE_OBJECT")
             self.current_state = State.RELEASE_OBJECT
@@ -104,11 +119,11 @@ class KinematicPlanner(Node):
         elif msg.data == State.MOVE_TO_POSE_3.value:
             self.get_logger().info("Comando ricevuto: MOVE_TO_POSE_3")
             self.current_state = State.MOVE_TO_POSE_3
-            self.calculate_pose_with_offset_state(1, offset_x=-0.08, offset_y=0.15, offset_z=-0.1)
+            self.calculate_pose_with_offset_state(1, offset_x=-0.08, offset_y=0.10, offset_z=-0.18)
         elif msg.data == State.MOVE_TO_POSE_4.value:
             self.get_logger().info("Comando ricevuto: MOVE_TO_POSE_4")
             self.current_state = State.MOVE_TO_POSE_4
-            self.calculate_pose_with_offset_state(1, offset_x=-0.06, offset_y=0.15, offset_z=-0.1)
+            self.calculate_pose_with_offset_state(1, offset_x=-0.08, offset_y=0.10, offset_z=-0.3)
         elif msg.data == State.GRIP_OBJECT_2.value:
             self.get_logger().info("Comando ricevuto: GRIP_OBJECT_2")
             self.current_state = State.GRIP_OBJECT_2
@@ -120,7 +135,7 @@ class KinematicPlanner(Node):
         elif msg.data == State.MOVE_PRINGLES_TO_FINISH.value:
             self.get_logger().info("Comando ricevuto: MOVE_PRINGLES_TO_FINISH")
             self.current_state = State.MOVE_PRINGLES_TO_FINISH
-            self.calculate_pose_with_offset_state(4, offset_x=0, offset_y=0.0, offset_z=0.05)
+            self.calculate_pose_with_offset_state(4, offset_x=-0.05, offset_y=0.0, offset_z=0.02)
         elif msg.data == State.RELEASE_OBJECT_2.value:
             self.get_logger().info("Comando ricevuto: RELEASE_OBJECT_2")
             self.current_state = State.RELEASE_OBJECT_2
@@ -212,7 +227,7 @@ class KinematicPlanner(Node):
             self.get_logger().error(f"Errore nella costruzione della trasformazione finale TF: {e}")
             return
 
-        N = 10  
+        N = 20  
         try:
             trajectory = rtb.ctraj(T0, TF, N)
         except Exception as e:
@@ -309,54 +324,65 @@ class KinematicPlanner(Node):
     def close_gripper(self):
         self.get_logger().info("Chiusura gripper in corso...")
 
+        # Movimento gripper
         traj = JointTrajectory()
         traj.joint_names = ['gripper_left_finger_joint', 'gripper_right_finger_joint']
-
         point = JointTrajectoryPoint()
-        point.positions = [0.044, 0.036]  # Valori richiesti
+        point.positions = [0.041, 0.041]
         point.time_from_start.sec = 2
-        point.time_from_start.nanosec = 0
-
         traj.points.append(point)
-
-        # Attendi un attimo che il publisher si connetta (best practice in ROS2)
         time.sleep(0.5)
-
         self.gripper_pub.publish(traj)
-        self.get_logger().info("Comando di chiusura gripper pubblicato.")
 
         time.sleep(3)
-
+    
+        if self.current_state == State.GRIP_OBJECT:
+            object_name = "cocacola"
+        elif self.current_state == State.GRIP_OBJECT_2:
+            object_name = "pringles"
+        
+        
+        os.system("ros2 service call /attach gazebo_ros_link_attacher/srv/Attach \"{model_name_1: tiago, link_name_1: gripper_left_finger_link, model_name_2: "+ str(object_name)+", link_name_2: link}\"")
+        self.get_logger().info("Invio richiesta al servizio /attach...")
+        time.sleep(1)
+        
+        
         command_completed = Int32()
         command_completed.data = self.current_state.value
-        self.get_logger().info(f"Comando completato: {command_completed.data}")
         self.completed_command_topic.publish(command_completed)
 
     def open_gripper(self):
         self.get_logger().info("Apertura a gripper in corso...")
 
+        # Movimento gripper
         traj = JointTrajectory()
         traj.joint_names = ['gripper_left_finger_joint', 'gripper_right_finger_joint']
-
         point = JointTrajectoryPoint()
-        point.positions = [0.044, 0.044]  # Valori richiesti
+        point.positions = [0.044, 0.044]
         point.time_from_start.sec = 2
-        point.time_from_start.nanosec = 0
-
         traj.points.append(point)
-
-        # Attendi un attimo che il publisher si connetta (best practice in ROS2)
         time.sleep(0.5)
-
         self.gripper_pub.publish(traj)
-        self.get_logger().info("Comando di apertura gripper pubblicato.")
 
         time.sleep(3)
 
+        object_name = None
+
+        if self.current_state == State.RELEASE_OBJECT:
+            object_name = "cocacola"
+        elif self.current_state == State.RELEASE_OBJECT_2:
+            object_name = "pringles"
+        
+        
+        os.system("ros2 service call /detach gazebo_ros_link_attacher/srv/Attach \"{model_name_1: tiago, link_name_1: gripper_left_finger_link, model_name_2: "+ str(object_name)+", link_name_2: link}\"")
+        self.get_logger().info("Invio richiesta al servizio /detach...")
+        time.sleep(1)
+
+
         command_completed = Int32()
         command_completed.data = self.current_state.value
-        self.get_logger().info(f"Comando completato: {command_completed.data}")
         self.completed_command_topic.publish(command_completed)
+
 
     def move_to_home(self):
         self.get_logger().info("Ritorno alla posa finale predefinita...")
