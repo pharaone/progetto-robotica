@@ -2,10 +2,11 @@ from launch import LaunchDescription
 from launch_ros.actions import Node
 from launch.actions import ExecuteProcess, TimerAction
 
+
 def generate_launch_description():
     ld = LaunchDescription()
 
-    # Nodi ROS 2 da lanciare
+    # Nodi da lanciare subito
     action_client = Node(
         package="tiago_head",
         executable="head_action_client"
@@ -23,21 +24,28 @@ def generate_launch_description():
         executable="to_base"
     )
 
-    kinematic1 = Node (
-        package="kinematic",
-        executable="kinematic1",
+    # Avvio ritardato per kinematic1 e robot_state_machine
+    kinematic1_timer = TimerAction(
+        period=25.0,
+        actions=[
+            Node(
+                package="kinematic",
+                executable="kinematic1"
+            )
+        ]
     )
 
-    robot_machine_state = Node (
-        package="kinematic",
-        executable="robot_state_machine",
+    robot_machine_state_timer = TimerAction(
+        period=25.0,
+        actions=[
+            Node(
+                package="kinematic",
+                executable="robot_state_machine"
+            )
+        ]
     )
-
-
-
-
-
-    # Traiettoria 1: posizione intermedia del braccio (dopo 8 secondi)
+    
+    # Traiettoria 1: posizione intermedia del braccio 
     send_arm_trajectory_1 = TimerAction(
         period=8.0,
         actions=[
@@ -50,8 +58,8 @@ def generate_launch_description():
                     '"arm_1_joint", "arm_2_joint", "arm_3_joint", '
                     '"arm_4_joint", "arm_5_joint", "arm_6_joint", "arm_7_joint"], '
                     '"points": ['
-                    '{"positions": [0.0003836728901962516, -0.0001633239063343339, -9.037018213753356e-06, '
-                    '-6.145563957549172e-05, 4.409014973383307e-05, 0.0019643255648595925, 0.0004167305736686444], '
+                    '{"positions": [0.00038, -0.00016, -0.000009, '
+                    '-0.000061, 0.000044, 0.00196, 0.00042], '
                     '"time_from_start": {"sec": 3}}'
                     ']}}'
                 ],
@@ -60,7 +68,7 @@ def generate_launch_description():
         ]
     )
 
-    # Torso dopo 8 secondi
+    # Movimento del torso
     send_torso_trajectory = TimerAction(
         period=13.0,
         actions=[
@@ -77,9 +85,7 @@ def generate_launch_description():
         ]
     )
 
-
-
-    # Traiettoria 2: posizione finale del braccio (dopo 11 secondi)
+    # Traiettoria 2: posizione finale del braccio 
     send_arm_trajectory_2 = TimerAction(
         period=13.0,
         actions=[
@@ -101,16 +107,35 @@ def generate_launch_description():
         ]
     )
 
-    # Aggiunta delle azioni alla LaunchDescription
+    #Apertura gripper dopo 17s
+    gripper_open = TimerAction(
+        period=17.0,
+        actions=[
+            ExecuteProcess(
+                cmd=[
+                    'ros2', 'action', 'send_goal',
+                    '/gripper_controller/follow_joint_trajectory',
+                    'control_msgs/action/FollowJointTrajectory',
+                    '{"trajectory": {"joint_names": ["gripper_left_finger_joint", "gripper_right_finger_joint"], '
+                    '"points": [{"positions": [0.044, 0.044], "time_from_start": {"sec": 2}}]}}'
+                ],
+                output='screen'
+            )
+        ]
+
+    )
+
+
+    # Aggiunta di tutte le azioni e nodi alla launch description
     ld.add_action(action_client)
     ld.add_action(action_server)
     ld.add_action(aruco_pose_estimator_node)
     ld.add_action(to_base)
+    ld.add_action(kinematic1_timer)
+    ld.add_action(robot_machine_state_timer)
     ld.add_action(send_arm_trajectory_1)
     ld.add_action(send_torso_trajectory)
     ld.add_action(send_arm_trajectory_2)
-    ld.add_action(kinematic1)
-    ld.add_action(robot_machine_state)
+    ld.add_action(gripper_open)
 
     return ld
-
