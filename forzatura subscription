@@ -1,7 +1,0 @@
-def __init__(self):
-    super().__init__('task_planner')
-
-    self.get_logger().info("🛠 Avvio TaskPlanner")
-
-    self.pose_sub = self.create_subscription(PoseStamped, '/target_pose', self.pose_callback, 10)
-    self.get_logger().info("📡 Subscription a /target_pose creata!")
